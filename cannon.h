@@ -2,6 +2,8 @@
 
 #include "object.h"
 
+class Ship;
+
 enum CannonType
 {
     cannon_1,
@@ -15,9 +17,9 @@ class Cannon : public Object
 {
     public:
         Cannon(Game* game);
-        ~Cannon() {}
+        virtual ~Cannon() {}
 
-        virtual void Attack(int id);
+        virtual void Attack(Ship* source, Ship* target) = 0;
     
     protected:
         CannonType cannon_type_;

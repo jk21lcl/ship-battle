@@ -10,6 +10,12 @@ enum PlayerSide
     side_2
 };
 
+enum PlayerState
+{
+    ingame,
+    out
+};
+
 class Player
 {
     public:
@@ -17,8 +23,11 @@ class Player
         ~Player() {}
 
         string GetName() const;
+        PlayerState GetState() const;
+        void SetState(PlayerState state);
     
     private:
         string name_;
         PlayerSide side_;
+        PlayerState state_;
 };
