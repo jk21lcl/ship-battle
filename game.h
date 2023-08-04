@@ -45,11 +45,20 @@ class Game
         vector<Ship*> ships_2_;
         int num_1_;
         int num_2_;
-        Turn turn_;
 
+        Turn turn_;
+        Player* player_this;
+        Player* player_other;
+        vector<Ship*> ships_this;
+        vector<Ship*> ships_other;
+        int num_this;
+        int num_other;
+
+        void GetInfo();
         void ShowStatus() const;
         void Input();
         void Update();
+        void ShowCannonStatus(Ship* ship, bool showindex) const;
 
         bool CheckInGame() const;
         void ChangeTurn();

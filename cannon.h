@@ -20,7 +20,11 @@ class Cannon : public Object
         virtual ~Cannon() {}
 
         virtual void Attack(Ship* source, Ship* target) = 0;
+        void SetCd(int cd);
+        int GetCd() const;
+        bool IsReady() const;
     
     protected:
         CannonType cannon_type_;
+        int cd_;
 };
