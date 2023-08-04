@@ -10,3 +10,11 @@ MiddleShip::MiddleShip(Game* game) : Ship(game)
     cannons_.push_back(new Cannon2(game));
     cannons_.push_back(new Cannon3(game));
 }
+
+void MiddleShip::Ban()
+{
+    if (health_ < 5)
+        cannons_[2]->Ban();
+    if (health_ < 3)
+        cannons_[1]->Ban();
+}

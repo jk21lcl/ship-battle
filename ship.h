@@ -15,7 +15,7 @@ class Ship : public Object
 {
     public:
         Ship(Game* game);
-        ~Ship();
+        virtual ~Ship();
 
         int GetHealth() const;
         void SetHealth(int health);
@@ -27,4 +27,6 @@ class Ship : public Object
         bool alive_;
         ShipType ship_type_;
         vector<Cannon*> cannons_;
+
+        virtual void Ban() = 0;
 };

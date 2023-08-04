@@ -7,4 +7,6 @@ class BigShip : public Ship   // health 20, attack 5
     public:
         BigShip(Game* game);
         ~BigShip() {}
+    
+        void Ban() override;
 };

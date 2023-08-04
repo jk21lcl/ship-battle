@@ -82,10 +82,18 @@ void Game::Input()
                     cout << "Input out of range. Please input again." << endl;
                     continue;
                 }
-                if (option != 0 && !cannons[option - 1]->IsReady())
+                if (option != 0)
                 {
-                    cout << "This cannon is in cooldown. Please input again." << endl;
-                    continue;
+                    if (!cannons[option - 1]->IsAvailable())
+                    {
+                        cout << "This cannon is banned. Please input again." << endl;
+                        continue;
+                    }
+                    if (!cannons[option - 1]->IsReady())
+                    {
+                        cout << "This cannon is in cooldown. Please input again." << endl;
+                        continue;
+                    }
                 }
                 break;
             }
@@ -142,7 +150,9 @@ void Game::ShowCannonStatus(Ship* ship, bool showindex) const
             cout << i + 1 << ": ";
         Cannon* cur = cannons[i];
         cout << cur->GetName();
-        if (cur->IsReady())
+        if (!cur->IsAvailable())
+            cout << "(banned)";
+        else if (cur->IsReady())
             cout << "(ready)";
         else
             cout << "(cd: " << cur->GetCd() << ")";

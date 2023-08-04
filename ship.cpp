@@ -27,6 +27,7 @@ void Ship::SetHealth(int health)
         alive_ = false;
     }
     health_ = health;
+    Ban();
 }
 
 vector<Cannon*> Ship::GetCannons() const

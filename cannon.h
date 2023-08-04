@@ -23,8 +23,11 @@ class Cannon : public Object
         void SetCd(int cd);
         int GetCd() const;
         bool IsReady() const;
+        bool IsAvailable() const;
+        void Ban();
     
     protected:
         CannonType cannon_type_;
         int cd_;
+        bool available_;
 };
