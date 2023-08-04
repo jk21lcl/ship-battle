@@ -10,5 +10,6 @@ Cannon4::Cannon4(Game* game) : Cannon(game)
 void Cannon4::Attack(Ship* source, Ship* target)
 {
     target->SetHealth(target->GetHealth() - 4);
+    source->SetHealth(source->GetHealth() + 2);
     cd_ = 5;
 }

@@ -10,5 +10,6 @@ Cannon2::Cannon2(Game* game) : Cannon(game)
 void Cannon2::Attack(Ship* source, Ship* target)
 {
     target->SetHealth(target->GetHealth() - 2);
+    target->SetSkip(true);
     cd_ = 3;
 }

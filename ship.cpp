@@ -5,6 +5,7 @@ Ship::Ship(Game* game) : Object(game)
 {
     object_type_ = ship;
     alive_ = true;
+    skipped_ = false;
 }
 
 Ship::~Ship()
@@ -26,8 +27,13 @@ void Ship::SetHealth(int health)
         health_ = 0;
         alive_ = false;
     }
-    health_ = health;
+    health_ = min(health, max_health_);
     Ban();
+}
+
+int Ship::GetMaxHealth() const
+{
+    return max_health_;
 }
 
 vector<Cannon*> Ship::GetCannons() const
@@ -38,4 +44,14 @@ vector<Cannon*> Ship::GetCannons() const
 bool Ship::IsAlive() const
 {
     return alive_;
+}
+
+bool Ship::IsSkipped() const
+{
+    return skipped_;
+}
+
+void Ship::SetSkip(bool skipped)
+{
+    skipped_ = skipped;
 }

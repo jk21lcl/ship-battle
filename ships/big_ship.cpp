@@ -4,6 +4,7 @@
 BigShip::BigShip(Game* game) : Ship(game)
 {
     health_ = 20;
+    max_health_ = 20;
     ship_type_ = big_ship;
     name_ = "BigShip";
     cannons_.push_back(new Cannon1(game));

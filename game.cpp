@@ -40,15 +40,17 @@ void Game::ShowStatus() const
         {
             Ship* ship = ships[i];
             cout << "  " << i + 1 << "  ";
-            cout << ship->GetName() << "  ";
+            cout << ship->GetName();
             if (ship->IsAlive())
             {
-                cout << "Health: " << ship->GetHealth() << "  ";
+                if (ship->IsSkipped())
+                    cout << "(skipped)";
+                cout << "  Health: " << ship->GetHealth() << "  ";
                 ShowCannonStatus(ship, false);
                 cout << endl;
             }
             else
-                cout << "Dead" << endl;
+                cout << "  Dead" << endl;
         }
     }
     cout << endl;
@@ -60,7 +62,7 @@ void Game::Input()
     for (int i = 0; i < num_this; i++)
     {
         Ship* ship = ships_this[i];
-        if (ship->IsAlive())
+        if (ship->IsAlive() && !ship->IsSkipped())
         {
             cout << "  " << i + 1 << "  " << ship->GetName() << endl;
             cout << "  Option: " << endl;
@@ -120,21 +122,26 @@ void Game::Update()
 {
     // update ingame info
     player_other->SetState(out);
-    for (int i = 0; i < num_other; i++)
-        if (ships_other[i]->IsAlive())
+    for (Ship* ship : ships_other)
+        if (ship->IsAlive())
         {
             player_other->SetState(ingame);
             break;
         }
     
-    // update cd
+    // update cd and skip
     for (Ship* ship : ships_this)
         if (ship->IsAlive())
         {
-            vector<Cannon*> cannons = ship->GetCannons();
-            for (Cannon* cannon : cannons)
-                if (!cannon->IsReady())
-                    cannon->SetCd(cannon->GetCd() - 1);
+            if (ship->IsSkipped())
+                ship->SetSkip(false);
+            else
+            {
+                vector<Cannon*> cannons = ship->GetCannons();
+                for (Cannon* cannon : cannons)
+                    if (!cannon->IsReady())
+                        cannon->SetCd(cannon->GetCd() - 1);
+            }
         }
     
     ChangeTurn();

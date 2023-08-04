@@ -4,6 +4,7 @@
 MiddleShip::MiddleShip(Game* game) : Ship(game)
 {
     health_ = 10;
+    max_health_ = 10;
     ship_type_ = middle_ship;
     name_ = "MiddleShip";
     cannons_.push_back(new Cannon1(game));
