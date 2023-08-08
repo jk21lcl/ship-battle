@@ -60,27 +60,24 @@ int main()
         case advanced:
         {
             vector<int> cost = {4,2,1};
-            cout << "The cost of each ship is" << endl;
-            cout << "  BigShip: 4  MiddleShip: 2  SmallShip: 1" << endl;
             cout << "Enter the money of " << player_2.GetName() << ". ";
             cout << player_1.GetName() << " will get 80% of that." << endl;
             double money_1;
             double money_2;
             InputNumber<double>(money_2, 2, 1000);
             money_1 = money_2 * 0.8;
-            cout << player_1.GetName() << " has money " << money_1 << endl;
-            cout << player_2.GetName() << " has money " << money_2 << endl;
 
             for (int i = 0; i < 2; i++)
             {
                 Player* player = i == 0 ? &player_1 : &player_2;
                 PlayerSide side = i == 0 ? side_1 : side_2;
                 double* money = i == 0 ? &money_1 : &money_2;
+                cout << player->GetName() << " has money " << *money << endl;
 
                 cout << "Enter the ships for " << player->GetName() << ". ";
                 cout << "Enter 0 to end. " << endl;
                 cout << "  Option: " << endl;
-                cout << "    1: BigShip  2: MiddleShip  3: SmallShip" << endl;
+                cout << "    1: BigShip(4)  2: MiddleShip(2)  3: SmallShip(1)" << endl;
 
                 int choice;
                 int num = 0;
