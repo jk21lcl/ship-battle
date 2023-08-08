@@ -17,22 +17,22 @@ void Game::ShowStatus() const
         int num = player->GetNum();
         vector<Ship*> ships = player->GetShips();
 
-        cout << player->GetName() << "'s status: " << endl;
+        cout << "\033[0;36m" << player->GetName() << "\033[0m" << "'s status: " << endl;
         for (int i = 0; i < num; i++)
         {
             Ship* ship = ships[i];
             cout << "  " << i + 1 << "  ";
-            cout << ship->GetName();
+            cout << "\033[1;36m" << ship->GetName() << "\033[0m";
             if (ship->IsAlive())
             {
                 if (ship->IsSkipped())
-                    cout << "(skipped)";
+                    cout << "\033[1;33m" << "(skipped)" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";
                 ShowCannonStatus(ship, false);
                 cout << endl;
             }
             else
-                cout << "  Dead" << endl;
+                cout << "\033[1;31m" << "  Dead" << "\033[0m" << endl;
         }
     }
     cout << endl;
@@ -40,7 +40,7 @@ void Game::ShowStatus() const
 
 void Game::Input()
 {
-    cout << "It's " << cur_player_->GetName() << "'s turn." << endl;
+    cout << "It's " << "\033[0;36m" << cur_player_->GetName() << "\033[0m" << "'s turn." << endl;
     int num_ship = cur_player_->GetNum();
     vector<Ship*> ships = cur_player_->GetShips();
 
@@ -49,8 +49,8 @@ void Game::Input()
         Ship* ship = ships[i];
         if (ship->IsAlive() && !ship->IsSkipped())
         {
-            cout << "  " << i + 1 << "  " << ship->GetName() << endl;
-            cout << "  Option: " << endl;
+            cout << "  " << i + 1 << "  " << "\033[1;36m" << ship->GetName() << "\033[0m" << endl;
+            cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
             cout << "    ";
             cout << "0: rest  ";
             ShowCannonStatus(ship, true);
@@ -132,9 +132,9 @@ void Game::ShowCannonStatus(Ship* ship, bool showindex) const
         Cannon* cur = cannons[i];
         cout << cur->GetName();
         if (!cur->IsAvailable())
-            cout << "(banned)";
+            cout << "\033[1;31m" << "(banned)" << "\033[0m";
         else if (cur->IsReady())
-            cout << "(ready)";
+            cout << "\033[0;32m" << "(ready)" << "\033[0m";
         else
             cout << "(cd: " << cur->GetCd() << ")";
         cout << "  ";
@@ -146,13 +146,17 @@ void Game::Start()
     int round = 1;
     while (CheckInGame())
     {
+        cout << "\033[0;35m";
         cout << endl << "Round " << round << ": " << endl << endl;
+        cout << "\033[0m";
         ShowStatus();
         Input();
         Update();
         round++;
     }
+    cout << "\033[1;35m";
     cout << other_player_->GetName() << " wins!" << endl;
+    cout << "\033[0m";
 }
 
 bool Game::CheckInGame() const
