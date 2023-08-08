@@ -17,17 +17,17 @@ class Ship : public Object
         Ship(Game* game);
         virtual ~Ship();
 
-        int GetHealth() const;
-        void SetHealth(int health);
-        int GetMaxHealth() const;
+        double GetHealth() const;
+        void SetHealth(double health);
+        double GetMaxHealth() const;
         vector<Cannon*> GetCannons() const;
         bool IsAlive() const;
         bool IsSkipped() const;
         void SetSkip(bool skipped);
     
     protected:
-        int max_health_;
-        int health_;
+        double max_health_;
+        double health_;
         bool alive_;
         bool skipped_;
         ShipType ship_type_;

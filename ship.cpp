@@ -15,12 +15,12 @@ Ship::~Ship()
         delete cannons_[i];
 }
 
-int Ship::GetHealth() const
+double Ship::GetHealth() const
 {
     return health_;
 }
 
-void Ship::SetHealth(int health)
+void Ship::SetHealth(double health)
 {
     if (health <= 0)
     {
@@ -31,7 +31,7 @@ void Ship::SetHealth(int health)
     Ban();
 }
 
-int Ship::GetMaxHealth() const
+double Ship::GetMaxHealth() const
 {
     return max_health_;
 }
