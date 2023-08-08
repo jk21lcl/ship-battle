@@ -1,24 +1,16 @@
 #pragma once
 
-#include "ships.h"
-#include "cannons.h"
 #include "player.h"
 #include <vector>
 #include <iostream>
 
 using namespace std;
 
-enum Turn
-{
-    turn_1,
-    turn_2
-};
-
 class Game
 {
     public:
         Game(Player* player_1, Player* player_2);
-        ~Game();
+        ~Game() {}
 
         void Start();
 
@@ -28,12 +20,10 @@ class Game
             switch (side)
             {
                 case side_1:
-                    ships_1_.push_back(new ship_type(this));
-                    num_1_++;
+                    player_1_->AddShip<ship_type>(this);
                     break;
                 case side_2:
-                    ships_2_.push_back(new ship_type(this));
-                    num_2_++;
+                    player_2_->AddShip<ship_type>(this);
                     break;
             }
         }
@@ -41,25 +31,29 @@ class Game
     private:
         Player* player_1_;
         Player* player_2_;
-        vector<Ship*> ships_1_;
-        vector<Ship*> ships_2_;
-        int num_1_;
-        int num_2_;
 
-        Turn turn_;
-        Player* player_this;
-        Player* player_other;
-        vector<Ship*> ships_this;
-        vector<Ship*> ships_other;
-        int num_this;
-        int num_other;
+        Player* cur_player_;
+        Player* other_player_;
 
-        void GetInfo();
         void ShowStatus() const;
         void Input();
         void Update();
         void ShowCannonStatus(Ship* ship, bool showindex) const;
 
         bool CheckInGame() const;
-        void ChangeTurn();
 };
+
+template<typename T>
+void InputNumber(T& tar, T m, T n) // input a number in [m, n] to tar
+{
+    while (true)
+    {
+        cin >> tar;
+        if (tar < m || tar > n)
+        {
+            cout << "Input out of range. Please input again." << endl;
+            continue;
+        }
+        break;
+    }
+}

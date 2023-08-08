@@ -1,6 +1,9 @@
 #pragma once
 
+#include "ships.h"
+#include "cannons.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -20,14 +23,26 @@ class Player
 {
     public:
         Player(string name, PlayerSide side);
-        ~Player() {}
+        ~Player();
 
         string GetName() const;
         PlayerState GetState() const;
         void SetState(PlayerState state);
+        vector<Ship*> GetShips() const;
+        int GetNum() const;
+
+        template<typename ship_type>
+        void AddShip(Game* game)
+        {
+            ships_.push_back(new ship_type(game));
+            num_++;
+        }
     
     private:
         string name_;
         PlayerSide side_;
         PlayerState state_;
+
+        vector<Ship*> ships_;
+        int num_;
 };

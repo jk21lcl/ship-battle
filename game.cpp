@@ -4,27 +4,9 @@ Game::Game(Player* player_1, Player* player_2)
 {
     player_1_ = player_1;
     player_2_ = player_2;
-    num_1_ = 0;
-    num_2_ = 0;
-    turn_ = turn_1;
-}
 
-Game::~Game()
-{
-    for (int i = 0; i < num_1_; i++)
-        delete ships_1_[i];
-    for (int i = 0; i < num_2_; i++)
-        delete ships_2_[i];
-}
-
-void Game::GetInfo()
-{
-    player_this = turn_ == turn_1 ? player_1_ : player_2_;
-    player_other = turn_ == turn_1 ? player_2_ : player_1_;
-    ships_this = turn_ == turn_1 ? ships_1_ : ships_2_;
-    ships_other = turn_ == turn_1 ? ships_2_ : ships_1_;
-    num_this = turn_ == turn_1 ? num_1_ : num_2_;
-    num_other = turn_ == turn_1 ? num_2_ : num_1_;
+    cur_player_ = player_1;
+    other_player_ = player_2;
 }
 
 void Game::ShowStatus() const
@@ -32,8 +14,8 @@ void Game::ShowStatus() const
     for (int j = 0; j < 2; j++)
     {
         Player* player = j == 0 ? player_1_ : player_2_;
-        vector<Ship*> ships = j == 0 ? ships_1_ : ships_2_;
-        int num = j == 0 ? num_1_ : num_2_;
+        int num = player->GetNum();
+        vector<Ship*> ships = player->GetShips();
 
         cout << player->GetName() << "'s status: " << endl;
         for (int i = 0; i < num; i++)
@@ -58,10 +40,13 @@ void Game::ShowStatus() const
 
 void Game::Input()
 {
-    cout << "It's " << player_this->GetName() << "'s turn." << endl;
-    for (int i = 0; i < num_this; i++)
+    cout << "It's " << cur_player_->GetName() << "'s turn." << endl;
+    int num_ship = cur_player_->GetNum();
+    vector<Ship*> ships = cur_player_->GetShips();
+
+    for (int i = 0; i < num_ship; i++)
     {
-        Ship* ship = ships_this[i];
+        Ship* ship = ships[i];
         if (ship->IsAlive() && !ship->IsSkipped())
         {
             cout << "  " << i + 1 << "  " << ship->GetName() << endl;
@@ -73,17 +58,12 @@ void Game::Input()
             cout << "Please input your choice: "<< endl;
 
             vector<Cannon*> cannons = ship->GetCannons();
-            int num = cannons.size();
+            int num_cannon = cannons.size();
 
             int option;
             while (true)
             {
-                cin >> option;
-                if (option < 0 || option > num)
-                {
-                    cout << "Input out of range. Please input again." << endl;
-                    continue;
-                }
+                InputNumber<int>(option, 0, num_cannon);
                 if (option != 0)
                 {
                     if (!cannons[option - 1]->IsAvailable())
@@ -104,15 +84,8 @@ void Game::Input()
             {
                 cout << "Please input target id: " << endl;
                 int target;
-                while (true)
-                {
-                    cin >> target;
-                    if (target >= 1 && target <= num_other)
-                        break;
-                    else
-                        cout << "Input out of range. Please input again." << endl;
-                }
-                cannons[option - 1]->Attack(ship, ships_other[target - 1]);
+                InputNumber<int>(target, 1, other_player_->GetNum());
+                cannons[option - 1]->Attack(ship, other_player_->GetShips()[target - 1]);
             }
         }
     }
@@ -121,16 +94,16 @@ void Game::Input()
 void Game::Update() 
 {
     // update ingame info
-    player_other->SetState(out);
-    for (Ship* ship : ships_other)
+    other_player_->SetState(out);
+    for (Ship* ship : other_player_->GetShips())
         if (ship->IsAlive())
         {
-            player_other->SetState(ingame);
+            other_player_->SetState(ingame);
             break;
         }
     
     // update cd and skip
-    for (Ship* ship : ships_this)
+    for (Ship* ship : cur_player_->GetShips())
         if (ship->IsAlive())
         {
             if (ship->IsSkipped())
@@ -144,7 +117,8 @@ void Game::Update()
             }
         }
     
-    ChangeTurn();
+    // change turn
+    swap(cur_player_, other_player_);
 }
 
 void Game::ShowCannonStatus(Ship* ship, bool showindex) const
@@ -173,21 +147,15 @@ void Game::Start()
     while (CheckInGame())
     {
         cout << endl << "Round " << round << ": " << endl << endl;
-        GetInfo();
         ShowStatus();
         Input();
         Update();
         round++;
     }
-    cout << player_this->GetName() << " wins!" << endl;
+    cout << other_player_->GetName() << " wins!" << endl;
 }
 
 bool Game::CheckInGame() const
 {
     return player_1_->GetState() == ingame && player_2_->GetState() == ingame;
-}
-
-void Game::ChangeTurn()
-{
-    turn_ = turn_ == turn_1 ? turn_2 : turn_1;
 }

@@ -39,16 +39,7 @@ int main()
     cout << "  1: battle" << endl;
     cout << "  2: advanced" << endl;
     cout << "  3: sandbox" << endl;
-    while (true)
-    {
-        cin >> mode;
-        if (mode < 1 || mode > 3)
-        {
-            cout << "Input out of range. Please input again." << endl;
-            continue;
-        }
-        break;
-    }
+    InputNumber<int>(mode, 1, 3);
 
     GameMode M = (GameMode)(mode - 1);
     switch (M)
@@ -73,21 +64,10 @@ int main()
             cout << "  BigShip: 4  MiddleShip: 2  SmallShip: 1" << endl;
             cout << "Enter the money of " << player_2.GetName() << ". ";
             cout << player_1.GetName() << " will get 80% of that." << endl;
-
             double money_1;
             double money_2;
-            while (true)
-            {
-                cin >> money_2;
-                if (money_2 < 1.25)
-                {
-                    cout << "Input is too small. Please input again." << endl;
-                    continue;
-                }
-                money_1 = money_2 * 0.8;
-                break;
-            }
-
+            InputNumber<double>(money_2, 2, 1000);
+            money_1 = money_2 * 0.8;
             cout << player_1.GetName() << " has money " << money_1 << endl;
             cout << player_2.GetName() << " has money " << money_2 << endl;
 
@@ -106,12 +86,7 @@ int main()
                 int num = 0;
                 while (true)
                 {
-                    cin >> choice;
-                    if (choice < 0 || choice > 3)
-                    {
-                        cout << "Input out of range. Please input again." << endl;
-                        continue;
-                    }
+                    InputNumber<int>(choice, 0, 3);
                     if (choice == 0)
                     {
                         if (num == 0)
@@ -151,12 +126,7 @@ int main()
                 int num = 0;
                 while (true)
                 {
-                    cin >> choice;
-                    if (choice < 0 || choice > 3)
-                    {
-                        cout << "Input out of range. Please input again." << endl;
-                        continue;
-                    }
+                    InputNumber<int>(choice, 0, 3);
                     if (choice == 0)
                     {
                         if (num == 0)
