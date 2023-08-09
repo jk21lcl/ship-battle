@@ -5,7 +5,7 @@ Ship::Ship(Game* game) : Object(game)
 {
     object_type_ = ship;
     alive_ = true;
-    skipped_ = false;
+    stunned_ = 0;
 }
 
 Ship::~Ship()
@@ -20,14 +20,24 @@ double Ship::GetHealth() const
     return health_;
 }
 
-void Ship::SetHealth(double health)
+void Ship::IncreaseHealth(double n)
 {
-    if (health <= 0)
+    health_ = min(health_ + n, max_health_);
+}
+
+void Ship::DecreaseHealth(double n, Ship* source)
+{
+    if (shield_health_)
+        shield_health_ -= n;
+    else
+        health_ -= n;
+    if (shield_health_ <= 0)
+        shield_health_ = 0;
+    if (health_ <= 0)
     {
         health_ = 0;
         alive_ = false;
     }
-    health_ = min(health, max_health_);
     Ban();
 }
 
@@ -41,17 +51,42 @@ vector<Cannon*> Ship::GetCannons() const
     return cannons_;
 }
 
+ShipType Ship::GetShipType() const
+{
+    return ship_type_;
+}
+
 bool Ship::IsAlive() const
 {
     return alive_;
 }
 
-bool Ship::IsSkipped() const
+int Ship::GetStunned() const
 {
-    return skipped_;
+    return stunned_;
 }
 
-void Ship::SetSkip(bool skipped)
+bool Ship::IsStunned() const
 {
-    skipped_ = skipped;
+    return stunned_ ;
+}
+
+void Ship::IncreaseStun(int n)
+{
+    stunned_ += n;
+}
+
+int Ship::GetShieldHealth() const
+{
+    return shield_health_;
+}
+
+void Ship::IncreaseShieldHealth(int n)
+{
+    shield_health_ += n;
+}
+
+bool Ship::HasShield() const
+{
+    return shield_health_ != 0;
 }

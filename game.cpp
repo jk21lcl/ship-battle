@@ -25,8 +25,10 @@ void Game::ShowStatus() const
             cout << "\033[1;36m" << ship->GetName() << "\033[0m";
             if (ship->IsAlive())
             {
-                if (ship->IsSkipped())
-                    cout << "\033[1;33m" << "(skipped)" << "\033[0m";
+                if (ship->HasShield())
+                    cout << "\033[0;32m" << "(shield: " << ship->GetShieldHealth() << ")" << "\033[0m";
+                if (ship->IsStunned())
+                    cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";
                 ShowCannonStatus(ship, false);
                 cout << endl;
@@ -47,7 +49,7 @@ void Game::Input()
     for (int i = 0; i < num_ship; i++)
     {
         Ship* ship = ships[i];
-        if (ship->IsAlive() && !ship->IsSkipped())
+        if (ship->IsAlive() && !ship->IsStunned())
         {
             cout << "  " << i + 1 << "  " << "\033[1;36m" << ship->GetName() << "\033[0m" << endl;
             cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
@@ -84,8 +86,17 @@ void Game::Input()
             {
                 cout << "Please input target id: " << endl;
                 int target;
-                InputNumber<int>(target, 1, other_player_->GetNum());
-                cannons[option - 1]->Attack(ship, other_player_->GetShips()[target - 1]);
+                Cannon* cur_cannon = cannons[option - 1];
+                if (cur_cannon->GetCannonType() == shield)
+                {
+                    InputNumber<int>(target, 1, cur_player_->GetNum());
+                    cur_cannon->Attack(ship, cur_player_->GetShips()[target - 1]);
+                }
+                else
+                {
+                    InputNumber<int>(target, 1, other_player_->GetNum());
+                    cannons[option - 1]->Attack(ship, other_player_->GetShips()[target - 1]);
+                }
             }
         }
     }
@@ -106,8 +117,8 @@ void Game::Update()
     for (Ship* ship : cur_player_->GetShips())
         if (ship->IsAlive())
         {
-            if (ship->IsSkipped())
-                ship->SetSkip(false);
+            if (ship->IsStunned())
+                ship->IncreaseStun(-1);
             else
             {
                 vector<Cannon*> cannons = ship->GetCannons();

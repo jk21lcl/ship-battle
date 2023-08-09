@@ -4,7 +4,6 @@
 Cannon::Cannon(Game* game) : Object(game)
 {
     object_type_ = cannon;
-    cd_ = 0;
     available_ = true;
 }
 
@@ -31,4 +30,9 @@ bool Cannon::IsAvailable() const
 void Cannon::Ban()
 {
     available_ = false;
+}
+
+CannonType Cannon::GetCannonType() const
+{
+    return cannon_type_;
 }

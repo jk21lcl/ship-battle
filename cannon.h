@@ -10,7 +10,8 @@ enum CannonType
     cannon_2,
     cannon_3,
     cannon_4,
-    cannon_5
+    cannon_5,
+    shield
 };
 
 class Cannon : public Object
@@ -25,6 +26,7 @@ class Cannon : public Object
         bool IsReady() const;
         bool IsAvailable() const;
         void Ban();
+        CannonType GetCannonType() const;
     
     protected:
         CannonType cannon_type_;

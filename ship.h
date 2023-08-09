@@ -8,7 +8,8 @@ enum ShipType
 {
     big_ship,
     middle_ship,
-    small_ship
+    small_ship,
+    defense_ship
 };
 
 class Ship : public Object
@@ -18,20 +19,30 @@ class Ship : public Object
         virtual ~Ship();
 
         double GetHealth() const;
-        void SetHealth(double health);
         double GetMaxHealth() const;
         vector<Cannon*> GetCannons() const;
+        ShipType GetShipType() const;
         bool IsAlive() const;
-        bool IsSkipped() const;
-        void SetSkip(bool skipped);
+
+        int GetStunned() const;
+        bool IsStunned() const;
+        void IncreaseStun(int n);
+
+        virtual void IncreaseHealth(double n);
+        virtual void DecreaseHealth(double n, Ship* source);
+
+        int GetShieldHealth() const;
+        void IncreaseShieldHealth(int n);
+        bool HasShield() const;
     
     protected:
         double max_health_;
         double health_;
         bool alive_;
-        bool skipped_;
+        int stunned_;
         ShipType ship_type_;
         vector<Cannon*> cannons_;
+        int shield_health_;
 
         virtual void Ban() = 0;
 };

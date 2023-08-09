@@ -20,6 +20,7 @@ class Object
         ~Object() {}
 
         string GetName() const;
+        ObjectType GetObjectType() const;
     
     protected:
         Game* game_;

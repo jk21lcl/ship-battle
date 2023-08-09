@@ -10,3 +10,8 @@ string Object::GetName() const
 {
     return name_;
 }
+
+ObjectType Object::GetObjectType() const
+{
+    return object_type_;
+}

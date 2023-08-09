@@ -2,6 +2,9 @@
 
 using namespace std;
 
+vector<int> cost = {4,2,1,5};
+vector<string> name = {"BigShip","MiddleShip","SmallShip","DefenseShip"};
+
 enum GameMode
 {
     battle,
@@ -22,10 +25,28 @@ void AddShip(Game* game, PlayerSide side, int type)
         case 3:
             game->AddShip<SmallShip>(side);
             break;
+        case 4:
+            game->AddShip<DefenseShip>(side);
+            break;
         default:
             cout << "Input out of range." << endl;
             break;
     }
+}
+
+void ShowOption(Player* player)
+{
+    cout << "Enter the ships for " << "\033[0;36m" << player->GetName() << "\033[0m" << ". ";
+    cout << "Enter 0 to end. " << endl;
+    cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
+    cout << "    ";
+    for (int j = 1; j <= 4; j++)
+    {
+        cout << j << ": ";
+        cout << "\033[1;36m" << name[j - 1] << "\033[0m" << "(";
+        cout << "\033[1;33m" << cost[j - 1] << "\033[0m" << ")  ";
+    }
+    cout << endl;
 }
 
 int main()
@@ -61,8 +82,6 @@ int main()
 
         case advanced:
         {
-            vector<int> cost = {4,2,1};
-            vector<string> name = {"BigShip","MiddleShip","SmallShip"};
             cout << "Enter the money of " << "\033[0;36m" << player_2.GetName() << "\033[0m" << ". " << endl;
             cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get 80% of that." << endl;
             double money_1;
@@ -77,23 +96,12 @@ int main()
                 double* money = i == 0 ? &money_1 : &money_2;
                 cout << "\033[0;36m" << player->GetName() << "\033[0m" << " has money " << *money << endl;
 
-                cout << "Enter the ships for " << "\033[0;36m" << player->GetName() << "\033[0m" << ". ";
-                cout << "Enter 0 to end. " << endl;
-                cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
-                cout << "    ";
-                for (int j = 1; j <= 3; j++)
-                {
-                    cout << j << ": ";
-                    cout << "\033[1;36m" << name[j - 1] << "\033[0m" << "(";
-                    cout << "\033[1;33m" << cost[j - 1] << "\033[0m" << ")  ";
-                }
-                cout << endl;
-
+                ShowOption(player);
                 int choice;
                 int num = 0;
                 while (true)
                 {
-                    InputNumber<int>(choice, 0, 3);
+                    InputNumber<int>(choice, 0, 4);
                     if (choice == 0)
                     {
                         if (num == 0)
@@ -119,21 +127,18 @@ int main()
 
         case sandbox:
         {
+            vector<string> name = {"BigShip","MiddleShip","SmallShip","DefenseShip"};
             for (int i = 0; i < 2; i++)
             {
                 Player* player = i == 0 ? &player_1 : &player_2;
                 PlayerSide side = i == 0 ? side_1 : side_2;
 
-                cout << "Enter the ships for " << "\033[0;36m" << player->GetName() << "\033[0m" << ". ";
-                cout << "Enter 0 to end. " << endl;
-                cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
-                cout << "    1: BigShip  2: MiddleShip  3: SmallShip" << endl;
-
+                ShowOption(player);
                 int choice;
                 int num = 0;
                 while (true)
                 {
-                    InputNumber<int>(choice, 0, 3);
+                    InputNumber<int>(choice, 0, 4);
                     if (choice == 0)
                     {
                         if (num == 0)
