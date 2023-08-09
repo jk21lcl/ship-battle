@@ -121,6 +121,13 @@ void Game::Input()
 void Game::Update() 
 {
     // update ingame info
+    cur_player_->SetState(out);
+    for (Ship* ship : cur_player_->GetShips())
+        if (ship->IsAlive())
+        {
+            cur_player_->SetState(ingame);
+            break;
+        }
     other_player_->SetState(out);
     for (Ship* ship : other_player_->GetShips())
         if (ship->IsAlive())

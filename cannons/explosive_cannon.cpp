@@ -5,7 +5,6 @@ ExplosiveCannon::ExplosiveCannon(Game* game) : Cannon(game)
 {
     cannon_type_ = explosive_cannon;
     name_ = "Explosive Cannon";
-    cd_ = 2;
 }
 
 void ExplosiveCannon::SpecialAttack(Ship* source, Ship* main_target, 

@@ -11,5 +11,5 @@ void StunningCannon::Attack(Ship* source, Ship* target)
 {
     if (!target->HasShield() && !(target->GetShipType() == wizard_ship))
         target->IncreaseStun(2);
-    cd_ = 3;
+    cd_ = 4;
 }

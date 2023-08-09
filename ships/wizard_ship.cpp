@@ -27,7 +27,7 @@ void WizardShip::DecreaseHealth(double n, Ship* source)
     {
         shield_health_ -= n;
         if (source)
-            source->DecreaseHealth(n * 0.5, nullptr);
+            source->DecreaseHealth(n, nullptr);
     }
     else
         health_ -= n;
