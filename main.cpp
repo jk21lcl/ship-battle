@@ -2,8 +2,9 @@
 
 using namespace std;
 
-vector<int> cost = {4,2,1,5};
-vector<string> name = {"BigShip","MiddleShip","SmallShip","DefenseShip"};
+vector<int> cost = {4,2,1,4,5};
+vector<string> name = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
+                       "Wizard Ship"};
 
 enum GameMode
 {
@@ -28,6 +29,9 @@ void AddShip(Game* game, PlayerSide side, int type)
         case 4:
             game->AddShip<DefenseShip>(side);
             break;
+        case 5:
+            game->AddShip<WizardShip>(side);
+            break;
         default:
             cout << "Input out of range." << endl;
             break;
@@ -40,7 +44,7 @@ void ShowOption(Player* player)
     cout << "Enter 0 to end. " << endl;
     cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
     cout << "    ";
-    for (int j = 1; j <= 4; j++)
+    for (int j = 1; j <= 5; j++)
     {
         cout << j << ": ";
         cout << "\033[1;36m" << name[j - 1] << "\033[0m" << "(";
@@ -101,7 +105,7 @@ int main()
                 int num = 0;
                 while (true)
                 {
-                    InputNumber<int>(choice, 0, 4);
+                    InputNumber<int>(choice, 0, 5);
                     if (choice == 0)
                     {
                         if (num == 0)
@@ -127,7 +131,6 @@ int main()
 
         case sandbox:
         {
-            vector<string> name = {"BigShip","MiddleShip","SmallShip","DefenseShip"};
             for (int i = 0; i < 2; i++)
             {
                 Player* player = i == 0 ? &player_1 : &player_2;
@@ -138,7 +141,7 @@ int main()
                 int num = 0;
                 while (true)
                 {
-                    InputNumber<int>(choice, 0, 4);
+                    InputNumber<int>(choice, 0, 5);
                     if (choice == 0)
                     {
                         if (num == 0)

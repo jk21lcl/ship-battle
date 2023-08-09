@@ -5,7 +5,6 @@ Cannon4::Cannon4(Game* game) : Cannon(game)
 {
     cannon_type_ = cannon_4;
     name_ = "Cannon4";
-    cd_ = 0;
 }
 
 void Cannon4::Attack(Ship* source, Ship* target)

@@ -6,6 +6,7 @@ Ship::Ship(Game* game) : Object(game)
     object_type_ = ship;
     alive_ = true;
     stunned_ = 0;
+    shield_health_ = 0;
 }
 
 Ship::~Ship()

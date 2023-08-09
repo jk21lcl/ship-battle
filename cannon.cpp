@@ -5,6 +5,7 @@ Cannon::Cannon(Game* game) : Object(game)
 {
     object_type_ = cannon;
     available_ = true;
+    cd_ = 0;
 }
 
 void Cannon::SetCd(int cd)

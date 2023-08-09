@@ -92,10 +92,26 @@ void Game::Input()
                     InputNumber<int>(target, 1, cur_player_->GetNum());
                     cur_cannon->Attack(ship, cur_player_->GetShips()[target - 1]);
                 }
+                else if (cur_cannon->GetCannonType() == split_cannon)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        InputNumber<int>(target, 1, other_player_->GetNum());
+                        cur_cannon->Attack(ship, other_player_->GetShips()[target - 1]);
+                    }
+                }
+                else if (cur_cannon->GetCannonType() == explosive_cannon)
+                {
+                    InputNumber<int>(target, 1, other_player_->GetNum());
+                    Ship* main_ship = other_player_->GetShips()[target - 1];
+                    Ship* ship_1 = target == 1 ? nullptr : other_player_->GetShips()[target - 2];
+                    Ship* ship_2 = target == other_player_->GetNum() ? nullptr : other_player_->GetShips()[target];
+                    dynamic_cast<ExplosiveCannon*>(cur_cannon)->SpecialAttack(ship, main_ship, ship_1, ship_2);
+                }
                 else
                 {
                     InputNumber<int>(target, 1, other_player_->GetNum());
-                    cannons[option - 1]->Attack(ship, other_player_->GetShips()[target - 1]);
+                    cur_cannon->Attack(ship, other_player_->GetShips()[target - 1]);
                 }
             }
         }

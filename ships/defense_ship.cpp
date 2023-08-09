@@ -5,9 +5,8 @@ DefenseShip::DefenseShip(Game* game) : Ship(game)
 {
     health_ = 15;
     max_health_ = 15;
-    shield_health_ = 0;
     ship_type_ = defense_ship;
-    name_ = "DefenseShip";
+    name_ = "Defense Ship";
     cannons_.push_back(new Cannon1(game));
     cannons_.push_back(new Cannon2(game));
     cannons_.push_back(new Cannon3(game));

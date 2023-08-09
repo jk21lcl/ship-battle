@@ -9,7 +9,8 @@ enum ShipType
     big_ship,
     middle_ship,
     small_ship,
-    defense_ship
+    defense_ship,
+    wizard_ship
 };
 
 class Ship : public Object

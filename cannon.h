@@ -11,7 +11,10 @@ enum CannonType
     cannon_3,
     cannon_4,
     cannon_5,
-    shield
+    shield,
+    split_cannon,
+    stunning_cannon,
+    explosive_cannon
 };
 
 class Cannon : public Object

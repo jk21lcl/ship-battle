@@ -5,12 +5,11 @@ Cannon2::Cannon2(Game* game) : Cannon(game)
 {
     cannon_type_ = cannon_2;
     name_ = "Cannon2";
-    cd_ = 0;
 }
 
 void Cannon2::Attack(Ship* source, Ship* target)
 {
-    if (!target->HasShield())
+    if (!target->HasShield() && !(target->GetShipType() == wizard_ship))
         target->IncreaseStun(1);
     target->DecreaseHealth(2, source);
     cd_ = 3;
