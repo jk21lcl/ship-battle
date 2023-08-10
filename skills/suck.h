@@ -2,11 +2,11 @@
 
 #include "skill.h"
 
-class Shield : public Skill
+class Suck : public Skill
 {
     public:
-        Shield(Game* game);
-        ~Shield() {}
+        Suck(Game* game);
+        ~Suck() {}
 
         void Use(Ship* source, Ship* target) override;
 };

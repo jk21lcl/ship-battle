@@ -11,6 +11,7 @@ WizardShip::WizardShip(Game* game) : Ship(game)
     cannons_.push_back(new SplitCannon(game));
     cannons_.push_back(new StunningCannon(game));
     cannons_.push_back(new ExplosiveCannon(game));
+    skills_.push_back(new Immune(game));
 }
 
 void WizardShip::Ban()
@@ -23,8 +24,6 @@ void WizardShip::Ban()
 
 void WizardShip::DecreaseHealth(double n, Ship* source)
 {
-    if (source->IsSuck())
-        source->IncreaseHealth(n * 0.5);
     if (shield_health_)
     {
         shield_health_ -= n;
@@ -33,6 +32,8 @@ void WizardShip::DecreaseHealth(double n, Ship* source)
     }
     else
         health_ -= n;
+    if (source && source->IsSuck())
+        source->IncreaseHealth(n * 0.5);
     if (shield_health_ <= 0)
         shield_health_ = 0;
     if (health_ <= 0)

@@ -7,8 +7,8 @@ Shield::Shield(Game* game) : Skill(game)
     name_ = "Shield";
 }
 
-void Shield::Attack(Ship* source, Ship* target)
+void Shield::Use(Ship* source, Ship* target)
 {
     target->IncreaseShieldHealth(5);
-    cd_ = 3;
+    cd_ = 2;
 }

@@ -156,14 +156,14 @@ void Game::Input()
                     if (type == heal_cannon)
                     {
                         InputNumber<int>(target, 1, cur_player_->GetNum());
-                        cur_cannon->Attack(ship, cur_player_->GetShips()[target - 1]);
+                        cannon_event_.push(new CannonEvent(cur_cannon, ship, cur_player_->GetShips()[target - 1]));
                     }
                     else if (type == split_cannon)
                     {
                         for (int j = 0; j < 3; j++)
                         {
                             InputNumber<int>(target, 1, other_player_->GetNum());
-                            cur_cannon->Attack(ship, other_player_->GetShips()[target - 1]);
+                            cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
                         }
                     }
                     else if (type == explosive_cannon)
@@ -172,19 +172,30 @@ void Game::Input()
                         Ship* main_ship = other_player_->GetShips()[target - 1];
                         Ship* ship_1 = target == 1 ? nullptr : other_player_->GetShips()[target - 2];
                         Ship* ship_2 = target == other_player_->GetNum() ? nullptr : other_player_->GetShips()[target];
-                        dynamic_cast<ExplosiveCannon*>(cur_cannon)->SpecialAttack(ship, main_ship, ship_1, ship_2);
+                        cannon_event_.push(new ExplosiveEvent(cur_cannon, ship, main_ship, ship_1, ship_2));
                     }
                     else
                     {
                         InputNumber<int>(target, 1, other_player_->GetNum());
-                        cur_cannon->Attack(ship, other_player_->GetShips()[target - 1]);
+                        cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
                     }
                 }
                 else
                 {
                     Skill* cur_skill = skills[option - num_cannon - 1];
-                    InputNumber<int>(target, 1, cur_player_->GetNum());
-                    cur_skill->Attack(ship, cur_player_->GetShips()[target - 1]);
+                    SkillType type = cur_skill->GetSkillType();
+                    if (type == super_heal)
+                    {
+                        for (Ship* tar_ship : ships)
+                            if (tar_ship->IsAlive())
+                                skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
+                    }
+                    else
+                    {
+                        InputNumber<int>(target, 1, cur_player_->GetNum());
+                        skill_event_.push(new SkillEvent(cur_skill, ship,
+                            cur_player_->GetShips()[target - 1]));
+                    }
                 }
             }
         }
@@ -193,22 +204,8 @@ void Game::Input()
 
 void Game::Update() 
 {
-    // update ingame info
-    cur_player_->SetState(out);
-    for (Ship* ship : cur_player_->GetShips())
-        if (ship->IsAlive())
-        {
-            cur_player_->SetState(ingame);
-            break;
-        }
-    other_player_->SetState(out);
-    for (Ship* ship : other_player_->GetShips())
-        if (ship->IsAlive())
-        {
-            other_player_->SetState(ingame);
-            break;
-        }
-    
+    ProcessCannon();
+
     // update cd, stun, immune, suck, heal
     for (Ship* ship : cur_player_->GetShips())
         if (ship->IsAlive())
@@ -239,8 +236,48 @@ void Game::Update()
             }
         }
     
+    ProcessSkill();
+
+    // update ingame info
+    cur_player_->SetState(out);
+    for (Ship* ship : cur_player_->GetShips())
+        if (ship->IsAlive())
+        {
+            cur_player_->SetState(ingame);
+            break;
+        }
+    other_player_->SetState(out);
+    for (Ship* ship : other_player_->GetShips())
+        if (ship->IsAlive())
+        {
+            other_player_->SetState(ingame);
+            break;
+        }
+    
     // change turn
     swap(cur_player_, other_player_);
+}
+
+void Game::ProcessCannon()
+{
+    while (!cannon_event_.empty())
+    {
+        Event* event = cannon_event_.front();
+        event->Process();
+        delete event;
+        cannon_event_.pop();
+    }
+}
+
+void Game::ProcessSkill()
+{
+    while (!skill_event_.empty())
+    {
+        Event* event = skill_event_.front();
+        event->Process();
+        delete event;
+        skill_event_.pop();
+    }
 }
 
 void Game::Start()

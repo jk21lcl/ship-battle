@@ -6,7 +6,11 @@ class Ship;
 
 enum SkillType
 {
-    shield
+    shield,
+    immune,
+    suck,
+    heal,
+    super_heal
 };
 
 class Skill : public Object
@@ -15,7 +19,7 @@ class Skill : public Object
         Skill(Game* game);
         virtual ~Skill() {}
 
-        virtual void Attack(Ship* source, Ship* target) = 0;
+        virtual void Use(Ship* source, Ship* target) = 0;
         void SetCd(int cd);
         int GetCd() const;
         bool IsReady() const;

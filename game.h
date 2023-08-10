@@ -1,7 +1,9 @@
 #pragma once
 
 #include "player.h"
+#include "events.h"
 #include <vector>
+#include <queue>
 #include <iostream>
 
 using namespace std;
@@ -35,11 +37,16 @@ class Game
         Player* cur_player_;
         Player* other_player_;
 
+        queue<Event*> cannon_event_;
+        queue<Event*> skill_event_;
+
         void ShowStatus() const;
         void ShowCannonStatus(Ship* ship, bool showindex) const;
         void ShowSkillStatus(Ship* ship, bool showindex) const;
         void Input();
         void Update();
+        void ProcessCannon();
+        void ProcessSkill();
 
         bool CheckInGame() const;
 };
