@@ -36,9 +36,10 @@ class Game
         Player* other_player_;
 
         void ShowStatus() const;
+        void ShowCannonStatus(Ship* ship, bool showindex) const;
+        void ShowSkillStatus(Ship* ship, bool showindex) const;
         void Input();
         void Update();
-        void ShowCannonStatus(Ship* ship, bool showindex) const;
 
         bool CheckInGame() const;
 };

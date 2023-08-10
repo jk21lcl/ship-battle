@@ -2,6 +2,7 @@
 
 #include "ships.h"
 #include "cannons.h"
+#include "skills.h"
 #include <string>
 #include <vector>
 

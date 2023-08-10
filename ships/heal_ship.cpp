@@ -1,0 +1,11 @@
+#include "heal_ship.h"
+#include "game.h"
+
+HealShip::HealShip(Game* game) : Ship(game)
+{
+    health_ = 20;
+    max_health_ = 20;
+    ship_type_ = heal_ship;
+    name_ = "Heal Ship";
+    cannons_.push_back(new HealCannon(game));
+}

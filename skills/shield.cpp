@@ -1,14 +1,14 @@
 #include "shield.h"
 #include "game.h"
 
-Shield::Shield(Game* game) : Cannon(game)
+Shield::Shield(Game* game) : Skill(game)
 {
-    cannon_type_ = shield;
+    skill_type_ = shield;
     name_ = "Shield";
 }
 
 void Shield::Attack(Ship* source, Ship* target)
 {
-    target->IncreaseShieldHealth(3);
+    target->IncreaseShieldHealth(5);
     cd_ = 3;
 }

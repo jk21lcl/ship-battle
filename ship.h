@@ -3,6 +3,7 @@
 #include "object.h"
 
 class Cannon;
+class Skill;
 
 enum ShipType
 {
@@ -10,7 +11,8 @@ enum ShipType
     middle_ship,
     small_ship,
     defense_ship,
-    wizard_ship
+    wizard_ship,
+    heal_ship
 };
 
 class Ship : public Object
@@ -21,9 +23,13 @@ class Ship : public Object
 
         double GetHealth() const;
         double GetMaxHealth() const;
-        vector<Cannon*> GetCannons() const;
         ShipType GetShipType() const;
         bool IsAlive() const;
+
+        vector<Cannon*> GetCannons() const;
+        vector<Skill*> GetSkills() const;
+        int GetNumCannons() const;
+        int GetNumSkills() const;
 
         int GetStunned() const;
         bool IsStunned() const;
@@ -43,6 +49,7 @@ class Ship : public Object
         int stunned_;
         ShipType ship_type_;
         vector<Cannon*> cannons_;
+        vector<Skill*> skills_;
         int shield_health_;
 
         virtual void Ban() = 0;

@@ -10,7 +10,7 @@ DefenseShip::DefenseShip(Game* game) : Ship(game)
     cannons_.push_back(new Cannon1(game));
     cannons_.push_back(new Cannon2(game));
     cannons_.push_back(new Cannon3(game));
-    cannons_.push_back(new Shield(game));
+    skills_.push_back(new Shield(game));
 }
 
 void DefenseShip::Ban()

@@ -10,7 +10,8 @@ class Game;
 enum ObjectType
 {
     ship,
-    cannon
+    cannon,
+    skill
 };
 
 class Object

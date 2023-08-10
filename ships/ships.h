@@ -5,3 +5,4 @@
 #include "big_ship.h"
 #include "defense_ship.h"
 #include "wizard_ship.h"
+#include "heal_ship.h"

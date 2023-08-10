@@ -1,8 +1,8 @@
 #pragma once
 
-#include "cannon.h"
+#include "skill.h"
 
-class Shield : public Cannon
+class Shield : public Skill
 {
     public:
         Shield(Game* game);

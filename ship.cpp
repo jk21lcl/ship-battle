@@ -52,6 +52,21 @@ vector<Cannon*> Ship::GetCannons() const
     return cannons_;
 }
 
+vector<Skill*> Ship::GetSkills() const
+{
+    return skills_;
+}
+
+int Ship::GetNumCannons() const
+{
+    return cannons_.size();
+}
+
+int Ship::GetNumSkills() const
+{
+    return skills_.size();
+}
+
 ShipType Ship::GetShipType() const
 {
     return ship_type_;
