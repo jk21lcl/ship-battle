@@ -9,7 +9,7 @@ Cannon2::Cannon2(Game* game) : Cannon(game)
 
 void Cannon2::Attack(Ship* source, Ship* target)
 {
-    if (!target->HasShield() && !(target->GetShipType() == wizard_ship))
+    if (!target->HasShield() && !target->IsImmune() && !(target->GetShipType() == wizard_ship))
         target->IncreaseStun(1);
     target->DecreaseHealth(2, source);
     cd_ = 3;

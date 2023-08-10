@@ -27,6 +27,12 @@ void Game::ShowStatus() const
             {
                 if (ship->HasShield())
                     cout << "\033[0;32m" << "(shield: " << ship->GetShieldHealth() << ")" << "\033[0m";
+                if (ship->IsImmune())
+                    cout << "\033[1;35m" << "(immune: " << ship->GetImmune() << ")" << "\033[0m";
+                if (ship->IsSuck())
+                    cout << "\033[0;35m" << "(suck: " << ship->GetSuck() << ")" << "\033[0m";
+                if (ship->IsHeal())
+                    cout << "\033[1;32m" << "(heal: " << ship->GetHeal() << ")" << "\033[0m";
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";
@@ -203,10 +209,19 @@ void Game::Update()
             break;
         }
     
-    // update cd and skip
+    // update cd, stun, immune, suck, heal
     for (Ship* ship : cur_player_->GetShips())
         if (ship->IsAlive())
         {
+            if (ship->IsImmune())
+                ship->IncreaseImmune(-1);
+            if (ship->IsSuck())
+                ship->IncreaseSuck(-1);
+            if (ship->IsHeal())
+            {
+                ship->IncreaseHealth(2);
+                ship->IncreaseHeal(-1);
+            }
             if (ship->IsStunned())
                 ship->IncreaseStun(-1);
             else

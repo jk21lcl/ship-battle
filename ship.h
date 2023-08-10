@@ -31,26 +31,42 @@ class Ship : public Object
         int GetNumCannons() const;
         int GetNumSkills() const;
 
+        virtual void IncreaseHealth(double n);
+        virtual void DecreaseHealth(double n, Ship* source);
+
         int GetStunned() const;
         bool IsStunned() const;
         void IncreaseStun(int n);
 
-        virtual void IncreaseHealth(double n);
-        virtual void DecreaseHealth(double n, Ship* source);
-
         int GetShieldHealth() const;
         void IncreaseShieldHealth(int n);
         bool HasShield() const;
+
+        int GetImmune() const;
+        bool IsImmune() const;
+        void IncreaseImmune(int n);
+
+        int GetSuck() const;
+        bool IsSuck() const;
+        void IncreaseSuck(int n);
+
+        int GetHeal() const;
+        bool IsHeal() const;
+        void IncreaseHeal(int n);
     
     protected:
         double max_health_;
         double health_;
         bool alive_;
-        int stunned_;
         ShipType ship_type_;
         vector<Cannon*> cannons_;
         vector<Skill*> skills_;
+
+        int stunned_;
         int shield_health_;
+        int immune_;
+        int suck_;
+        int heal_;
 
         virtual void Ban() = 0;
 };

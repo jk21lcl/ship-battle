@@ -23,6 +23,8 @@ void WizardShip::Ban()
 
 void WizardShip::DecreaseHealth(double n, Ship* source)
 {
+    if (source->IsSuck())
+        source->IncreaseHealth(n * 0.5);
     if (shield_health_)
     {
         shield_health_ -= n;
