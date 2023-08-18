@@ -35,6 +35,8 @@ void Game::ShowStatus() const
                     cout << "\033[1;32m" << "(heal: " << ship->GetHeal() << ")" << "\033[0m";
                 if (ship->IsFury())
                     cout << "\033[0;33m" << "(fury: " << ship->GetFury() << ")" << "\033[0m";
+                if (ship->IsDodge())
+                    cout << "\033[1;34m" << "(dodge: " << ship->GetDodge() << ")" << "\033[0m";
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";
@@ -222,6 +224,8 @@ void Game::Update()
                 ship->IncreaseHealth(2);
                 ship->IncreaseHeal(-1);
             }
+            if (ship->IsDodge())
+                ship->IncreaseDodge(-1);
             if (ship->IsStunned())
                 ship->IncreaseStun(-1);
             else

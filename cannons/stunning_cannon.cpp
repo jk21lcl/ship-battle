@@ -9,7 +9,8 @@ StunningCannon::StunningCannon(Game* game) : Cannon(game)
 
 void StunningCannon::Attack(Ship* source, Ship* target)
 {
-    if (!target->HasShield() && !target->IsImmune() && !(target->GetShipType() == wizard_ship))
-        target->IncreaseStun(2);
+    if (!ProcessDodge(source, target))
+        if (!target->HasShield() && !target->IsImmune() && !(target->GetShipType() == wizard_ship))
+            target->IncreaseStun(2);
     cd_ = 4;
 }

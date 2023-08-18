@@ -11,10 +11,13 @@ void ExplosiveCannon::SpecialAttack(Ship* source, Ship* main_target,
                                     Ship* splash_target_1, Ship* splash_target_2)
 {
     ProcessCrit(source);
-    main_target->DecreaseHealth(4 * crit_, source);
+    if (!ProcessDodge(source, main_target))
+        main_target->DecreaseHealth(4 * crit_, source);
     if (splash_target_1)
-        splash_target_1->DecreaseHealth(2 * crit_, source);
+        if (!ProcessDodge(source, splash_target_1))
+            splash_target_1->DecreaseHealth(2 * crit_, source);
     if (splash_target_2)
-        splash_target_2->DecreaseHealth(2 * crit_, source);
+        if (!ProcessDodge(source, splash_target_2))
+            splash_target_2->DecreaseHealth(2 * crit_, source);
     cd_ = 5;
 }

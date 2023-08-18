@@ -30,6 +30,7 @@ void SuperCritCannon::ProcessCrit(Ship* source)
 void SuperCritCannon::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source);
-    target->DecreaseHealth(3 * crit_, source);
+    if (!ProcessDodge(source, target))
+        target->DecreaseHealth(3 * crit_, source);
     cd_ = 5;
 }

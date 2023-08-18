@@ -15,7 +15,7 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             
             ships/small_ship.cpp ships/middle_ship.cpp ships/big_ship.cpp 
             ships/defense_ship.cpp ships/wizard_ship.cpp ships/heal_ship.cpp
-            ships/crit_ship.cpp
+            ships/crit_ship.cpp ships/swift_ship.cpp
 
             cannons/cannon_1.cpp cannons/cannon_2.cpp cannons/cannon_3.cpp
             cannons/cannon_4.cpp cannons/cannon_5.cpp
@@ -24,7 +24,7 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             cannons/crit_cannon.cpp cannons/super_crit_cannon.cpp
             
             skills/shield.cpp skills/immune.cpp skills/suck.cpp skills/heal.cpp
-            skills/super_heal.cpp skills/fury.cpp
+            skills/super_heal.cpp skills/fury.cpp skills/dodge.cpp
             
             events/cannon_event.cpp events/skill_event.cpp events/explosive_event.cpp)
 

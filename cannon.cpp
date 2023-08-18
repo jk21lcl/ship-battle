@@ -7,6 +7,7 @@ Cannon::Cannon(Game* game) : Object(game)
     available_ = true;
     cd_ = 0;
     crit_ = 1;
+    dodge_ = 0;
 }
 
 void Cannon::SetCd(int cd)
@@ -58,4 +59,21 @@ void Cannon::OutputCrit(Ship* source) const
         cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m ";
         cout << "made a " << "\033[0;33m" << crit_ << "\033[0m" << " crit." << endl;
     }
+}
+
+bool Cannon::ProcessDodge(Ship* source, Ship* target)
+{
+    dodge_ = 0;
+    if (target->GetShipType() == swift_ship)
+        dodge_ += 25;
+    if (target->IsDodge())
+        dodge_ += 25;
+    int random = rand() % 100;
+    if (random < dodge_)
+    {
+        cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m";
+        cout << "'s attack is dodged." << endl;
+        return true;
+    }
+    return false;
 }

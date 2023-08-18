@@ -34,10 +34,12 @@ class Cannon : public Object
         CannonType GetCannonType() const;
         virtual void ProcessCrit(Ship* source);
         void OutputCrit(Ship* source) const;
+        bool ProcessDodge(Ship* source, Ship* target);
     
     protected:
         CannonType cannon_type_;
         int cd_;
         bool available_;
         double crit_;
+        int dodge_;
 };

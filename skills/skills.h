@@ -6,3 +6,4 @@
 #include "heal.h"
 #include "super_heal.h"
 #include "fury.h"
+#include "dodge.h"

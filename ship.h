@@ -13,7 +13,8 @@ enum ShipType
     defense_ship,
     wizard_ship,
     heal_ship,
-    crit_ship
+    crit_ship,
+    swift_ship
 };
 
 class Ship : public Object
@@ -59,6 +60,10 @@ class Ship : public Object
         int GetFury() const;
         bool IsFury() const;
         void IncreaseFury(int n);
+
+        int GetDodge() const;
+        bool IsDodge() const;
+        void IncreaseDodge(int n);
     
     protected:
         int id_;
@@ -76,6 +81,7 @@ class Ship : public Object
         int suck_;
         int heal_;
         int fury_;
+        int dodge_;
 
         virtual void Ban() = 0;
 };

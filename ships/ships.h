@@ -7,3 +7,4 @@
 #include "wizard_ship.h"
 #include "heal_ship.h"
 #include "crit_ship.h"
+#include "swift_ship.h"

@@ -10,7 +10,8 @@ Cannon3::Cannon3(Game* game) : Cannon(game)
 void Cannon3::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source);
-    target->DecreaseHealth(3 * crit_, source);
+    if (!ProcessDodge(source, target))
+        target->DecreaseHealth(3 * crit_, source);
     source->IncreaseHealth(1);
     cd_ = 4;
 }

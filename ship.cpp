@@ -11,6 +11,7 @@ Ship::Ship(Game* game, int id) : Object(game)
     suck_ = 0;
     heal_ = 0;
     fury_ = 0;
+    dodge_ = 0;
     id_ = id;
 }
 
@@ -178,4 +179,19 @@ bool Ship::IsFury() const
 void Ship::IncreaseFury(int n)
 {
     fury_ += n;
+}
+
+int Ship::GetDodge() const
+{
+    return dodge_;
+}
+
+bool Ship::IsDodge() const
+{
+    return dodge_;
+}
+
+void Ship::IncreaseDodge(int n)
+{
+    dodge_ += n;
 }
