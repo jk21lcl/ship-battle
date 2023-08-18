@@ -1,7 +1,7 @@
 #include "small_ship.h"
 #include "game.h"
 
-SmallShip::SmallShip(Game* game) : Ship(game)
+SmallShip::SmallShip(Game* game, int id) : Ship(game, id)
 {
     health_ = 5;
     max_health_ = 5;

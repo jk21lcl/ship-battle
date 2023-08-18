@@ -33,6 +33,8 @@ void Game::ShowStatus() const
                     cout << "\033[0;35m" << "(suck: " << ship->GetSuck() << ")" << "\033[0m";
                 if (ship->IsHeal())
                     cout << "\033[1;32m" << "(heal: " << ship->GetHeal() << ")" << "\033[0m";
+                if (ship->IsFury())
+                    cout << "\033[0;33m" << "(fury: " << ship->GetFury() << ")" << "\033[0m";
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";
@@ -200,6 +202,7 @@ void Game::Input()
             }
         }
     }
+    cout << endl;
 }
 
 void Game::Update() 
@@ -282,6 +285,7 @@ void Game::ProcessSkill()
 
 void Game::Start()
 {
+    srand(time(nullptr));
     int round = 1;
     while (CheckInGame())
     {

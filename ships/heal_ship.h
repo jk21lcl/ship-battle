@@ -5,7 +5,7 @@
 class HealShip : public Ship
 {
     public:
-        HealShip(Game* game);
+        HealShip(Game* game, int id);
         ~HealShip() {}
 
         void Ban() override {}

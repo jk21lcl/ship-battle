@@ -12,19 +12,21 @@ enum ShipType
     small_ship,
     defense_ship,
     wizard_ship,
-    heal_ship
+    heal_ship,
+    crit_ship
 };
 
 class Ship : public Object
 {
     public:
-        Ship(Game* game);
+        Ship(Game* game, int id);
         virtual ~Ship();
 
         double GetHealth() const;
         double GetMaxHealth() const;
         ShipType GetShipType() const;
         bool IsAlive() const;
+        int GetId() const;
 
         vector<Cannon*> GetCannons() const;
         vector<Skill*> GetSkills() const;
@@ -53,8 +55,14 @@ class Ship : public Object
         int GetHeal() const;
         bool IsHeal() const;
         void IncreaseHeal(int n);
+
+        int GetFury() const;
+        bool IsFury() const;
+        void IncreaseFury(int n);
     
     protected:
+        int id_;
+
         double max_health_;
         double health_;
         bool alive_;
@@ -67,6 +75,7 @@ class Ship : public Object
         int immune_;
         int suck_;
         int heal_;
+        int fury_;
 
         virtual void Ban() = 0;
 };

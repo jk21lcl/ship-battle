@@ -1,7 +1,7 @@
 #include "ship.h"
 #include "game.h"
 
-Ship::Ship(Game* game) : Object(game)
+Ship::Ship(Game* game, int id) : Object(game)
 {
     object_type_ = ship;
     alive_ = true;
@@ -10,6 +10,8 @@ Ship::Ship(Game* game) : Object(game)
     immune_ = 0;
     suck_ = 0;
     heal_ = 0;
+    fury_ = 0;
+    id_ = id;
 }
 
 Ship::~Ship()
@@ -50,6 +52,11 @@ void Ship::DecreaseHealth(double n, Ship* source)
 double Ship::GetMaxHealth() const
 {
     return max_health_;
+}
+
+int Ship::GetId() const
+{
+    return id_;
 }
 
 vector<Cannon*> Ship::GetCannons() const
@@ -156,4 +163,19 @@ bool Ship::IsHeal() const
 void Ship::IncreaseHeal(int n)
 {
     heal_ += n;
+}
+
+int Ship::GetFury() const
+{
+    return fury_;
+}
+
+bool Ship::IsFury() const
+{
+    return fury_;
+}
+
+void Ship::IncreaseFury(int n)
+{
+    fury_ += n;
 }

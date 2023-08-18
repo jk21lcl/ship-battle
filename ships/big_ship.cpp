@@ -1,7 +1,7 @@
 #include "big_ship.h"
 #include "game.h"
 
-BigShip::BigShip(Game* game) : Ship(game)
+BigShip::BigShip(Game* game, int id) : Ship(game, id)
 {
     health_ = 20;
     max_health_ = 20;

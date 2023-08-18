@@ -9,3 +9,5 @@
 #include "stunning_cannon.h"
 #include "explosive_cannon.h"
 #include "heal_cannon.h"
+#include "crit_cannon.h"
+#include "super_crit_cannon.h"

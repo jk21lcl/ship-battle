@@ -6,6 +6,7 @@ Cannon::Cannon(Game* game) : Object(game)
     object_type_ = cannon;
     available_ = true;
     cd_ = 0;
+    crit_ = 1;
 }
 
 void Cannon::SetCd(int cd)
@@ -36,4 +37,25 @@ void Cannon::Ban()
 CannonType Cannon::GetCannonType() const
 {
     return cannon_type_;
+}
+
+void Cannon::ProcessCrit(Ship* source)
+{
+    if (source->IsFury())
+    {
+        crit_ = 2;
+        source->IncreaseFury(-1);
+    }
+    else
+        crit_ = 1;
+    OutputCrit(source);
+}
+
+void Cannon::OutputCrit(Ship* source) const
+{
+    if (crit_ != 1)
+    {
+        cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m ";
+        cout << "made a " << "\033[0;33m" << crit_ << "\033[0m" << " crit." << endl;
+    }
 }

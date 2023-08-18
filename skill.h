@@ -10,7 +10,8 @@ enum SkillType
     immune,
     suck,
     heal,
-    super_heal
+    super_heal,
+    fury
 };
 
 class Skill : public Object

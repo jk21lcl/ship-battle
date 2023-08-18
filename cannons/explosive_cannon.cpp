@@ -10,10 +10,11 @@ ExplosiveCannon::ExplosiveCannon(Game* game) : Cannon(game)
 void ExplosiveCannon::SpecialAttack(Ship* source, Ship* main_target, 
                                     Ship* splash_target_1, Ship* splash_target_2)
 {
-    main_target->DecreaseHealth(4, source);
+    ProcessCrit(source);
+    main_target->DecreaseHealth(4 * crit_, source);
     if (splash_target_1)
-        splash_target_1->DecreaseHealth(2, source);
+        splash_target_1->DecreaseHealth(2 * crit_, source);
     if (splash_target_2)
-        splash_target_2->DecreaseHealth(2, source);
+        splash_target_2->DecreaseHealth(2 * crit_, source);
     cd_ = 5;
 }

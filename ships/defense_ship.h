@@ -5,7 +5,7 @@
 class DefenseShip : public Ship
 {
     public:
-        DefenseShip(Game* game);
+        DefenseShip(Game* game, int id);
         ~DefenseShip() {}
 
         void Ban() override;

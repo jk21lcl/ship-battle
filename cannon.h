@@ -14,7 +14,9 @@ enum CannonType
     split_cannon,
     stunning_cannon,
     explosive_cannon,
-    heal_cannon
+    heal_cannon,
+    crit_cannon,
+    super_crit_cannon
 };
 
 class Cannon : public Object
@@ -30,9 +32,12 @@ class Cannon : public Object
         bool IsAvailable() const;
         void Ban();
         CannonType GetCannonType() const;
+        virtual void ProcessCrit(Ship* source);
+        void OutputCrit(Ship* source) const;
     
     protected:
         CannonType cannon_type_;
         int cd_;
         bool available_;
+        double crit_;
 };

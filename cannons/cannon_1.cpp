@@ -9,6 +9,7 @@ Cannon1::Cannon1(Game* game) : Cannon(game)
 
 void Cannon1::Attack(Ship* source, Ship* target)
 {
-    target->DecreaseHealth(1, source);
+    ProcessCrit(source);
+    target->DecreaseHealth(1 * crit_, source);
     cd_ = 2;
 }

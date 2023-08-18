@@ -2,10 +2,10 @@
 
 using namespace std;
 
-vector<int> cost = {4,2,1,5,5,5};
+vector<int> cost = {4,2,1,5,5,5,3};
 vector<string> name = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
-                       "Wizard Ship","Heal Ship"};
-int num_ship = 6;
+                       "Wizard Ship","Heal Ship","Crit Ship"};
+int num_ship = 7;
 
 enum GameMode
 {
@@ -35,6 +35,9 @@ void AddShip(Game* game, PlayerSide side, int type)
             break;
         case 6:
             game->AddShip<HealShip>(side);
+            break;
+        case 7:
+            game->AddShip<CritShip>(side);
             break;
         default:
             cout << "Input out of range." << endl;

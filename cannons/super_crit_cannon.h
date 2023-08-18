@@ -2,15 +2,12 @@
 
 #include "cannon.h"
 
-class SplitCannon : public Cannon
+class SuperCritCannon : public Cannon
 {
     public:
-        SplitCannon(Game* game);
-        ~SplitCannon() {}
-    
+        SuperCritCannon(Game* game);
+        ~SuperCritCannon() {}
+
         void Attack(Ship* source, Ship* target) override;
         void ProcessCrit(Ship* source) override;
-    
-    private:
-        int crit_count_;
 };
