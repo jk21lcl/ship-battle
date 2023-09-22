@@ -7,3 +7,4 @@
 #include "super_heal.h"
 #include "fury.h"
 #include "dodge.h"
+#include "super_shield.h"

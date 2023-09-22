@@ -25,6 +25,7 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             
             skills/shield.cpp skills/immune.cpp skills/suck.cpp skills/heal.cpp
             skills/super_heal.cpp skills/fury.cpp skills/dodge.cpp
+            skills/super_shield.cpp
             
             events/cannon_event.cpp events/skill_event.cpp events/explosive_event.cpp)
 

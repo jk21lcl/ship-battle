@@ -11,6 +11,7 @@ DefenseShip::DefenseShip(Game* game, int id) : Ship(game, id)
     cannons_.push_back(new Cannon2(game));
     cannons_.push_back(new Cannon3(game));
     skills_.push_back(new Shield(game));
+    skills_.push_back(new SuperShield(game));
 }
 
 void DefenseShip::Ban()
@@ -24,7 +25,7 @@ void DefenseShip::Ban()
 void DefenseShip::DecreaseHealth(double n, Ship* source)
 {
     if (source && source->IsSuck())
-        source->IncreaseHealth(n * 0.5);
+        source->IncreaseHealth(n);
     if (shield_health_)
         shield_health_ -= n;
     else

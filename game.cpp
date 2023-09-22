@@ -194,6 +194,12 @@ void Game::Input()
                             if (tar_ship->IsAlive())
                                 skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
                     }
+                    else if (type == super_shield)
+                    {
+                        for (Ship* tar_ship : ships)
+                            if (tar_ship->IsAlive())
+                                skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
+                    }
                     else
                     {
                         InputNumber<int>(target, 1, cur_player_->GetNum());

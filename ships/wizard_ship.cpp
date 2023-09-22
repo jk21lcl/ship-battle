@@ -3,11 +3,12 @@
 
 WizardShip::WizardShip(Game* game, int id) : Ship(game, id)
 {
-    health_ = 15;
-    max_health_ = 15;
+    health_ = 20;
+    max_health_ = 20;
     shield_health_ = 5;
     ship_type_ = wizard_ship;
     name_ = "Wizard Ship";
+    cannons_.push_back(new SplitCannon(game));
     cannons_.push_back(new SplitCannon(game));
     cannons_.push_back(new StunningCannon(game));
     cannons_.push_back(new ExplosiveCannon(game));
@@ -33,7 +34,7 @@ void WizardShip::DecreaseHealth(double n, Ship* source)
     else
         health_ -= n;
     if (source && source->IsSuck())
-        source->IncreaseHealth(n * 0.5);
+        source->IncreaseHealth(n);
     if (shield_health_ <= 0)
         shield_health_ = 0;
     if (health_ <= 0)

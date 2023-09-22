@@ -35,7 +35,7 @@ void Ship::IncreaseHealth(double n)
 void Ship::DecreaseHealth(double n, Ship* source)
 {
     if (source && source->IsSuck())
-        source->IncreaseHealth(n * 0.5);
+        source->IncreaseHealth(n);
     if (shield_health_)
         shield_health_ -= n;
     else
