@@ -170,6 +170,14 @@ void Game::Input()
                             cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
                         }
                     }
+                    else if (type == stunning_cannon)
+                    {
+                        for (int j = 0; j < 2; j++)
+                        {
+                            InputNumber<int>(target, 1, other_player_->GetNum());
+                            cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
+                        }
+                    }
                     else if (type == explosive_cannon)
                     {
                         InputNumber<int>(target, 1, other_player_->GetNum());
@@ -199,6 +207,15 @@ void Game::Input()
                         for (Ship* tar_ship : ships)
                             if (tar_ship->IsAlive())
                                 skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
+                    }
+                    else if (type == immune)
+                    {
+                        for (int j = 0; j < 2; j++)
+                        {
+                            InputNumber<int>(target, 1, cur_player_->GetNum());
+                            skill_event_.push(new SkillEvent(cur_skill, ship,
+                                cur_player_->GetShips()[target - 1]));
+                        }
                     }
                     else
                     {
@@ -308,7 +325,10 @@ void Game::Start()
         round++;
     }
     cout << "\033[1;35m";
-    cout << other_player_->GetName() << " wins!" << endl;
+    if (player_1_->GetState() == ingame)
+        cout << player_1_->GetName() << " wins!" << endl;
+    else
+        cout << player_2_->GetName() << " wins!" << endl;
     cout << "\033[0m";
 }
 

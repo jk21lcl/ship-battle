@@ -3,8 +3,8 @@
 
 HealShip::HealShip(Game* game, int id) : Ship(game, id)
 {
-    health_ = 20;
-    max_health_ = 20;
+    health_ = 30;
+    max_health_ = 30;
     ship_type_ = heal_ship;
     name_ = "Heal Ship";
     cannons_.push_back(new Cannon1(game));

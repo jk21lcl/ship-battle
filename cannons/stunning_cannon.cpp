@@ -11,6 +11,6 @@ void StunningCannon::Attack(Ship* source, Ship* target)
 {
     if (!ProcessDodge(source, target))
         if (!target->HasShield() && !target->IsImmune() && !(target->GetShipType() == wizard_ship))
-            target->IncreaseStun(2);
+            target->IncreaseStun(1);
     cd_ = 4;
 }

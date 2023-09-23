@@ -3,8 +3,8 @@
 
 WizardShip::WizardShip(Game* game, int id) : Ship(game, id)
 {
-    health_ = 20;
-    max_health_ = 20;
+    health_ = 15;
+    max_health_ = 15;
     shield_health_ = 5;
     ship_type_ = wizard_ship;
     name_ = "Wizard Ship";
@@ -18,9 +18,9 @@ WizardShip::WizardShip(Game* game, int id) : Ship(game, id)
 void WizardShip::Ban()
 {
     if (health_ < 4)
-        cannons_[1]->Ban();
-    if (health_ < 8)
         cannons_[2]->Ban();
+    if (health_ < 8)
+        cannons_[3]->Ban();
 }
 
 void WizardShip::DecreaseHealth(double n, Ship* source)

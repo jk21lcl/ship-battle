@@ -10,5 +10,5 @@ SuperShield::SuperShield(Game* game) : Skill(game)
 void SuperShield::Use(Ship* source, Ship* target)
 {
     target->IncreaseShieldHealth(2);
-    cd_ = 5;
+    cd_ = 4;
 }
