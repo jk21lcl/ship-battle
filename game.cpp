@@ -151,10 +151,10 @@ void Game::Input()
 
             if (option != 0)
             {
-                cout << "Please input target id: " << endl;
                 int target;
                 if (option <= num_cannon)
                 {
+                    cout << "Please input target id: " << endl;
                     Cannon* cur_cannon = cannons[option - 1];
                     CannonType type = cur_cannon->GetCannonType();
                     if (type == heal_cannon)
@@ -196,13 +196,7 @@ void Game::Input()
                 {
                     Skill* cur_skill = skills[option - num_cannon - 1];
                     SkillType type = cur_skill->GetSkillType();
-                    if (type == super_heal)
-                    {
-                        for (Ship* tar_ship : ships)
-                            if (tar_ship->IsAlive())
-                                skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
-                    }
-                    else if (type == super_shield)
+                    if (type == super_heal || type == super_shield)
                     {
                         for (Ship* tar_ship : ships)
                             if (tar_ship->IsAlive())
@@ -210,6 +204,7 @@ void Game::Input()
                     }
                     else if (type == immune)
                     {
+                        cout << "Please input target id: " << endl;
                         for (int j = 0; j < 2; j++)
                         {
                             InputNumber<int>(target, 1, cur_player_->GetNum());
@@ -217,8 +212,15 @@ void Game::Input()
                                 cur_player_->GetShips()[target - 1]));
                         }
                     }
+                    else if (type == grapeshot || type == super_grapeshot)
+                    {
+                        for (Ship* tar_ship : other_player_->GetShips())
+                            if (tar_ship->IsAlive())
+                                skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
+                    }
                     else
                     {
+                        cout << "Please input target id: " << endl;
                         InputNumber<int>(target, 1, cur_player_->GetNum());
                         skill_event_.push(new SkillEvent(cur_skill, ship,
                             cur_player_->GetShips()[target - 1]));
@@ -324,6 +326,7 @@ void Game::Start()
         Update();
         round++;
     }
+    ShowStatus();
     cout << "\033[1;35m";
     if (player_1_->GetState() == ingame)
         cout << player_1_->GetName() << " wins!" << endl;

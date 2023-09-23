@@ -8,3 +8,5 @@
 #include "fury.h"
 #include "dodge.h"
 #include "super_shield.h"
+#include "grapeshot.h"
+#include "super_grapeshot.h"

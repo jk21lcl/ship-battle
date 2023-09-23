@@ -14,7 +14,8 @@ enum ShipType
     wizard_ship,
     heal_ship,
     crit_ship,
-    swift_ship
+    swift_ship,
+    grapeshot_ship
 };
 
 class Ship : public Object

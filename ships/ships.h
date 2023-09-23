@@ -8,3 +8,4 @@
 #include "heal_ship.h"
 #include "crit_ship.h"
 #include "swift_ship.h"
+#include "grapeshot_ship.h"

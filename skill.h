@@ -13,7 +13,9 @@ enum SkillType
     super_heal,
     fury,
     dodge,
-    super_shield
+    super_shield,
+    grapeshot,
+    super_grapeshot
 };
 
 class Skill : public Object
