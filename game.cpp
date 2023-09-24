@@ -335,7 +335,6 @@ void Game::ProcessAttackSkill()
 
 void Game::Start()
 {
-    srand(time(nullptr));
     int round = 1;
     while (CheckInGame())
     {

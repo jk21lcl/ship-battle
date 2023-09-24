@@ -13,7 +13,8 @@ enum GameMode
 {
     battle,
     advanced,
-    sandbox
+    sandbox,
+    random
 };
 
 void AddShip(Game* game, PlayerSide side, int type)
@@ -79,6 +80,7 @@ void ShowOption(Player* player)
 
 int main()
 {
+    srand(time(nullptr));
     cout << "\033[0m";
 
     Player player_1("player_1", side_1);
@@ -90,7 +92,8 @@ int main()
     cout << "  1: battle" << endl;
     cout << "  2: advanced" << endl;
     cout << "  3: sandbox" << endl;
-    InputNumber<int>(mode, 1, 3);
+    cout << "  4: random" << endl;
+    InputNumber<int>(mode, 1, 4);
 
     GameMode M = (GameMode)(mode - 1);
     switch (M)
@@ -178,6 +181,32 @@ int main()
                     }
                     AddShip(&game, side, choice);
                     num++;
+                }
+            }
+            break;
+        }
+
+        case random:
+        {
+            cout << "Enter the money of " << "\033[0;36m" << player_2.GetName() << "\033[0m" << ". " << endl;
+            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get 80% of that." << endl;
+            double money_1;
+            double money_2;
+            InputNumber<double>(money_2, 2, 1000);
+            money_1 = money_2 * 0.8;
+
+            for (int i = 0; i < 2; i++)
+            {
+                PlayerSide side = i == 0 ? side_1 : side_2;
+                double* money = i == 0 ? &money_1 : &money_2;
+                
+                while (*money >= 1)
+                {
+                    int choice = rand() % num_ship;
+                    if (*money < cost[choice])
+                        continue;
+                    AddShip(&game, side, choice + 1);
+                    *money -= cost[choice];
                 }
             }
             break;
