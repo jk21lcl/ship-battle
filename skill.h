@@ -15,7 +15,10 @@ enum SkillType
     dodge,
     super_shield,
     grapeshot,
-    super_grapeshot
+    super_grapeshot,
+    small_explode,
+    medium_explode,
+    big_explode
 };
 
 class Skill : public Object

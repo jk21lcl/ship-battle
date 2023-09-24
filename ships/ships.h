@@ -9,3 +9,6 @@
 #include "crit_ship.h"
 #include "swift_ship.h"
 #include "grapeshot_ship.h"
+#include "small_explosive_ship.h"
+#include "medium_explosive_ship.h"
+#include "big_explosive_ship.h"

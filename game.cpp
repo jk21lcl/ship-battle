@@ -112,9 +112,12 @@ void Game::Input()
         if (ship->IsAlive() && !ship->IsStunned())
         {
             cout << "  " << i + 1 << "  " << "\033[1;36m" << ship->GetName() << "\033[0m" << endl;
-            cout << "\033[1;33m" << "  Cannons: " << "\033[0m";
-            ShowCannonStatus(ship, true);
-            cout << endl;
+            if (ship->GetNumCannons())
+            {
+                cout << "\033[1;33m" << "  Cannons: " << "\033[0m";
+                ShowCannonStatus(ship, true);
+                cout << endl;
+            }
             if (ship->GetNumSkills())
             {
                 cout << "\033[1;33m" << "  Skills: " << "\033[0m";
@@ -215,6 +218,14 @@ void Game::Input()
                     else if (type == grapeshot || type == super_grapeshot)
                     {
                         attack_skill_event_.push(new SkillEvent(cur_skill, ship, nullptr));
+                    }
+                    else if (type == small_explode || type == medium_explode || 
+                             type == big_explode)
+                    {
+                        cout << "Please input target id: " << endl;
+                        InputNumber<int>(target, 1, other_player_->GetNum());
+                        attack_skill_event_.push(new SkillEvent(cur_skill, ship,
+                            other_player_->GetShips()[target - 1]));
                     }
                     else
                     {
@@ -340,8 +351,10 @@ void Game::Start()
     cout << "\033[1;35m";
     if (player_1_->GetState() == ingame)
         cout << player_1_->GetName() << " wins!" << endl;
-    else
+    else if (player_2_->GetState() == ingame)
         cout << player_2_->GetName() << " wins!" << endl;
+    else
+        cout << "It's a tie." << endl;
     cout << "\033[0m";
 }
 

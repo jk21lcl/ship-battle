@@ -10,3 +10,6 @@
 #include "super_shield.h"
 #include "grapeshot.h"
 #include "super_grapeshot.h"
+#include "small_explode.h"
+#include "medium_explode.h"
+#include "big_explode.h"

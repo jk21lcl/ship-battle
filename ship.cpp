@@ -90,6 +90,11 @@ bool Ship::IsAlive() const
     return alive_;
 }
 
+void Ship::SetDead()
+{
+    alive_ = false;
+}
+
 int Ship::GetStunned() const
 {
     return stunned_;

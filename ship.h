@@ -15,7 +15,10 @@ enum ShipType
     heal_ship,
     crit_ship,
     swift_ship,
-    grapeshot_ship
+    grapeshot_ship,
+    small_explosive_ship,
+    medium_explosive_ship,
+    big_explosive_ship
 };
 
 class Ship : public Object
@@ -28,6 +31,7 @@ class Ship : public Object
         double GetMaxHealth() const;
         ShipType GetShipType() const;
         bool IsAlive() const;
+        void SetDead();
         int GetId() const;
 
         vector<Cannon*> GetCannons() const;
