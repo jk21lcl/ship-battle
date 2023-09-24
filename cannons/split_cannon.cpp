@@ -8,7 +8,7 @@ SplitCannon::SplitCannon(Game* game) : Cannon(game)
     crit_count_ = 0;
 }
 
-void SplitCannon::ProcessCrit(Ship* source)
+void SplitCannon::ProcessCrit(Ship* source, Ship* target)
 {
     if (source->IsFury())
     {
@@ -23,12 +23,12 @@ void SplitCannon::ProcessCrit(Ship* source)
     }
     else
         crit_ = 1;
-    OutputCrit(source);
+    OutputCrit(source, target);
 }
 
 void SplitCannon::Attack(Ship* source, Ship* target)
 {
-    ProcessCrit(source);
+    ProcessCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(1 * crit_, source);
     cd_ = 3;

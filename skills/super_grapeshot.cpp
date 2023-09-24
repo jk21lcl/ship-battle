@@ -7,8 +7,25 @@ SuperGrapeshot::SuperGrapeshot(Game* game) : Skill(game)
     name_ = "Super Grapeshot";
 }
 
+void SuperGrapeshot::ProcessCrit(Ship* source, Ship* target)
+{
+    if (source->IsFury())
+    {
+        crit_ = 2;
+        source->IncreaseFury(-1);
+    }
+    else
+        crit_ = 1;
+}
+
 void SuperGrapeshot::Use(Ship* source, Ship* target)
 {
-    target->DecreaseHealth(4, source);
-    cd_ = 5;
+    ProcessCrit(source, target);
+    for (Ship* ship : game_->GetOtherPlayer()->GetShips())
+    {
+        OutputCrit(source, ship);
+        if (!ProcessDodge(source, ship))
+            ship->DecreaseHealth(4 * crit_, source);
+    }
+    cd_ = 6;
 }

@@ -7,7 +7,7 @@ CritCannon::CritCannon(Game* game) : Cannon(game)
     name_ = "Crit Cannon";
 }
 
-void CritCannon::ProcessCrit(Ship* source)
+void CritCannon::ProcessCrit(Ship* source, Ship* target)
 {
     if (source->IsFury())
     {
@@ -22,12 +22,12 @@ void CritCannon::ProcessCrit(Ship* source)
         else
             crit_ = 1;
     }
-    OutputCrit(source);
+    OutputCrit(source, target);
 }
 
 void CritCannon::Attack(Ship* source, Ship* target)
 {
-    ProcessCrit(source);
+    ProcessCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(2 * crit_, source);
     cd_ = 3;

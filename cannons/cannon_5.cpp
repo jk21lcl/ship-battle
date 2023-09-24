@@ -9,7 +9,7 @@ Cannon5::Cannon5(Game* game) : Cannon(game)
 
 void Cannon5::Attack(Ship* source, Ship* target)
 {
-    ProcessCrit(source);
+    ProcessCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(5 * crit_, source);
     source->IncreaseHealth(3);

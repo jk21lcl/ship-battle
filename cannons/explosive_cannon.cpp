@@ -7,17 +7,19 @@ ExplosiveCannon::ExplosiveCannon(Game* game) : Cannon(game)
     name_ = "Explosive Cannon";
 }
 
-void ExplosiveCannon::SpecialAttack(Ship* source, Ship* main_target, 
-                                    Ship* splash_target_1, Ship* splash_target_2)
+void ExplosiveCannon::Attack(Ship* source, Ship* target)
 {
-    ProcessCrit(source);
-    if (!ProcessDodge(source, main_target))
-        main_target->DecreaseHealth(4 * crit_, source);
-    if (splash_target_1)
-        if (!ProcessDodge(source, splash_target_1))
-            splash_target_1->DecreaseHealth(2 * crit_, source);
-    if (splash_target_2)
-        if (!ProcessDodge(source, splash_target_2))
-            splash_target_2->DecreaseHealth(2 * crit_, source);
+    ProcessCrit(source, target);
+    if (!ProcessDodge(source, target))
+    {
+        target->DecreaseHealth(4 * crit_, source);
+        int id = target->GetId();
+        vector<Ship*> ships = game_->GetOtherPlayer()->GetShips();
+        int num = game_->GetOtherPlayer()->GetNum();
+        if (id != 1)
+            ships[id - 2]->DecreaseHealth(2 * crit_, source);
+        if (id != num)
+            ships[id]->DecreaseHealth(2 * crit_, source);
+    }
     cd_ = 5;
 }

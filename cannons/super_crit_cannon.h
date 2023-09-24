@@ -9,5 +9,5 @@ class SuperCritCannon : public Cannon
         ~SuperCritCannon() {}
 
         void Attack(Ship* source, Ship* target) override;
-        void ProcessCrit(Ship* source) override;
+        void ProcessCrit(Ship* source, Ship* target) override;
 };

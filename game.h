@@ -31,6 +31,9 @@ class Game
                     break;
             }
         }
+
+        Player* GetCurPlayer() const;
+        Player* GetOtherPlayer() const;
     
     private:
         Player* player_1_;
@@ -41,6 +44,7 @@ class Game
 
         queue<Event*> cannon_event_;
         queue<Event*> skill_event_;
+        queue<Event*> attack_skill_event_;
 
         void ShowStatus() const;
         void ShowCannonStatus(Ship* ship, bool showindex) const;
@@ -49,6 +53,7 @@ class Game
         void Update();
         void ProcessCannon();
         void ProcessSkill();
+        void ProcessAttackSkill();
 
         bool CheckInGame() const;
 };

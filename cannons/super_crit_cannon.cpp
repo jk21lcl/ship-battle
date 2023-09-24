@@ -7,7 +7,7 @@ SuperCritCannon::SuperCritCannon(Game* game) : Cannon(game)
     name_ = "Super Crit Cannon";
 }
 
-void SuperCritCannon::ProcessCrit(Ship* source)
+void SuperCritCannon::ProcessCrit(Ship* source, Ship* target)
 {
     if (source->IsFury())
     {
@@ -24,12 +24,12 @@ void SuperCritCannon::ProcessCrit(Ship* source)
         else
             crit_ = 1;
     }
-    OutputCrit(source);
+    OutputCrit(source, target);
 }
 
 void SuperCritCannon::Attack(Ship* source, Ship* target)
 {
-    ProcessCrit(source);
+    ProcessCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(3 * crit_, source);
     cd_ = 5;

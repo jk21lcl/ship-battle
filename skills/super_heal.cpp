@@ -9,6 +9,7 @@ SuperHeal::SuperHeal(Game* game) : Skill(game)
 
 void SuperHeal::Use(Ship* source, Ship* target)
 {
-    target->IncreaseHealth(4);
+    for (Ship* ship : game_->GetCurPlayer()->GetShips())
+        ship->IncreaseHealth(4);
     cd_ = 4;
 }

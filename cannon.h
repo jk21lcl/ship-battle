@@ -29,11 +29,13 @@ class Cannon : public Object
         void SetCd(int cd);
         int GetCd() const;
         bool IsReady() const;
+        CannonType GetCannonType() const;
+
         bool IsAvailable() const;
         void Ban();
-        CannonType GetCannonType() const;
-        virtual void ProcessCrit(Ship* source);
-        void OutputCrit(Ship* source) const;
+
+        virtual void ProcessCrit(Ship* source, Ship* target);
+        void OutputCrit(Ship* source, Ship* target) const;
         bool ProcessDodge(Ship* source, Ship* target);
     
     protected:

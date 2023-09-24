@@ -9,6 +9,7 @@ SuperShield::SuperShield(Game* game) : Skill(game)
 
 void SuperShield::Use(Ship* source, Ship* target)
 {
-    target->IncreaseShieldHealth(2);
+    for (Ship* ship : game_->GetCurPlayer()->GetShips())
+        ship->IncreaseShieldHealth(2);
     cd_ = 4;
 }

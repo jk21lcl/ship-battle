@@ -9,6 +9,16 @@ Game::Game(Player* player_1, Player* player_2)
     other_player_ = player_2;
 }
 
+Player* Game::GetCurPlayer() const
+{
+    return cur_player_;
+}
+
+Player* Game::GetOtherPlayer() const
+{
+    return other_player_;
+}
+
 void Game::ShowStatus() const
 {
     for (int j = 0; j < 2; j++)
@@ -178,14 +188,6 @@ void Game::Input()
                             cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
                         }
                     }
-                    else if (type == explosive_cannon)
-                    {
-                        InputNumber<int>(target, 1, other_player_->GetNum());
-                        Ship* main_ship = other_player_->GetShips()[target - 1];
-                        Ship* ship_1 = target == 1 ? nullptr : other_player_->GetShips()[target - 2];
-                        Ship* ship_2 = target == other_player_->GetNum() ? nullptr : other_player_->GetShips()[target];
-                        cannon_event_.push(new ExplosiveEvent(cur_cannon, ship, main_ship, ship_1, ship_2));
-                    }
                     else
                     {
                         InputNumber<int>(target, 1, other_player_->GetNum());
@@ -198,9 +200,7 @@ void Game::Input()
                     SkillType type = cur_skill->GetSkillType();
                     if (type == super_heal || type == super_shield)
                     {
-                        for (Ship* tar_ship : ships)
-                            if (tar_ship->IsAlive())
-                                skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
+                        skill_event_.push(new SkillEvent(cur_skill, ship, nullptr));
                     }
                     else if (type == immune)
                     {
@@ -214,9 +214,7 @@ void Game::Input()
                     }
                     else if (type == grapeshot || type == super_grapeshot)
                     {
-                        for (Ship* tar_ship : other_player_->GetShips())
-                            if (tar_ship->IsAlive())
-                                skill_event_.push(new SkillEvent(cur_skill, ship, tar_ship));
+                        attack_skill_event_.push(new SkillEvent(cur_skill, ship, nullptr));
                     }
                     else
                     {
@@ -235,6 +233,7 @@ void Game::Input()
 void Game::Update() 
 {
     ProcessCannon();
+    ProcessAttackSkill();
 
     // update cd, stun, immune, suck, heal
     for (Ship* ship : cur_player_->GetShips())
@@ -267,7 +266,7 @@ void Game::Update()
                         skill->SetCd(skill->GetCd() - 1);
             }
         }
-    
+
     ProcessSkill();
 
     // update ingame info
@@ -309,6 +308,17 @@ void Game::ProcessSkill()
         event->Process();
         delete event;
         skill_event_.pop();
+    }
+}
+
+void Game::ProcessAttackSkill()
+{
+    while (!attack_skill_event_.empty())
+    {
+        Event* event = attack_skill_event_.front();
+        event->Process();
+        delete event;
+        attack_skill_event_.pop();
     }
 }
 

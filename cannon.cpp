@@ -40,7 +40,7 @@ CannonType Cannon::GetCannonType() const
     return cannon_type_;
 }
 
-void Cannon::ProcessCrit(Ship* source)
+void Cannon::ProcessCrit(Ship* source, Ship* target)
 {
     if (source->IsFury())
     {
@@ -49,15 +49,17 @@ void Cannon::ProcessCrit(Ship* source)
     }
     else
         crit_ = 1;
-    OutputCrit(source);
+    OutputCrit(source, target);
 }
 
-void Cannon::OutputCrit(Ship* source) const
+void Cannon::OutputCrit(Ship* source, Ship* target) const
 {
     if (crit_ != 1)
     {
         cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m ";
-        cout << "made a " << "\033[0;33m" << crit_ << "\033[0m" << " crit." << endl;
+        cout << "made a " << "\033[0;33m" << crit_ << "\033[0m" << " crit to ";
+        cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m ";
+        cout << endl;
     }
 }
 
@@ -72,7 +74,9 @@ bool Cannon::ProcessDodge(Ship* source, Ship* target)
     if (random < dodge_)
     {
         cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m";
-        cout << "'s attack is dodged." << endl;
+        cout << "'s attack is dodged by ";
+        cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m";
+        cout << endl;
         return true;
     }
     return false;

@@ -27,7 +27,7 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             skills/super_heal.cpp skills/fury.cpp skills/dodge.cpp
             skills/super_shield.cpp skills/grapeshot.cpp skills/super_grapeshot.cpp
             
-            events/cannon_event.cpp events/skill_event.cpp events/explosive_event.cpp)
+            events/cannon_event.cpp events/skill_event.cpp)
 
 add_executable(game_start main.cpp)
 target_link_libraries(game_start ship_battle)

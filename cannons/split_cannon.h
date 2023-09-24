@@ -9,7 +9,7 @@ class SplitCannon : public Cannon
         ~SplitCannon() {}
     
         void Attack(Ship* source, Ship* target) override;
-        void ProcessCrit(Ship* source) override;
+        void ProcessCrit(Ship* source, Ship* target) override;
     
     private:
         int crit_count_;

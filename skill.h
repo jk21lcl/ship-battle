@@ -29,8 +29,14 @@ class Skill : public Object
         int GetCd() const;
         bool IsReady() const;
         SkillType GetSkillType() const;
+
+        virtual void ProcessCrit(Ship* source, Ship* target);
+        void OutputCrit(Ship* source, Ship* target) const;
+        bool ProcessDodge(Ship* source, Ship* target);
     
     protected:
         SkillType skill_type_;
         int cd_;
+        double crit_;
+        int dodge_;
 };
