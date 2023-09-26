@@ -10,5 +10,5 @@ Shield::Shield(Game* game) : Skill(game)
 void Shield::Use(Ship* source, Ship* target)
 {
     target->IncreaseShieldHealth(5);
-    cd_ = 2;
+    cd_ = 3;
 }

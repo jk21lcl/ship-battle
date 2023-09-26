@@ -2,7 +2,7 @@
 
 using namespace std;
 
-vector<int> cost = {4,2,1,4,5,5,3,3,4,1,2,3};
+vector<int> cost = {4,2,1,5,5,5,3,3,4,1,2,3};
 vector<string> name = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
                        "Wizard Ship","Heal Ship","Crit Ship","Swift Ship",
                        "Grapeshot Ship","Small Explosive Ship",

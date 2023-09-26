@@ -23,9 +23,12 @@ void SuperGrapeshot::Use(Ship* source, Ship* target)
     ProcessCrit(source, target);
     for (Ship* ship : game_->GetOtherPlayer()->GetShips())
     {
-        OutputCrit(source, ship);
-        if (!ProcessDodge(source, ship))
-            ship->DecreaseHealth(4 * crit_, source);
+        if (ship->IsAlive())
+        {
+            OutputCrit(source, ship);
+            if (!ProcessDodge(source, ship))
+                ship->DecreaseHealth(4 * crit_, source);
+        }
     }
     cd_ = 6;
 }
