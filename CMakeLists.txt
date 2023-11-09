@@ -17,13 +17,14 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             ships/defense_ship.cpp ships/wizard_ship.cpp ships/heal_ship.cpp
             ships/crit_ship.cpp ships/swift_ship.cpp ships/grapeshot_ship.cpp
             ships/small_explosive_ship.cpp ships/medium_explosive_ship.cpp
-            ships/big_explosive_ship.cpp
+            ships/big_explosive_ship.cpp ships/torpedo_ship.cpp
 
             cannons/cannon_1.cpp cannons/cannon_2.cpp cannons/cannon_3.cpp
             cannons/cannon_4.cpp cannons/cannon_5.cpp
             cannons/split_cannon.cpp cannons/stunning_cannon.cpp
             cannons/explosive_cannon.cpp cannons/heal_cannon.cpp
             cannons/crit_cannon.cpp cannons/super_crit_cannon.cpp
+            cannons/torpedo.cpp
             
             skills/shield.cpp skills/immune.cpp skills/suck.cpp skills/heal.cpp
             skills/super_heal.cpp skills/fury.cpp skills/dodge.cpp

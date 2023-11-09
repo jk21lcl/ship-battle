@@ -16,7 +16,8 @@ enum CannonType
     explosive_cannon,
     heal_cannon,
     crit_cannon,
-    super_crit_cannon
+    super_crit_cannon,
+    torpedo
 };
 
 class Cannon : public Object

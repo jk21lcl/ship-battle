@@ -2,12 +2,13 @@
 
 using namespace std;
 
-vector<int> cost = {4,2,1,5,5,5,3,3,4,1,2,3};
+vector<int> cost = {4,2,1,5,5,5,3,3,4,1,2,3,3};
 vector<string> name = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
                        "Wizard Ship","Heal Ship","Crit Ship","Swift Ship",
                        "Grapeshot Ship","Small Explosive Ship",
-                       "Medium Explosive Ship","Big Explosive Ship"};
-int num_ship = 12;
+                       "Medium Explosive Ship","Big Explosive Ship",
+                       "Torpedo Ship"};
+int num_ship = 13;
 
 vector<bool> available_1(num_ship, true);
 vector<bool> available_2(num_ship, true);
@@ -60,6 +61,9 @@ void AddShip(Game* game, PlayerSide side, int type)
             break;
         case 12:
             game->AddShip<BigExplosiveShip>(side);
+            break;
+        case 13:
+            game->AddShip<TorpedoShip>(side);
             break;
         default:
             cout << "Input out of range." << endl;

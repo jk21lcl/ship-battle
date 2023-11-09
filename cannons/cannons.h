@@ -11,3 +11,4 @@
 #include "heal_cannon.h"
 #include "crit_cannon.h"
 #include "super_crit_cannon.h"
+#include "torpedo.h"

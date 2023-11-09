@@ -12,3 +12,4 @@
 #include "small_explosive_ship.h"
 #include "medium_explosive_ship.h"
 #include "big_explosive_ship.h"
+#include "torpedo_ship.h"

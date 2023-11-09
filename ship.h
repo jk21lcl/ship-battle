@@ -18,7 +18,8 @@ enum ShipType
     grapeshot_ship,
     small_explosive_ship,
     medium_explosive_ship,
-    big_explosive_ship
+    big_explosive_ship,
+    torpedo_ship
 };
 
 class Ship : public Object
