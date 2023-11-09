@@ -47,6 +47,8 @@ void Game::ShowStatus() const
                     cout << "\033[0;33m" << "(fury: " << ship->GetFury() << ")" << "\033[0m";
                 if (ship->IsDodge())
                     cout << "\033[1;34m" << "(dodge: " << ship->GetDodge() << ")" << "\033[0m";
+                if (ship->IsBurn())
+                    cout << "\033[0;31m" << "(burn: " << ship->GetBurn() << ")" << "\033[0m";
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";
@@ -246,7 +248,7 @@ void Game::Update()
     ProcessCannon();
     ProcessAttackSkill();
 
-    // update cd, stun, immune, suck, heal
+    // update cd, stun, immune, suck, heal, burn
     for (Ship* ship : cur_player_->GetShips())
         if (ship->IsAlive())
         {
@@ -261,6 +263,11 @@ void Game::Update()
             }
             if (ship->IsDodge())
                 ship->IncreaseDodge(-1);
+            if (ship->IsBurn())
+            {
+                ship->DecreaseHealth(1, nullptr);
+                ship->IncreaseBurn(-1);
+            }
             if (ship->IsStunned())
                 ship->IncreaseStun(-1);
             else
@@ -346,6 +353,7 @@ void Game::Start()
         Update();
         round++;
     }
+    cout << endl;
     ShowStatus();
     cout << "\033[1;35m";
     if (player_1_->GetState() == ingame)

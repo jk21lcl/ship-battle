@@ -11,10 +11,14 @@ void Torpedo::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
     int random = rand() % 100;
-    if (random < 20)
+    if (random < 35)
     {
         if (!ProcessDodge(source, target))
+        {
             target->DecreaseHealth(8 * crit_, source);
+            if (!target->IsImmune())
+                target->IncreaseBurn(3);
+        }
     }
     else
     {

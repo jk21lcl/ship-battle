@@ -139,6 +139,7 @@ void Ship::IncreaseImmune(int n)
 {
     immune_ += n;
     stunned_ = 0;
+    burn_ = 0;
 }
 
 int Ship::GetSuck() const
@@ -199,4 +200,19 @@ bool Ship::IsDodge() const
 void Ship::IncreaseDodge(int n)
 {
     dodge_ += n;
+}
+
+int Ship::GetBurn() const
+{
+    return burn_;
+}
+
+bool Ship::IsBurn() const
+{
+    return burn_;
+}
+
+void Ship::IncreaseBurn(int n)
+{
+    burn_ += n;
 }

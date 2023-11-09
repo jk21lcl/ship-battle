@@ -70,6 +70,10 @@ class Ship : public Object
         int GetDodge() const;
         bool IsDodge() const;
         void IncreaseDodge(int n);
+
+        int GetBurn() const;
+        bool IsBurn() const;
+        void IncreaseBurn(int n);
     
     protected:
         int id_;
@@ -88,6 +92,7 @@ class Ship : public Object
         int heal_;
         int fury_;
         int dodge_;
+        int burn_;
 
         virtual void Ban() = 0;
 };
