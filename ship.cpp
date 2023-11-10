@@ -12,6 +12,7 @@ Ship::Ship(Game* game, int id) : Object(game)
     heal_ = 0;
     fury_ = 0;
     dodge_ = 0;
+    burn_ = 0;
     id_ = id;
 }
 
