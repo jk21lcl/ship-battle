@@ -34,6 +34,7 @@ class Ship : public Object
         bool IsAlive() const;
         void SetDead();
         int GetId() const;
+        bool GetCanStunned() const;
 
         vector<Cannon*> GetCannons() const;
         vector<Skill*> GetSkills() const;
@@ -81,6 +82,7 @@ class Ship : public Object
         double max_health_;
         double health_;
         bool alive_;
+        bool can_stunned_;
         ShipType ship_type_;
         vector<Cannon*> cannons_;
         vector<Skill*> skills_;

@@ -5,6 +5,7 @@ Ship::Ship(Game* game, int id) : Object(game)
 {
     object_type_ = ship;
     alive_ = true;
+    can_stunned_ = true;
     stunned_ = 0;
     shield_health_ = 0;
     immune_ = 0;
@@ -59,6 +60,11 @@ double Ship::GetMaxHealth() const
 int Ship::GetId() const
 {
     return id_;
+}
+
+bool Ship::GetCanStunned() const
+{
+    return can_stunned_;
 }
 
 vector<Cannon*> Ship::GetCannons() const
