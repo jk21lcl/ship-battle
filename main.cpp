@@ -19,7 +19,9 @@ enum GameMode
     battle,
     advanced,
     sandbox,
-    random
+    random,
+    sandbox_computer,
+    random_computer
 };
 
 void AddShip(Game* game, PlayerSide side, int type)
@@ -142,7 +144,9 @@ int main()
     cout << "  2: advanced" << endl;
     cout << "  3: sandbox" << endl;
     cout << "  4: random" << endl;
-    InputNumber<int>(mode, 1, 4);
+    cout << "  5: sandbox + computer" << endl;
+    cout << "  6: random + computer" << endl;
+    InputNumber<int>(mode, 1, 6);
 
     GameMode M = (GameMode)(mode - 1);
     switch (M)
@@ -212,8 +216,10 @@ int main()
             break;
         }
 
-        case sandbox:
+        case sandbox: case sandbox_computer:
         {
+            if (M == sandbox_computer)
+                game.GetOtherPlayer()->SetType(computer);
             for (int i = 0; i < 2; i++)
             {
                 Player* player = i == 0 ? &player_1 : &player_2;
@@ -242,15 +248,18 @@ int main()
             break;
         }
 
-        case random:
+        case random: case random_computer:
         {
+            if (M == random_computer)
+                game.GetOtherPlayer()->SetType(computer);
+            double ratio = M == random_computer ? 0.65 : 0.8;
             ProcessBan(&player_1, &player_2);
             cout << "Enter the money of " << "\033[0;36m" << player_2.GetName() << "\033[0m" << ". " << endl;
-            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get 80% of that." << endl;
+            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get " << ratio * 100 << "% of that." << endl;
             double money_1;
             double money_2;
             InputNumber<double>(money_2, 2, 1000);
-            money_1 = money_2 * 0.8;
+            money_1 = money_2 * ratio;
 
             for (int i = 0; i < 2; i++)
             {

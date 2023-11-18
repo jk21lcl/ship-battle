@@ -5,6 +5,7 @@ Player::Player(string name, PlayerSide side)
     name_ = name;
     side_ = side;
     state_ = ingame;
+    type_ = human;
     num_ = 0;
 }
 
@@ -27,6 +28,16 @@ PlayerState Player::GetState() const
 void Player::SetState(PlayerState state)
 {
     state_ = state;
+}
+
+PlayerType Player::GetType() const
+{
+    return type_;
+}
+
+void Player::SetType(PlayerType type)
+{
+    type_ = type;
 }
 
 vector<Ship*> Player::GetShips() const

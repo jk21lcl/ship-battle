@@ -73,9 +73,10 @@ void Cannon::OutputCrit(Ship* source, Ship* target) const
 {
     if (crit_ != 1)
     {
-        cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m ";
-        cout << "made a " << "\033[0;33m" << crit_ << "\033[0m" << " crit to ";
-        cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m ";
+        cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m";
+        cout << "'s " << "\033[0;33m" << name_ << "\033[0m";
+        cout << " made a " << "\033[0;33m" << crit_ << "\033[0m" << " crit to ";
+        cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m";
         cout << endl;
     }
 }
@@ -91,7 +92,7 @@ bool Cannon::ProcessDodge(Ship* source, Ship* target)
     if (random < dodge_)
     {
         cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m";
-        cout << "'s attack is dodged by ";
+        cout << "'s " << "\033[0;33m" << name_ << "\033[0m" << " is dodged by ";
         cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m";
         cout << endl;
         return true;

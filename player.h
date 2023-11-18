@@ -20,6 +20,12 @@ enum PlayerState
     out
 };
 
+enum PlayerType
+{
+    human,
+    computer
+};
+
 class Player
 {
     public:
@@ -29,6 +35,9 @@ class Player
         string GetName() const;
         PlayerState GetState() const;
         void SetState(PlayerState state);
+        PlayerType GetType() const;
+        void SetType(PlayerType type);
+
         vector<Ship*> GetShips() const;
         int GetNum() const;
 
@@ -43,6 +52,7 @@ class Player
         string name_;
         PlayerSide side_;
         PlayerState state_;
+        PlayerType type_;
 
         vector<Ship*> ships_;
         int num_;
