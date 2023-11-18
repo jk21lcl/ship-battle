@@ -5,6 +5,8 @@ SuperShield::SuperShield(Game* game) : Skill(game)
 {
     skill_type_ = super_shield;
     name_ = "Super Shield";
+    attack_times_ = 0;
+    max_cd_ = 4;
 }
 
 void SuperShield::Use(Ship* source, Ship* target)

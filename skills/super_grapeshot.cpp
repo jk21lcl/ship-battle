@@ -5,17 +5,9 @@ SuperGrapeshot::SuperGrapeshot(Game* game) : Skill(game)
 {
     skill_type_ = super_grapeshot;
     name_ = "Super Grapeshot";
-}
-
-void SuperGrapeshot::ProcessCrit(Ship* source, Ship* target)
-{
-    if (source->IsFury())
-    {
-        crit_ = 2;
-        source->IncreaseFury(-1);
-    }
-    else
-        crit_ = 1;
+    skill_property_ = attack_skill;
+    attack_times_ = 0;
+    max_cd_ = 5;
 }
 
 void SuperGrapeshot::Use(Ship* source, Ship* target)
@@ -30,5 +22,4 @@ void SuperGrapeshot::Use(Ship* source, Ship* target)
                 ship->DecreaseHealth(4 * crit_, source);
         }
     }
-    cd_ = 6;
 }

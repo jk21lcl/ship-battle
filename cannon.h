@@ -29,8 +29,11 @@ class Cannon : public Object
         virtual void Attack(Ship* source, Ship* target) = 0;
         void SetCd(int cd);
         int GetCd() const;
+        int GetMaxCd() const;
         bool IsReady() const;
         CannonType GetCannonType() const;
+        TargetType GetTargetType() const;
+        int GetAttackTimes() const;
 
         bool IsAvailable() const;
         void Ban();
@@ -42,7 +45,11 @@ class Cannon : public Object
     protected:
         CannonType cannon_type_;
         int cd_;
+        int max_cd_;
         bool available_;
         double crit_;
         int dodge_;
+
+        TargetType target_type_; // default enemy
+        int attack_times_; // default 1
 };

@@ -5,10 +5,10 @@ Dodge::Dodge(Game* game) : Skill(game)
 {
     skill_type_ = dodge;
     name_ = "Dodge";
+    max_cd_ = 3;
 }
 
 void Dodge::Use(Ship* source, Ship* target)
 {
     target->IncreaseDodge(2);
-    cd_ = 3;
 }

@@ -5,6 +5,7 @@ SuperCritCannon::SuperCritCannon(Game* game) : Cannon(game)
 {
     cannon_type_ = super_crit_cannon;
     name_ = "Super Crit Cannon";
+    max_cd_ = 4;
 }
 
 void SuperCritCannon::ProcessCrit(Ship* source, Ship* target)
@@ -32,5 +33,4 @@ void SuperCritCannon::Attack(Ship* source, Ship* target)
     ProcessCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(3 * crit_, source);
-    cd_ = 5;
 }

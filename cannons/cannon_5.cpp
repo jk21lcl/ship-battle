@@ -5,6 +5,7 @@ Cannon5::Cannon5(Game* game) : Cannon(game)
 {
     cannon_type_ = cannon_5;
     name_ = "Cannon5";
+    max_cd_ = 5;
 }
 
 void Cannon5::Attack(Ship* source, Ship* target)
@@ -13,5 +14,4 @@ void Cannon5::Attack(Ship* source, Ship* target)
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(5 * crit_, source);
     source->IncreaseHealth(3);
-    cd_ = 6;
 }

@@ -5,10 +5,10 @@ Fury::Fury(Game* game) : Skill(game)
 {
     skill_type_ = fury;
     name_ = "Fury";
+    max_cd_ = 3;
 }
 
 void Fury::Use(Ship* source, Ship* target)
 {
     target->IncreaseFury(1);
-    cd_ = 3;
 }

@@ -9,5 +9,4 @@ class Grapeshot : public Skill
         ~Grapeshot() {}
 
         void Use(Ship* source, Ship* target) override;
-        void ProcessCrit(Ship* source, Ship* target) override;
 };

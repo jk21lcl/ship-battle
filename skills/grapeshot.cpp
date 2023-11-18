@@ -5,17 +5,9 @@ Grapeshot::Grapeshot(Game* game) : Skill(game)
 {
     skill_type_ = grapeshot;
     name_ = "Grapeshot";
-}
-
-void Grapeshot::ProcessCrit(Ship* source, Ship* target)
-{
-    if (source->IsFury())
-    {
-        crit_ = 2;
-        source->IncreaseFury(-1);
-    }
-    else
-        crit_ = 1;
+    skill_property_ = attack_skill;
+    attack_times_ = 0;
+    max_cd_ = 2;
 }
 
 void Grapeshot::Use(Ship* source, Ship* target)
@@ -30,5 +22,4 @@ void Grapeshot::Use(Ship* source, Ship* target)
                 ship->DecreaseHealth(2 * crit_, source);
         }
     }
-    cd_ = 3;
 }

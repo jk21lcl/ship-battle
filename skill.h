@@ -21,6 +21,12 @@ enum SkillType
     big_explode
 };
 
+enum SkillProperty
+{
+    assist_skill,
+    attack_skill
+};
+
 class Skill : public Object
 {
     public:
@@ -30,16 +36,25 @@ class Skill : public Object
         virtual void Use(Ship* source, Ship* target) = 0;
         void SetCd(int cd);
         int GetCd() const;
+        int GetMaxCd() const;
         bool IsReady() const;
         SkillType GetSkillType() const;
+        SkillProperty GetSkillProperty() const;
+        TargetType GetTargetType() const;
+        int GetAttackTimes() const;
 
-        virtual void ProcessCrit(Ship* source, Ship* target);
+        void ProcessCrit(Ship* source, Ship* target);
         void OutputCrit(Ship* source, Ship* target) const;
         bool ProcessDodge(Ship* source, Ship* target);
     
     protected:
         SkillType skill_type_;
         int cd_;
+        int max_cd_;
         double crit_;
         int dodge_;
+
+        SkillProperty skill_property_; // default assist_skill
+        TargetType target_type_; // default ally
+        int attack_times_; // default 1
 };

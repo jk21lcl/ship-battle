@@ -5,6 +5,9 @@ MediumExplode::MediumExplode(Game* game) : Skill(game)
 {
     skill_type_ = medium_explode;
     name_ = "Medium Explode";
+    skill_property_ = attack_skill;
+    target_type_ = enemy;
+    max_cd_ = 0;
     cd_ = 2;
 }
 

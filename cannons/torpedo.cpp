@@ -5,6 +5,7 @@ Torpedo::Torpedo(Game* game) : Cannon(game)
 {
     cannon_type_ = torpedo;
     name_ = "Torpedo";
+    max_cd_ = 2;
 }
 
 void Torpedo::Attack(Ship* source, Ship* target)
@@ -25,5 +26,4 @@ void Torpedo::Attack(Ship* source, Ship* target)
         cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m";
         cout << "'s torpedo deviates from its route." << endl;
     }
-    cd_ = 3;
 }

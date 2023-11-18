@@ -5,6 +5,9 @@ BigExplode::BigExplode(Game* game) : Skill(game)
 {
     skill_type_ = big_explode;
     name_ = "Big Explode";
+    skill_property_ = attack_skill;
+    target_type_ = enemy;
+    max_cd_ = 0;
     cd_ = 3;
 }
 

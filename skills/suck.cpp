@@ -5,10 +5,10 @@ Suck::Suck(Game* game) : Skill(game)
 {
     skill_type_ = suck;
     name_ = "Suck";
+    max_cd_ = 2;
 }
 
 void Suck::Use(Ship* source, Ship* target)
 {
     target->IncreaseSuck(2);
-    cd_ = 2;
 }

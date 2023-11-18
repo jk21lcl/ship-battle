@@ -5,6 +5,7 @@ Cannon2::Cannon2(Game* game) : Cannon(game)
 {
     cannon_type_ = cannon_2;
     name_ = "Cannon2";
+    max_cd_ = 2;
 }
 
 void Cannon2::Attack(Ship* source, Ship* target)
@@ -26,5 +27,4 @@ void Cannon2::Attack(Ship* source, Ship* target)
         }
         target->DecreaseHealth(2 * crit_, source);
     }
-    cd_ = 3;
 }

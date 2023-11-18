@@ -5,6 +5,8 @@ StunningCannon::StunningCannon(Game* game) : Cannon(game)
 {
     cannon_type_ = stunning_cannon;
     name_ = "Stunning Cannon";
+    max_cd_ = 3;
+    attack_times_ = 2;
 }
 
 void StunningCannon::Attack(Ship* source, Ship* target)
@@ -14,5 +16,4 @@ void StunningCannon::Attack(Ship* source, Ship* target)
         {
             target->IncreaseStun(1);
         }
-    cd_ = 4;
 }

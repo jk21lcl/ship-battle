@@ -5,6 +5,9 @@ Skill::Skill(Game* game) : Object(game)
 {
     object_type_ = skill;
     cd_ = 0;
+    skill_property_ = assist_skill;
+    target_type_ = ally;
+    attack_times_ = 1;
     crit_ = 1;
     dodge_ = 0;
 }
@@ -19,6 +22,11 @@ int Skill::GetCd() const
     return cd_;
 }
 
+int Skill::GetMaxCd() const
+{
+    return max_cd_;
+}
+
 bool Skill::IsReady() const
 {
     return cd_ == 0;
@@ -27,6 +35,21 @@ bool Skill::IsReady() const
 SkillType Skill::GetSkillType() const
 {
     return skill_type_;
+}
+
+SkillProperty Skill::GetSkillProperty() const
+{
+    return skill_property_;
+}
+
+TargetType Skill::GetTargetType() const
+{
+    return target_type_;
+}
+
+int Skill::GetAttackTimes() const
+{
+    return attack_times_;
 }
 
 void Skill::ProcessCrit(Ship* source, Ship* target)
@@ -38,7 +61,6 @@ void Skill::ProcessCrit(Ship* source, Ship* target)
     }
     else
         crit_ = 1;
-    OutputCrit(source, target);
 }
 
 void Skill::OutputCrit(Ship* source, Ship* target) const

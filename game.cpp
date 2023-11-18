@@ -171,71 +171,31 @@ void Game::Input()
                 {
                     cout << "Please input target id: " << endl;
                     Cannon* cur_cannon = cannons[option - 1];
-                    CannonType type = cur_cannon->GetCannonType();
-                    if (type == heal_cannon)
+                    Player* target_player = cur_cannon->GetTargetType() == ally ? cur_player_ : other_player_;
+                    for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
                     {
-                        InputNumber<int>(target, 1, cur_player_->GetNum());
-                        cannon_event_.push(new CannonEvent(cur_cannon, ship, cur_player_->GetShips()[target - 1]));
+                        InputNumber<int>(target, 1, target_player->GetNum());
+                        cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
                     }
-                    else if (type == split_cannon)
-                    {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            InputNumber<int>(target, 1, other_player_->GetNum());
-                            cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
-                        }
-                    }
-                    else if (type == stunning_cannon)
-                    {
-                        for (int j = 0; j < 2; j++)
-                        {
-                            InputNumber<int>(target, 1, other_player_->GetNum());
-                            cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
-                        }
-                    }
-                    else
-                    {
-                        InputNumber<int>(target, 1, other_player_->GetNum());
-                        cannon_event_.push(new CannonEvent(cur_cannon, ship, other_player_->GetShips()[target - 1]));
-                    }
+                    cur_cannon->SetCd(cur_cannon->GetMaxCd() + 1);
                 }
                 else
                 {
                     Skill* cur_skill = skills[option - num_cannon - 1];
-                    SkillType type = cur_skill->GetSkillType();
-                    if (type == super_heal || type == super_shield)
-                    {
-                        skill_event_.push(new SkillEvent(cur_skill, ship, nullptr));
-                    }
-                    else if (type == immune)
+                    Player* target_player = cur_skill->GetTargetType() == ally ? cur_player_ : other_player_;
+                    queue<Event*>* target_queue = cur_skill->GetSkillProperty() == assist_skill ? &skill_event_ : &attack_skill_event_;
+                    if (cur_skill->GetAttackTimes() == 0)
+                        target_queue->push(new SkillEvent(cur_skill, ship, nullptr));
+                    else 
                     {
                         cout << "Please input target id: " << endl;
-                        for (int j = 0; j < 2; j++)
+                        for (int j = 0; j < cur_skill->GetAttackTimes(); j++)
                         {
-                            InputNumber<int>(target, 1, cur_player_->GetNum());
-                            skill_event_.push(new SkillEvent(cur_skill, ship,
-                                cur_player_->GetShips()[target - 1]));
+                            InputNumber<int>(target, 1, target_player->GetNum());
+                            target_queue->push(new SkillEvent(cur_skill, ship, target_player->GetShips()[target - 1]));
                         }
                     }
-                    else if (type == grapeshot || type == super_grapeshot)
-                    {
-                        attack_skill_event_.push(new SkillEvent(cur_skill, ship, nullptr));
-                    }
-                    else if (type == small_explode || type == medium_explode || 
-                             type == big_explode)
-                    {
-                        cout << "Please input target id: " << endl;
-                        InputNumber<int>(target, 1, other_player_->GetNum());
-                        attack_skill_event_.push(new SkillEvent(cur_skill, ship,
-                            other_player_->GetShips()[target - 1]));
-                    }
-                    else
-                    {
-                        cout << "Please input target id: " << endl;
-                        InputNumber<int>(target, 1, cur_player_->GetNum());
-                        skill_event_.push(new SkillEvent(cur_skill, ship,
-                            cur_player_->GetShips()[target - 1]));
-                    }
+                    cur_skill->SetCd(cur_skill->GetMaxCd() + 1);
                 }
             }
         }

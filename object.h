@@ -14,6 +14,12 @@ enum ObjectType
     skill
 };
 
+enum TargetType
+{
+    ally,
+    enemy
+};
+
 class Object
 {
     public:

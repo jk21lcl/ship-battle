@@ -8,6 +8,8 @@ Cannon::Cannon(Game* game) : Object(game)
     cd_ = 0;
     crit_ = 1;
     dodge_ = 0;
+    target_type_ = enemy;
+    attack_times_ = 1;
 }
 
 void Cannon::SetCd(int cd)
@@ -18,6 +20,11 @@ void Cannon::SetCd(int cd)
 int Cannon::GetCd() const
 {
     return cd_;
+}
+
+int Cannon::GetMaxCd() const
+{
+    return max_cd_;
 }
 
 bool Cannon::IsReady() const
@@ -38,6 +45,16 @@ void Cannon::Ban()
 CannonType Cannon::GetCannonType() const
 {
     return cannon_type_;
+}
+
+TargetType Cannon::GetTargetType() const
+{
+    return target_type_;
+}
+
+int Cannon::GetAttackTimes() const
+{
+    return attack_times_;
 }
 
 void Cannon::ProcessCrit(Ship* source, Ship* target)

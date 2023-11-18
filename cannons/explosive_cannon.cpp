@@ -5,6 +5,7 @@ ExplosiveCannon::ExplosiveCannon(Game* game) : Cannon(game)
 {
     cannon_type_ = explosive_cannon;
     name_ = "Explosive Cannon";
+    max_cd_ = 4;
 }
 
 void ExplosiveCannon::Attack(Ship* source, Ship* target)
@@ -21,5 +22,4 @@ void ExplosiveCannon::Attack(Ship* source, Ship* target)
         if (id != num)
             ships[id]->DecreaseHealth(2 * crit_, source);
     }
-    cd_ = 5;
 }
