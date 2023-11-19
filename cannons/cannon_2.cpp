@@ -21,7 +21,7 @@ void Cannon2::Attack(Ship* source, Ship* target)
             {
                 target->IncreaseStun(1);
                 cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m";
-                cout << " stuns ";
+                cout << "'s " << "\033[0;33m" << "Cannon 2" << "\033[0m" <<" stuns ";
                 cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m";
                 cout << endl;
             }

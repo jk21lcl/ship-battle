@@ -347,7 +347,7 @@ void Game::Update()
                 ship->IncreaseStun(-1);
             else
             {
-                if (ship->GetShipType() == heal_ship)
+                if (ship->GetShipType() == heal_ship || ship->GetShipType() == concatenation_boss)
                     ship->IncreaseHealth(2);
                 vector<Cannon*> cannons = ship->GetCannons();
                 for (Cannon* cannon : cannons)

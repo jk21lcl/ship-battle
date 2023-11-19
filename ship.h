@@ -19,7 +19,8 @@ enum ShipType
     small_explosive_ship,
     medium_explosive_ship,
     big_explosive_ship,
-    torpedo_ship
+    torpedo_ship,
+    concatenation_boss
 };
 
 class Ship : public Object

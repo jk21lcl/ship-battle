@@ -17,7 +17,8 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             ships/defense_ship.cpp ships/wizard_ship.cpp ships/heal_ship.cpp
             ships/crit_ship.cpp ships/swift_ship.cpp ships/grapeshot_ship.cpp
             ships/small_explosive_ship.cpp ships/medium_explosive_ship.cpp
-            ships/big_explosive_ship.cpp ships/torpedo_ship.cpp
+            ships/big_explosive_ship.cpp ships/torpedo_ship.cpp 
+            ships/concatenation_boss.cpp
 
             cannons/cannon_1.cpp cannons/cannon_2.cpp cannons/cannon_3.cpp
             cannons/cannon_4.cpp cannons/cannon_5.cpp

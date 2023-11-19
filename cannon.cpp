@@ -90,7 +90,7 @@ void Cannon::OutputCrit(Ship* source, Ship* target) const
 bool Cannon::ProcessDodge(Ship* source, Ship* target)
 {
     dodge_ = 0;
-    if (target->GetShipType() == swift_ship)
+    if (target->GetShipType() == swift_ship || target->GetShipType() == concatenation_boss)
         dodge_ += 25;
     if (target->IsDodge())
         dodge_ += 25;

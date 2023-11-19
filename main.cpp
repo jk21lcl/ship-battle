@@ -2,13 +2,13 @@
 
 using namespace std;
 
-vector<int> cost = {4,2,1,5,5,5,3,3,4,1,2,3,3};
+vector<int> cost = {4,2,1,5,5,5,3,3,4,1,2,3,3,40};
 vector<string> name = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
                        "Wizard Ship","Heal Ship","Crit Ship","Swift Ship",
                        "Grapeshot Ship","Small Explosive Ship",
                        "Medium Explosive Ship","Big Explosive Ship",
-                       "Torpedo Ship"};
-int num_ship = 13;
+                       "Torpedo Ship", "Concatenation Boss"};
+int num_ship = 14;
 
 vector<bool> available_1(num_ship, true);
 vector<bool> available_2(num_ship, true);
@@ -20,6 +20,7 @@ enum GameMode
     advanced,
     sandbox,
     random,
+    boss,
     test
 };
 
@@ -65,6 +66,9 @@ void AddShip(Game* game, PlayerSide side, int type)
             break;
         case 13:
             game->AddShip<TorpedoShip>(side);
+            break;
+        case 14:
+            game->AddShip<ConcatenationBoss>(side);
             break;
         default:
             cout << "Input out of range." << endl;
@@ -152,8 +156,9 @@ int main()
     cout << "  2: advanced" << endl;
     cout << "  3: sandbox" << endl;
     cout << "  4: random" << endl;
-    cout << "  5: test" << endl;
-    InputNumber<int>(mode, 1, 5);
+    cout << "  5: boss" << endl;
+    cout << "  6: test" << endl;
+    InputNumber<int>(mode, 1, 6);
 
     GameMode M = (GameMode)(mode - 1);
     switch (M)
@@ -285,9 +290,9 @@ int main()
                 vector<bool>* available = i == 0 ? &available_1 : &available_2;
 
                 int min_cost = INT32_MAX;
-                for (int i = 0; i < num_ship; i++)
-                    if ((*available)[i] && cost[i] < min_cost)
-                        min_cost = cost[i];
+                for (int j = 0; j < num_ship; j++)
+                    if ((*available)[j] && cost[j] < min_cost)
+                        min_cost = cost[j];
                 
                 while (*money >= min_cost)
                 {
@@ -298,6 +303,57 @@ int main()
                     *money -= cost[choice];
                 }
             }
+            break;
+        }
+
+        case boss:
+        {
+            int choice;
+            cout << "Enter the ships of " << "\033[0;36m" << player_1.GetName() << "\033[0m";
+            cout << " that will be banned. Enter 0 to end." << endl;
+            cout << "  ";
+            for (int j = 1; j <= num_ship; j++)
+            {
+                cout << j << ": ";
+                cout << "\033[1;36m" << name[j - 1] << "\033[0m" << "(";
+                cout << "\033[1;33m" << cost[j - 1] << "\033[0m" << ")  ";
+            }
+            cout << endl;
+            while (true)
+            {
+                InputNumber<int>(choice, 0, num_ship);
+                if (choice == 0)
+                    break;
+                if (available_1[choice - 1])
+                {
+                    if (num_ban[1] == num_ship - 1)
+                    {
+                        cout << "You cannot ban all the ships." << endl;
+                        continue;
+                    }
+                    available_1[choice - 1] = false;
+                    num_ban[1]++;
+                }
+            }
+
+            player_2.SetType(computer);
+            AddShip(&game, side_2, 14);
+            double money = cost[13] * 0.65;
+
+            int min_cost = INT32_MAX;
+            for (int i = 0; i < num_ship; i++)
+                if (available_1[i] && cost[i] < min_cost)
+                    min_cost = cost[i];
+            
+            while (money >= min_cost)
+            {
+                int choice = rand() % num_ship;
+                if (!available_1[choice] || money < cost[choice])
+                    continue;
+                AddShip(&game, side_1, choice + 1);
+                money -= cost[choice];
+            }
+
             break;
         }
 
