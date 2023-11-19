@@ -6,6 +6,7 @@ Cannon5::Cannon5(Game* game) : Cannon(game)
     cannon_type_ = cannon_5;
     name_ = "Cannon5";
     max_cd_ = 5;
+    ban_health_ = 15;
 }
 
 void Cannon5::Attack(Ship* source, Ship* target)

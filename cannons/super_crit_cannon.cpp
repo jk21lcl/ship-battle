@@ -6,6 +6,7 @@ SuperCritCannon::SuperCritCannon(Game* game) : Cannon(game)
     cannon_type_ = super_crit_cannon;
     name_ = "Super Crit Cannon";
     max_cd_ = 4;
+    ban_health_ = 6;
 }
 
 void SuperCritCannon::ProcessCrit(Ship* source, Ship* target)

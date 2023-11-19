@@ -16,14 +16,6 @@ WizardShip::WizardShip(Game* game, int id) : Ship(game, id)
     skills_.push_back(new Immune(game));
 }
 
-void WizardShip::Ban()
-{
-    if (health_ < 4)
-        cannons_[2]->Ban();
-    if (health_ < 8)
-        cannons_[3]->Ban();
-}
-
 void WizardShip::DecreaseHealth(double n, Ship* source)
 {
     if (shield_health_)

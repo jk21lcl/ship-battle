@@ -7,8 +7,17 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <climits>
+#include <cmath>
 
 using namespace std;
+
+enum GameResult
+{
+    side_1_win,
+    side_2_win,
+    tie
+};
 
 class Game
 {
@@ -34,6 +43,7 @@ class Game
 
         Player* GetCurPlayer() const;
         Player* GetOtherPlayer() const;
+        GameResult GetResult() const;
     
     private:
         Player* player_1_;
@@ -45,6 +55,8 @@ class Game
         queue<Event*> cannon_event_;
         queue<Event*> skill_event_;
         queue<Event*> attack_skill_event_;
+
+        GameResult result_;
 
         void ShowStatus() const;
         void ShowCannonStatus(Ship* ship, bool showindex) const;

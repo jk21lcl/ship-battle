@@ -31,6 +31,7 @@ class Cannon : public Object
         int GetCd() const;
         int GetMaxCd() const;
         bool IsReady() const;
+        int GetBanHealth() const;
         CannonType GetCannonType() const;
         TargetType GetTargetType() const;
         int GetAttackTimes() const;
@@ -47,6 +48,7 @@ class Cannon : public Object
         int cd_;
         int max_cd_;
         bool available_;
+        int ban_health_; // when the health of ship is less than this health, then this cannon is banned
         double crit_;
         int dodge_;
 

@@ -13,11 +13,3 @@ GrapeshotShip::GrapeshotShip(Game* game, int id) : Ship(game, id)
     skills_.push_back(new Grapeshot(game));
     skills_.push_back(new SuperGrapeshot(game));
 }
-
-void GrapeshotShip::Ban()
-{
-    if (health_ < 5)
-        cannons_[2]->Ban();
-    if (health_ < 3)
-        cannons_[1]->Ban();
-}

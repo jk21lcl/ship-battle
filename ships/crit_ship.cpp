@@ -12,9 +12,3 @@ CritShip::CritShip(Game* game, int id) : Ship(game, id)
     cannons_.push_back(new SuperCritCannon(game));
     skills_.push_back(new Fury(game));
 }
-
-void CritShip::Ban()
-{
-    if (health_ < 6)
-        cannons_[2]->Ban();
-}

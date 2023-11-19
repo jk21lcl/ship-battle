@@ -12,11 +12,3 @@ SwiftShip::SwiftShip(Game* game, int id) : Ship(game, id)
     cannons_.push_back(new Cannon3(game));
     skills_.push_back(new Dodge(game));
 }
-
-void SwiftShip::Ban()
-{
-    if (health_ < 5)
-        cannons_[2]->Ban();
-    if (health_ < 3)
-        cannons_[1]->Ban();
-}

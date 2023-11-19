@@ -7,6 +7,4 @@ class CritShip : public Ship
     public:
         CritShip(Game* game, int id);
         ~CritShip() {}
-
-        void Ban() override;
 };

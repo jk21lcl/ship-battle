@@ -5,6 +5,7 @@ Cannon::Cannon(Game* game) : Object(game)
 {
     object_type_ = cannon;
     available_ = true;
+    ban_health_ = 0;
     cd_ = 0;
     crit_ = 1;
     dodge_ = 0;
@@ -30,6 +31,11 @@ int Cannon::GetMaxCd() const
 bool Cannon::IsReady() const
 {
     return cd_ == 0;
+}
+
+int Cannon::GetBanHealth() const
+{
+    return ban_health_;
 }
 
 bool Cannon::IsAvailable() const

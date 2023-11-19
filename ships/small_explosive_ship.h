@@ -7,6 +7,4 @@ class SmallExplosiveShip : public Ship
     public:
         SmallExplosiveShip(Game* game, int id);
         ~SmallExplosiveShip() {}
-    
-        void Ban() override {}
 };

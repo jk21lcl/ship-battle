@@ -19,6 +19,11 @@ Player* Game::GetOtherPlayer() const
     return other_player_;
 }
 
+GameResult Game::GetResult() const
+{
+    return result_;
+}
+
 void Game::ShowStatus() const
 {
     for (int j = 0; j < 2; j++)
@@ -413,7 +418,7 @@ void Game::ProcessAttackSkill()
 void Game::Start()
 {
     int round = 1;
-    while (CheckInGame())
+    while (CheckInGame() && round <= 200)
     {
         cout << "\033[0;35m";
         cout << endl << "Round " << round << ": " << endl << endl;
@@ -426,12 +431,23 @@ void Game::Start()
     cout << endl;
     ShowStatus();
     cout << "\033[1;35m";
-    if (player_1_->GetState() == ingame)
-        cout << player_1_->GetName() << " wins!" << endl;
-    else if (player_2_->GetState() == ingame)
-        cout << player_2_->GetName() << " wins!" << endl;
-    else
+    PlayerState state_1 = player_1_->GetState();
+    PlayerState state_2 = player_2_->GetState();
+    if ((state_1 == ingame && state_2 == ingame) || (state_1 == out && state_2 == out))
+    {
         cout << "It's a tie." << endl;
+        result_ = tie;
+    }
+    else if (state_1 == ingame)
+    {
+        cout << player_1_->GetName() << " wins!" << endl;
+        result_ = side_1_win;
+    }
+    else
+    {
+        cout << player_2_->GetName() << " wins!" << endl;
+        result_ = side_2_win;
+    }
     cout << "\033[0m";
 }
 

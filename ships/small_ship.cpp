@@ -10,9 +10,3 @@ SmallShip::SmallShip(Game* game, int id) : Ship(game, id)
     cannons_.push_back(new Cannon1(game));
     cannons_.push_back(new Cannon2(game));
 }
-
-void SmallShip::Ban()
-{
-    if (health_ < 3)
-        cannons_[1]->Ban();
-}

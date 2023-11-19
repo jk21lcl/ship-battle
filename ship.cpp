@@ -53,6 +53,13 @@ void Ship::DecreaseHealth(double n, Ship* source)
     Ban();
 }
 
+void Ship::Ban()
+{
+    for (Cannon* cannon : cannons_)
+        if (health_ < cannon->GetBanHealth())
+            cannon->Ban();
+}
+
 double Ship::GetMaxHealth() const
 {
     return max_health_;

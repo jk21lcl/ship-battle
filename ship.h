@@ -98,5 +98,5 @@ class Ship : public Object
         int dodge_;
         int burn_;
 
-        virtual void Ban() = 0;
+        void Ban();
 };

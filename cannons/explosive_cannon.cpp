@@ -6,6 +6,7 @@ ExplosiveCannon::ExplosiveCannon(Game* game) : Cannon(game)
     cannon_type_ = explosive_cannon;
     name_ = "Explosive Cannon";
     max_cd_ = 4;
+    ban_health_ = 8;
 }
 
 void ExplosiveCannon::Attack(Ship* source, Ship* target)

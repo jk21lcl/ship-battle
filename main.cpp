@@ -20,8 +20,7 @@ enum GameMode
     advanced,
     sandbox,
     random,
-    sandbox_computer,
-    random_computer
+    test
 };
 
 void AddShip(Game* game, PlayerSide side, int type)
@@ -129,6 +128,15 @@ void ShowOption(Player* player, int i)
     cout << endl;
 }
 
+PlayerType InputPlayerType(Player* player)
+{
+    cout << "Please input the type of " << "\033[0;36m" << player->GetName() << "\033[0m" << ". ";
+    cout << "0 for human, 1 for computer." << endl;
+    int type;
+    InputNumber(type, 0, 1);
+    return (PlayerType)type;
+}
+
 int main()
 {
     srand(time(nullptr));
@@ -144,9 +152,8 @@ int main()
     cout << "  2: advanced" << endl;
     cout << "  3: sandbox" << endl;
     cout << "  4: random" << endl;
-    cout << "  5: sandbox + computer" << endl;
-    cout << "  6: random + computer" << endl;
-    InputNumber<int>(mode, 1, 6);
+    cout << "  5: test" << endl;
+    InputNumber<int>(mode, 1, 5);
 
     GameMode M = (GameMode)(mode - 1);
     switch (M)
@@ -168,11 +175,11 @@ int main()
         {
             ProcessBan(&player_1, &player_2);
             cout << "Enter the money of " << "\033[0;36m" << player_2.GetName() << "\033[0m" << ". " << endl;
-            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get 80% of that." << endl;
+            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get 85% of that." << endl;
             double money_1;
             double money_2;
             InputNumber<double>(money_2, 2, 1000);
-            money_1 = money_2 * 0.8;
+            money_1 = money_2 * 0.85;
 
             for (int i = 0; i < 2; i++)
             {
@@ -216,10 +223,10 @@ int main()
             break;
         }
 
-        case sandbox: case sandbox_computer:
+        case sandbox:
         {
-            if (M == sandbox_computer)
-                game.GetOtherPlayer()->SetType(computer);
+            player_1.SetType(InputPlayerType(&player_1));
+            player_2.SetType(InputPlayerType(&player_2));
             for (int i = 0; i < 2; i++)
             {
                 Player* player = i == 0 ? &player_1 : &player_2;
@@ -248,18 +255,28 @@ int main()
             break;
         }
 
-        case random: case random_computer:
+        case random:
         {
-            if (M == random_computer)
-                game.GetOtherPlayer()->SetType(computer);
-            double ratio = M == random_computer ? 0.65 : 0.8;
+            PlayerType type_1 = InputPlayerType(&player_1);
+            PlayerType type_2 = InputPlayerType(&player_2);
+            player_1.SetType(type_1);
+            player_2.SetType(type_2);
+
+            double share_1 = 0.85;
+            double share_2 = 1;
+            if (type_1 == computer)
+                share_1 *= 1.46;
+            if (type_2 == computer)
+                share_2 *= 1.31;
+            double ratio = round(share_1 / share_2 * 100);
+
             ProcessBan(&player_1, &player_2);
             cout << "Enter the money of " << "\033[0;36m" << player_2.GetName() << "\033[0m" << ". " << endl;
-            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get " << ratio * 100 << "% of that." << endl;
+            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get " << ratio << "% of that." << endl;
             double money_1;
             double money_2;
             InputNumber<double>(money_2, 2, 1000);
-            money_1 = money_2 * ratio;
+            money_1 = money_2 * ratio / 100;
 
             for (int i = 0; i < 2; i++)
             {
@@ -267,7 +284,7 @@ int main()
                 double* money = i == 0 ? &money_1 : &money_2;
                 vector<bool>* available = i == 0 ? &available_1 : &available_2;
 
-                int min_cost = 100;
+                int min_cost = INT32_MAX;
                 for (int i = 0; i < num_ship; i++)
                     if ((*available)[i] && cost[i] < min_cost)
                         min_cost = cost[i];
@@ -282,6 +299,50 @@ int main()
                 }
             }
             break;
+        }
+
+        case test:
+        {
+            int win_times_1 = 0;
+            int win_times_2 = 0;
+            
+            for (int times = 0; times < 20; times++)
+            {
+                Player player_1("player_1", side_1);
+                Player player_2("player_2", side_2);
+                Game game(&player_1, &player_2);
+
+                player_1.SetType(computer);
+                player_2.SetType(computer);
+
+                double money_2 = 30;
+                double money_1 = money_2 * 0.95;
+                
+                for (int i = 0; i < 2; i++)
+                {
+                    PlayerSide side = i == 0 ? side_1 : side_2;
+                    double* money = i == 0 ? &money_1 : &money_2;
+                    vector<bool>* available = i == 0 ? &available_1 : &available_2;
+                    
+                    while (*money >= 1)
+                    {
+                        int choice = rand() % num_ship;
+                        if (!(*available)[choice] || *money < cost[choice])
+                            continue;
+                        AddShip(&game, side, choice + 1);
+                        *money -= cost[choice];
+                    }
+                }
+                game.Start();
+                if (game.GetResult() == side_1_win)
+                    win_times_1++;
+                if (game.GetResult() == side_2_win)
+                    win_times_2++;
+            }
+
+            cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " wins " << win_times_1 << " times" << endl;
+            cout << "\033[0;36m" << player_2.GetName() << "\033[0m" << " wins " << win_times_2 << " times" << endl;
+            return 0;
         }
     }
 
