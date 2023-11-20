@@ -7,6 +7,8 @@ Game::Game(Player* player_1, Player* player_2)
 
     cur_player_ = player_1;
     other_player_ = player_2;
+
+    skip_ = false;
 }
 
 Player* Game::GetCurPlayer() const
@@ -115,97 +117,116 @@ void Game::Input()
         int num_ship = cur_player_->GetNum();
         vector<Ship*> ships = cur_player_->GetShips();
 
+        bool all_stunned = true;
         for (int i = 0; i < num_ship; i++)
         {
             Ship* ship = ships[i];
             if (ship->IsAlive() && !ship->IsStunned())
             {
-                cout << "  " << i + 1 << "  " << "\033[1;36m" << ship->GetName() << "\033[0m" << endl;
-                if (ship->GetNumCannons())
+                all_stunned = false;
+                break;
+            }
+        }
+        if (all_stunned)
+        {
+            cout << "\033[0;32m" << "(press enter to continue)" << "\033[0m" << endl;
+            fflush(stdin);
+            getchar();
+        }
+        else
+        {
+            for (int i = 0; i < num_ship; i++)
+            {
+                Ship* ship = ships[i];
+                if (ship->IsAlive() && !ship->IsStunned())
                 {
-                    cout << "\033[1;33m" << "  Cannons: " << "\033[0m";
-                    ShowCannonStatus(ship, true);
-                    cout << endl;
-                }
-                if (ship->GetNumSkills())
-                {
-                    cout << "\033[1;33m" << "  Skills: " << "\033[0m";
-                    ShowSkillStatus(ship, true);
-                    cout << endl;
-                }
-
-                vector<Cannon*> cannons = ship->GetCannons();
-                vector<Skill*> skills = ship->GetSkills();
-                int num_cannon = cannons.size();
-                int num_skill = skills.size();
-
-                for (int k = 0; k < ship->GetAttackTimes(); k++)
-                {
-                    cout << "\033[0;32m" << "Attack " << k + 1 << ":" << "\033[0m" << endl;
-                    cout << "Please input your choice. Enter 0 to rest."<< endl;
-                    int option;
-                    while (true)
+                    cout << "  " << i + 1 << "  " << "\033[1;36m" << ship->GetName() << "\033[0m" << endl;
+                    if (ship->GetNumCannons())
                     {
-                        InputNumber<int>(option, 0, num_cannon + num_skill);
+                        cout << "\033[1;33m" << "  Cannons: " << "\033[0m";
+                        ShowCannonStatus(ship, true);
+                        cout << endl;
+                    }
+                    if (ship->GetNumSkills())
+                    {
+                        cout << "\033[1;33m" << "  Skills: " << "\033[0m";
+                        ShowSkillStatus(ship, true);
+                        cout << endl;
+                    }
+
+                    vector<Cannon*> cannons = ship->GetCannons();
+                    vector<Skill*> skills = ship->GetSkills();
+                    int num_cannon = cannons.size();
+                    int num_skill = skills.size();
+
+                    for (int k = 0; k < ship->GetAttackTimes(); k++)
+                    {
+                        cout << "\033[0;32m" << "Attack " << k + 1 << ":" << "\033[0m" << endl;
+                        cout << "Please input your choice. Enter 0 to rest."<< endl;
+                        int option;
+                        while (true)
+                        {
+                            InputNumber<int>(option, 0, num_cannon + num_skill);
+                            if (option != 0)
+                            {
+                                if (option <= num_cannon)
+                                {
+                                    if (!cannons[option - 1]->IsAvailable())
+                                    {
+                                        cout << "This cannon is banned. Please input again." << endl;
+                                        continue;
+                                    }
+                                    if (!cannons[option - 1]->IsReady())
+                                    {
+                                        cout << "This cannon is in cooldown. Please input again." << endl;
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    if (!skills[option - num_cannon - 1]->IsReady())
+                                    {
+                                        cout << "This skill is in cooldown. Please input again." << endl;
+                                        continue;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
                         if (option != 0)
                         {
+                            int target;
                             if (option <= num_cannon)
                             {
-                                if (!cannons[option - 1]->IsAvailable())
+                                cout << "Please input target id: " << endl;
+                                Cannon* cur_cannon = cannons[option - 1];
+                                Player* target_player = cur_cannon->GetTargetType() == ally ? cur_player_ : other_player_;
+                                for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
                                 {
-                                    cout << "This cannon is banned. Please input again." << endl;
-                                    continue;
+                                    InputNumber<int>(target, 1, target_player->GetNum());
+                                    cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
                                 }
-                                if (!cannons[option - 1]->IsReady())
-                                {
-                                    cout << "This cannon is in cooldown. Please input again." << endl;
-                                    continue;
-                                }
+                                cur_cannon->SetCd(cur_cannon->GetMaxCd() + 1);
                             }
                             else
                             {
-                                if (!skills[option - num_cannon - 1]->IsReady())
+                                Skill* cur_skill = skills[option - num_cannon - 1];
+                                Player* target_player = cur_skill->GetTargetType() == ally ? cur_player_ : other_player_;
+                                queue<Event*>* target_queue = cur_skill->GetSkillProperty() == assist_skill ? &skill_event_ : &attack_skill_event_;
+                                if (cur_skill->GetAttackTimes() == 0)
+                                    target_queue->push(new SkillEvent(cur_skill, ship, nullptr));
+                                else 
                                 {
-                                    cout << "This skill is in cooldown. Please input again." << endl;
-                                    continue;
+                                    cout << "Please input target id: " << endl;
+                                    for (int j = 0; j < cur_skill->GetAttackTimes(); j++)
+                                    {
+                                        InputNumber<int>(target, 1, target_player->GetNum());
+                                        target_queue->push(new SkillEvent(cur_skill, ship, target_player->GetShips()[target - 1]));
+                                    }
                                 }
+                                cur_skill->SetCd(cur_skill->GetMaxCd() + 1);
                             }
-                        }
-                        break;
-                    }
-
-                    if (option != 0)
-                    {
-                        int target;
-                        if (option <= num_cannon)
-                        {
-                            cout << "Please input target id: " << endl;
-                            Cannon* cur_cannon = cannons[option - 1];
-                            Player* target_player = cur_cannon->GetTargetType() == ally ? cur_player_ : other_player_;
-                            for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
-                            {
-                                InputNumber<int>(target, 1, target_player->GetNum());
-                                cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
-                            }
-                            cur_cannon->SetCd(cur_cannon->GetMaxCd() + 1);
-                        }
-                        else
-                        {
-                            Skill* cur_skill = skills[option - num_cannon - 1];
-                            Player* target_player = cur_skill->GetTargetType() == ally ? cur_player_ : other_player_;
-                            queue<Event*>* target_queue = cur_skill->GetSkillProperty() == assist_skill ? &skill_event_ : &attack_skill_event_;
-                            if (cur_skill->GetAttackTimes() == 0)
-                                target_queue->push(new SkillEvent(cur_skill, ship, nullptr));
-                            else 
-                            {
-                                cout << "Please input target id: " << endl;
-                                for (int j = 0; j < cur_skill->GetAttackTimes(); j++)
-                                {
-                                    InputNumber<int>(target, 1, target_player->GetNum());
-                                    target_queue->push(new SkillEvent(cur_skill, ship, target_player->GetShips()[target - 1]));
-                                }
-                            }
-                            cur_skill->SetCd(cur_skill->GetMaxCd() + 1);
                         }
                     }
                 }
@@ -214,6 +235,21 @@ void Game::Input()
     }
     else
     {
+        cout << "It's " << "\033[0;36m" << cur_player_->GetName() << "\033[0m" << "'s turn." << endl;
+        if (other_player_->GetType() == human)
+        {
+            cout << "\033[0;32m" << "(press enter to continue)" << "\033[0m" << endl;
+            fflush(stdin);
+            getchar();
+        }
+        else if (!skip_)
+        {
+            cout << "\033[0;32m" << "(press enter to continue, press 's' to skip)" << "\033[0m" << endl;
+            fflush(stdin);
+            if (getchar() == 's')
+                skip_ = true;
+        }
+
         int num_ship = cur_player_->GetNum();
         vector<Ship*> ships = cur_player_->GetShips();
 
@@ -322,6 +358,7 @@ void Game::Update()
 {
     ProcessCannon();
     ProcessAttackSkill();
+    ProcessSkill();
 
     // update cd, stun, immune, suck, heal, burn
     for (Ship* ship : cur_player_->GetShips())
@@ -340,7 +377,7 @@ void Game::Update()
                 ship->IncreaseDodge(-1);
             if (ship->IsBurn())
             {
-                ship->DecreaseHealth(1, nullptr);
+                ship->DecreaseHealth(ship->GetBurn(), nullptr);
                 ship->IncreaseBurn(-1);
             }
             if (ship->IsStunned())
@@ -359,8 +396,6 @@ void Game::Update()
                         skill->SetCd(skill->GetCd() - 1);
             }
         }
-
-    ProcessSkill();
 
     // update ingame info
     cur_player_->SetState(out);

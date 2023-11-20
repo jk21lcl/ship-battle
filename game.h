@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <climits>
+#include <limits>
 #include <cmath>
 
 using namespace std;
@@ -57,6 +58,7 @@ class Game
         queue<Event*> attack_skill_event_;
 
         GameResult result_;
+        bool skip_; // whether skipping the details of computer-computer
 
         void ShowStatus() const;
         void ShowCannonStatus(Ship* ship, bool showindex) const;

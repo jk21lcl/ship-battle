@@ -12,7 +12,7 @@ void Torpedo::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
     int random = rand() % 100;
-    if (random < 35)
+    if (random < 30)
     {
         if (!ProcessDodge(source, target))
         {

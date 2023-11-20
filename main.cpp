@@ -2,17 +2,22 @@
 
 using namespace std;
 
-vector<int> cost = {4,2,1,5,5,5,3,3,4,1,2,3,3,40};
-vector<string> name = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
+vector<int> cost_ship = {4,2,1,5,5,5,3,3,4,1,2,3,3};
+vector<string> name_ship = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
                        "Wizard Ship","Heal Ship","Crit Ship","Swift Ship",
                        "Grapeshot Ship","Small Explosive Ship",
                        "Medium Explosive Ship","Big Explosive Ship",
-                       "Torpedo Ship", "Concatenation Boss"};
-int num_ship = 14;
+                       "Torpedo Ship"};
+int num_ship = 13;
 
-vector<bool> available_1(num_ship, true);
-vector<bool> available_2(num_ship, true);
-int num_ban[2] = {0,0};
+vector<int> cost_boss = {40};
+vector<string> name_boss = {"Concatenation Boss"};
+int num_boss = 1;
+
+vector<bool> available_ship[2] = {vector<bool>(num_ship, true), vector<bool>(num_ship, true)};
+vector<bool> available_boss[2] = {vector<bool>(num_boss, true), vector<bool>(num_boss, true)};
+int num_ship_ban[2] = {0,0};
+int num_boss_ban[2] = {0,0};
 
 enum GameMode
 {
@@ -76,60 +81,79 @@ void AddShip(Game* game, PlayerSide side, int type)
     }
 }
 
-void ProcessBan(Player* player_1, Player* player_2)
+void ProcessBan(Player* player, int i) // i=0 means player 1, i=1 means player 2
 {
-    for (int i = 0; i < 2; i++)
+    int choice;
+    cout << "Enter the ships of " << "\033[0;36m" << player->GetName() << "\033[0m";
+    cout << " that will be banned. Enter 0 to end." << endl;
+    cout << "  ";
+    for (int j = 1; j <= num_ship; j++)
     {
-        string player_name = i == 0 ? player_1->GetName() : player_2->GetName();
-        vector<bool>* available = i == 0 ? &available_1 : &available_2;
-
-        int choice;
-        cout << "Enter the ships of " << "\033[0;36m" << player_name << "\033[0m";
-        cout << " that will be banned. Enter 0 to end." << endl;
-        cout << "  ";
-        for (int j = 1; j <= num_ship; j++)
+        cout << j << ": ";
+        cout << "\033[1;36m" << name_ship[j - 1] << "\033[0m" << "(";
+        cout << "\033[1;33m" << cost_ship[j - 1] << "\033[0m" << ")  ";
+    }
+    cout << endl;
+    while (true)
+    {
+        InputNumber<int>(choice, 0, num_ship);
+        if (choice == 0)
+            break;
+        if (available_ship[i][choice - 1])
         {
-            cout << j << ": ";
-            cout << "\033[1;36m" << name[j - 1] << "\033[0m" << "(";
-            cout << "\033[1;33m" << cost[j - 1] << "\033[0m" << ")  ";
-        }
-        cout << endl;
-        while (true)
-        {
-            InputNumber<int>(choice, 0, num_ship);
-            if (choice == 0)
-                break;
-            if ((*available)[choice - 1])
+            if (num_ship_ban[i] == num_ship - 1)
             {
-                if (num_ban[i] == num_ship - 1)
-                {
-                    cout << "You cannot ban all the ships." << endl;
-                    continue;
-                }
-                (*available)[choice - 1] = false;
-                num_ban[i]++;
+                cout << "You cannot ban all the ships." << endl;
+                continue;
             }
+            available_ship[i][choice - 1] = false;
+            num_ship_ban[i]++;
         }
     }
 }
 
-void ShowOption(Player* player, int i)
+// i=0 means player 1, i=1 means player 2
+// show_boss=false only shows ships, show_boss=true shows both ships and bosses
+void ShowOption(Player* player, int i, bool show_boss) 
 {
-    vector<bool>* available = i == 0 ? &available_1 : &available_2;
     cout << "Enter the ships for " << "\033[0;36m" << player->GetName() << "\033[0m" << ". ";
     cout << "Enter 0 to end. " << endl;
     cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
     cout << "    ";
     for (int j = 1; j <= num_ship; j++)
     {
-        if ((*available)[j - 1])
+        if (available_ship[i][j - 1])
         {
             cout << j << ": ";
-            cout << "\033[1;36m" << name[j - 1] << "\033[0m" << "(";
-            cout << "\033[1;33m" << cost[j - 1] << "\033[0m" << ")  ";
+            cout << "\033[1;36m" << name_ship[j - 1] << "\033[0m" << "(";
+            cout << "\033[1;33m" << cost_ship[j - 1] << "\033[0m" << ")  ";
         }
     }
+    if (show_boss)
+        for (int j = 1; j <= num_boss; j++)
+        {
+            cout << j + num_ship << ": ";
+            cout << "\033[1;36m" << name_boss[j - 1] << "\033[0m" << "(";
+            cout << "\033[1;33m" << cost_boss[j - 1] << "\033[0m" << ")  ";
+        }
     cout << endl;
+}
+
+int SelectBoss()
+{
+    cout << "Enter the boss you want to conquer." << endl;
+    cout << "\033[1;33m" << "  Option: " << "\033[0m" << endl;
+    cout << "    ";
+    for (int j = 1; j <= num_boss; j++)
+    {
+        cout << j << ": ";
+        cout << "\033[1;36m" << name_boss[j - 1] << "\033[0m" << "(";
+        cout << "\033[1;33m" << cost_boss[j - 1] << "\033[0m" << ")  ";
+    }
+    cout << endl;
+    int option;
+    InputNumber(option, 1, num_boss);
+    return option;
 }
 
 PlayerType InputPlayerType(Player* player)
@@ -178,7 +202,8 @@ int main()
 
         case advanced:
         {
-            ProcessBan(&player_1, &player_2);
+            ProcessBan(&player_1, 0);
+            ProcessBan(&player_2, 1);
             cout << "Enter the money of " << "\033[0;36m" << player_2.GetName() << "\033[0m" << ". " << endl;
             cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get 85% of that." << endl;
             double money_1;
@@ -191,10 +216,9 @@ int main()
                 Player* player = i == 0 ? &player_1 : &player_2;
                 PlayerSide side = i == 0 ? side_1 : side_2;
                 double* money = i == 0 ? &money_1 : &money_2;
-                vector<bool>* available = i == 0 ? &available_1 : &available_2;
                 cout << "\033[0;36m" << player->GetName() << "\033[0m" << " has money " << *money << endl;
 
-                ShowOption(player, i);
+                ShowOption(player, i, false);
                 int choice;
                 int num = 0;
                 while (true)
@@ -210,18 +234,18 @@ int main()
                         else
                             break;
                     }
-                    if (!(*available)[choice - 1])
+                    if (!available_ship[i][choice - 1])
                     {
                         cout << "This ship has been banned. Please input again." << endl;
                         continue;
                     }
-                    if (*money < cost[choice - 1])
+                    if (*money < cost_ship[choice - 1])
                     {
                         cout << "Your money is not enough." << endl;
                         continue;
                     }
                     AddShip(&game, side, choice);
-                    *money -= cost[choice - 1];
+                    *money -= cost_ship[choice - 1];
                     num++;
                 }
             }
@@ -237,12 +261,12 @@ int main()
                 Player* player = i == 0 ? &player_1 : &player_2;
                 PlayerSide side = i == 0 ? side_1 : side_2;
 
-                ShowOption(player, i);
+                ShowOption(player, i, true);
                 int choice;
                 int num = 0;
                 while (true)
                 {
-                    InputNumber<int>(choice, 0, num_ship);
+                    InputNumber<int>(choice, 0, num_ship + num_boss);
                     if (choice == 0)
                     {
                         if (num == 0)
@@ -275,7 +299,8 @@ int main()
                 share_2 *= 1.31;
             double ratio = round(share_1 / share_2 * 100);
 
-            ProcessBan(&player_1, &player_2);
+            ProcessBan(&player_1, 0);
+            ProcessBan(&player_2, 1);
             cout << "Enter the money of " << "\033[0;36m" << player_2.GetName() << "\033[0m" << ". " << endl;
             cout << "\033[0;36m" << player_1.GetName() << "\033[0m" << " will get " << ratio << "% of that." << endl;
             double money_1;
@@ -287,20 +312,19 @@ int main()
             {
                 PlayerSide side = i == 0 ? side_1 : side_2;
                 double* money = i == 0 ? &money_1 : &money_2;
-                vector<bool>* available = i == 0 ? &available_1 : &available_2;
 
                 int min_cost = INT32_MAX;
                 for (int j = 0; j < num_ship; j++)
-                    if ((*available)[j] && cost[j] < min_cost)
-                        min_cost = cost[j];
+                    if (available_ship[i][j] && cost_ship[j] < min_cost)
+                        min_cost = cost_ship[j];
                 
                 while (*money >= min_cost)
                 {
                     int choice = rand() % num_ship;
-                    if (!(*available)[choice] || *money < cost[choice])
+                    if (!available_ship[i][choice] || *money < cost_ship[choice])
                         continue;
                     AddShip(&game, side, choice + 1);
-                    *money -= cost[choice];
+                    *money -= cost_ship[choice];
                 }
             }
             break;
@@ -308,50 +332,24 @@ int main()
 
         case boss:
         {
-            int choice;
-            cout << "Enter the ships of " << "\033[0;36m" << player_1.GetName() << "\033[0m";
-            cout << " that will be banned. Enter 0 to end." << endl;
-            cout << "  ";
-            for (int j = 1; j <= num_ship; j++)
-            {
-                cout << j << ": ";
-                cout << "\033[1;36m" << name[j - 1] << "\033[0m" << "(";
-                cout << "\033[1;33m" << cost[j - 1] << "\033[0m" << ")  ";
-            }
-            cout << endl;
-            while (true)
-            {
-                InputNumber<int>(choice, 0, num_ship);
-                if (choice == 0)
-                    break;
-                if (available_1[choice - 1])
-                {
-                    if (num_ban[1] == num_ship - 1)
-                    {
-                        cout << "You cannot ban all the ships." << endl;
-                        continue;
-                    }
-                    available_1[choice - 1] = false;
-                    num_ban[1]++;
-                }
-            }
-
+            int boss_id = SelectBoss();
+            ProcessBan(&player_1, 0);
             player_2.SetType(computer);
-            AddShip(&game, side_2, 14);
-            double money = cost[13] * 0.65;
+            AddShip(&game, side_2, num_ship + boss_id);
+            double money = cost_boss[boss_id - 1] * 0.65;
 
             int min_cost = INT32_MAX;
             for (int i = 0; i < num_ship; i++)
-                if (available_1[i] && cost[i] < min_cost)
-                    min_cost = cost[i];
+                if (available_ship[0][i] && cost_ship[i] < min_cost)
+                    min_cost = cost_ship[i];
             
             while (money >= min_cost)
             {
                 int choice = rand() % num_ship;
-                if (!available_1[choice] || money < cost[choice])
+                if (!available_ship[0][choice] || money < cost_ship[choice])
                     continue;
                 AddShip(&game, side_1, choice + 1);
-                money -= cost[choice];
+                money -= cost_ship[choice];
             }
 
             break;
@@ -378,15 +376,14 @@ int main()
                 {
                     PlayerSide side = i == 0 ? side_1 : side_2;
                     double* money = i == 0 ? &money_1 : &money_2;
-                    vector<bool>* available = i == 0 ? &available_1 : &available_2;
                     
                     while (*money >= 1)
                     {
                         int choice = rand() % num_ship;
-                        if (!(*available)[choice] || *money < cost[choice])
+                        if (!available_ship[i][choice] || *money < cost_ship[choice])
                             continue;
                         AddShip(&game, side, choice + 1);
-                        *money -= cost[choice];
+                        *money -= cost_ship[choice];
                     }
                 }
                 game.Start();

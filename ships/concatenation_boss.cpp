@@ -3,9 +3,9 @@
 
 ConcatenationBoss::ConcatenationBoss(Game* game, int id) : Ship(game, id)
 {
-    health_ = 50;
-    max_health_ = 50;
-    attack_times_ = 5;
+    health_ = 60;
+    max_health_ = 60;
+    attack_times_ = 4;
     shield_health_ = 20;
     can_stunned_ = false;
     ship_type_ = concatenation_boss;
@@ -23,12 +23,10 @@ ConcatenationBoss::ConcatenationBoss(Game* game, int id) : Ship(game, id)
     cannons_.push_back(new SuperCritCannon(game));
     cannons_.push_back(new Torpedo(game));
     skills_.push_back(new Shield(game));
-    skills_.push_back(new Suck(game));
     skills_.push_back(new Heal(game));
     skills_.push_back(new Fury(game));
     skills_.push_back(new Dodge(game));
     skills_.push_back(new Grapeshot(game));
-    skills_.push_back(new SuperGrapeshot(game));
 }
 
 void ConcatenationBoss::DecreaseHealth(double n, Ship* source)
@@ -43,10 +41,10 @@ void ConcatenationBoss::DecreaseHealth(double n, Ship* source)
     }
     else
     {
-        if (health_ >= 40)
-            n -= 2;
-        else
+        if (health_ > 30)
             n -= 1;
+        else
+            n *= 0.8;
         if (n > 0)
             health_ -= n;
     }
