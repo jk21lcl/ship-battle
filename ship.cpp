@@ -137,9 +137,14 @@ bool Ship::IsStunned() const
     return stunned_;
 }
 
-void Ship::IncreaseStun(int n)
+bool Ship::IncreaseStun(int n)
 {
-    stunned_ += n;
+    if (!shield_health_ && !immune_ && can_stunned_)
+    {
+        stunned_ += n;
+        return true;
+    }
+    return false;
 }
 
 int Ship::GetShieldHealth() const
@@ -246,5 +251,6 @@ bool Ship::IsBurn() const
 
 void Ship::IncreaseBurn(int n)
 {
-    burn_ += n;
+    if (!immune_)
+        burn_ += n;
 }

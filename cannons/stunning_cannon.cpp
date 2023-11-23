@@ -13,8 +13,5 @@ StunningCannon::StunningCannon(Game* game) : Cannon(game)
 void StunningCannon::Attack(Ship* source, Ship* target)
 {
     if (!ProcessDodge(source, target))
-        if (!target->HasShield() && !target->IsImmune() && target->GetCanStunned())
-        {
-            target->IncreaseStun(1);
-        }
+        target->IncreaseStun(1);
 }

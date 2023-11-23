@@ -51,7 +51,7 @@ class Ship : public Object
 
         int GetStunned() const;
         bool IsStunned() const;
-        void IncreaseStun(int n);
+        bool IncreaseStun(int n);
 
         int GetShieldHealth() const;
         void IncreaseShieldHealth(int n);
