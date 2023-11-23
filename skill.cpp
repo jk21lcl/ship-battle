@@ -5,6 +5,7 @@ Skill::Skill(Game* game) : Object(game)
 {
     object_type_ = skill;
     cd_ = 0;
+    available_ = true;
     skill_property_ = assist_skill;
     target_type_ = ally;
     attack_times_ = 1;
@@ -30,6 +31,16 @@ int Skill::GetMaxCd() const
 bool Skill::IsReady() const
 {
     return cd_ == 0;
+}
+
+bool Skill::IsAvailable() const
+{
+    return available_;
+}
+
+void Skill::Ban()
+{
+    available_ = false;
 }
 
 SkillType Skill::GetSkillType() const
@@ -77,9 +88,7 @@ void Skill::OutputCrit(Ship* source, Ship* target) const
 
 bool Skill::ProcessDodge(Ship* source, Ship* target)
 {
-    dodge_ = 0;
-    if (target->GetShipType() == swift_ship || target->GetShipType() == concatenation_boss)
-        dodge_ += 25;
+    dodge_ = target->GetDodgeProb();
     if (target->IsDodge())
         dodge_ += 25;
     int random = rand() % 100;

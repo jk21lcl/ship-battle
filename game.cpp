@@ -101,7 +101,9 @@ void Game::ShowSkillStatus(Ship* ship, bool showindex) const
             cout << i + 1 + num_cannons << ": ";
         Skill* cur = skills[i];
         cout << cur->GetName();
-        if (cur->IsReady())
+        if (!cur->IsAvailable())
+            cout << "\033[1;31m" << "(banned)" << "\033[0m";
+        else if (cur->IsReady())
             cout << "\033[0;32m" << "(ready)" << "\033[0m";
         else
             cout << "(cd: " << cur->GetCd() << ")";
@@ -184,6 +186,11 @@ void Game::Input()
                                 }
                                 else
                                 {
+                                    if (!skills[option - num_cannon - 1]->IsAvailable())
+                                    {
+                                        cout << "This skill is banned. Please input again." << endl;
+                                        continue;
+                                    }
                                     if (!skills[option - num_cannon - 1]->IsReady())
                                     {
                                         cout << "This skill is in cooldown. Please input again." << endl;
@@ -278,7 +285,7 @@ void Game::Input()
                             }
                             else
                             {
-                                if (!skills[option - num_cannon - 1]->IsReady())
+                                if (!skills[option - num_cannon - 1]->IsAvailable() || !skills[option - num_cannon - 1]->IsReady())
                                     continue;
                             }
                         }
@@ -384,8 +391,7 @@ void Game::Update()
                 ship->IncreaseStun(-1);
             else
             {
-                if (ship->GetShipType() == heal_ship || ship->GetShipType() == concatenation_boss)
-                    ship->IncreaseHealth(2);
+                ship->IncreaseHealth(ship->GetHealHealth());
                 vector<Cannon*> cannons = ship->GetCannons();
                 for (Cannon* cannon : cannons)
                     if (!cannon->IsReady())

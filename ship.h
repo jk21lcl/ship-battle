@@ -20,7 +20,8 @@ enum ShipType
     medium_explosive_ship,
     big_explosive_ship,
     torpedo_ship,
-    concatenation_boss
+    concatenation_boss,
+    igniting_ship
 };
 
 class Ship : public Object
@@ -37,6 +38,8 @@ class Ship : public Object
         int GetId() const;
         bool GetCanStunned() const;
         int GetAttackTimes() const;
+        int GetDodgeProb() const;
+        int GetHealHealth() const;
 
         vector<Cannon*> GetCannons() const;
         vector<Skill*> GetSkills() const;
@@ -86,6 +89,8 @@ class Ship : public Object
         bool alive_;
         bool can_stunned_;
         int attack_times_; // default 1
+        int dodge_prob_; // initial dodge probability, default 0
+        int heal_health_; // the heal health in every round, default 0
         ShipType ship_type_;
         vector<Cannon*> cannons_;
         vector<Skill*> skills_;

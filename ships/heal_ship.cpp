@@ -5,6 +5,7 @@ HealShip::HealShip(Game* game, int id) : Ship(game, id)
 {
     health_ = 30;
     max_health_ = 30;
+    heal_health_ = 2;
     ship_type_ = heal_ship;
     name_ = "Heal Ship";
     cannons_.push_back(new Cannon1(game));

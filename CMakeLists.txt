@@ -18,19 +18,20 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             ships/crit_ship.cpp ships/swift_ship.cpp ships/grapeshot_ship.cpp
             ships/small_explosive_ship.cpp ships/medium_explosive_ship.cpp
             ships/big_explosive_ship.cpp ships/torpedo_ship.cpp 
-            ships/concatenation_boss.cpp
+            ships/concatenation_boss.cpp ships/igniting_ship.cpp
 
             cannons/cannon_1.cpp cannons/cannon_2.cpp cannons/cannon_3.cpp
             cannons/cannon_4.cpp cannons/cannon_5.cpp
             cannons/split_cannon.cpp cannons/stunning_cannon.cpp
             cannons/explosive_cannon.cpp cannons/heal_cannon.cpp
             cannons/crit_cannon.cpp cannons/super_crit_cannon.cpp
-            cannons/torpedo.cpp
+            cannons/torpedo.cpp cannons/burning_cannon.cpp
             
             skills/shield.cpp skills/immune.cpp skills/suck.cpp skills/heal.cpp
             skills/super_heal.cpp skills/fury.cpp skills/dodge.cpp
             skills/super_shield.cpp skills/grapeshot.cpp skills/super_grapeshot.cpp
             skills/small_explode.cpp skills/medium_explode.cpp skills/big_explode.cpp
+            skills/ignite.cpp skills/blow.cpp
             
             events/cannon_event.cpp events/skill_event.cpp)
 

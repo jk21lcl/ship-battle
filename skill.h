@@ -18,7 +18,9 @@ enum SkillType
     super_grapeshot,
     small_explode,
     medium_explode,
-    big_explode
+    big_explode,
+    ignite,
+    blow
 };
 
 enum SkillProperty
@@ -43,6 +45,9 @@ class Skill : public Object
         TargetType GetTargetType() const;
         int GetAttackTimes() const;
 
+        bool IsAvailable() const;
+        void Ban();
+
         void ProcessCrit(Ship* source, Ship* target);
         void OutputCrit(Ship* source, Ship* target) const;
         bool ProcessDodge(Ship* source, Ship* target);
@@ -51,6 +56,7 @@ class Skill : public Object
         SkillType skill_type_;
         int cd_;
         int max_cd_;
+        bool available_;
         double crit_;
         int dodge_;
 

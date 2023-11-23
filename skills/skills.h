@@ -13,3 +13,5 @@
 #include "small_explode.h"
 #include "medium_explode.h"
 #include "big_explode.h"
+#include "ignite.h"
+#include "blow.h"

@@ -5,6 +5,7 @@ SwiftShip::SwiftShip(Game* game, int id) : Ship(game, id)
 {
     health_ = 15;
     max_health_ = 15;
+    dodge_prob_ = 25;
     ship_type_ = swift_ship;
     name_ = "Swift Ship";
     cannons_.push_back(new Cannon1(game));

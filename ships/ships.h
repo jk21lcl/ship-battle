@@ -14,3 +14,4 @@
 #include "big_explosive_ship.h"
 #include "torpedo_ship.h"
 #include "concatenation_boss.h"
+#include "igniting_ship.h"

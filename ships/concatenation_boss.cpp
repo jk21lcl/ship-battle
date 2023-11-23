@@ -8,6 +8,8 @@ ConcatenationBoss::ConcatenationBoss(Game* game, int id) : Ship(game, id)
     attack_times_ = 4;
     shield_health_ = 20;
     can_stunned_ = false;
+    dodge_prob_ = 25;
+    heal_health_ = 2;
     ship_type_ = concatenation_boss;
     name_ = "Concatenation Boss";
     cannons_.push_back(new Cannon1(game));
