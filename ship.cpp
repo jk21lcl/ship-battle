@@ -139,6 +139,11 @@ bool Ship::IsStunned() const
 
 bool Ship::IncreaseStun(int n)
 {
+    if (n < 0)
+    {
+        stunned_ += n;
+        return true;
+    }
     if (!shield_health_ && !immune_ && can_stunned_)
     {
         stunned_ += n;
