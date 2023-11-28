@@ -2,13 +2,13 @@
 
 using namespace std;
 
-vector<int> cost_ship = {4,2,1,5,5,5,3,3,4,1,2,3,3,4};
+vector<int> cost_ship = {4,2,1,5,5,5,3,3,4,1,2,3,3,4,3};
 vector<string> name_ship = {"Big Ship","Middle Ship","Small Ship","Defense Ship",
                        "Wizard Ship","Heal Ship","Crit Ship","Swift Ship",
                        "Grapeshot Ship","Small Explosive Ship",
                        "Medium Explosive Ship","Big Explosive Ship",
-                       "Torpedo Ship","Igniting Ship"};
-int num_ship = 14;
+                       "Torpedo Ship","Igniting Ship","Random Ship"};
+int num_ship = 15;
 
 vector<int> cost_boss = {40};
 vector<string> name_boss = {"Concatenation Boss"};
@@ -76,6 +76,9 @@ void AddShip(Game* game, PlayerSide side, int type)
             game->AddShip<IgnitingShip>(side);
             break;
         case 15:
+            game->AddShip<RandomShip>(side);
+            break;
+        case 16:
             game->AddShip<ConcatenationBoss>(side);
             break;
         default:

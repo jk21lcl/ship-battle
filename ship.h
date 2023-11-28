@@ -21,7 +21,8 @@ enum ShipType
     big_explosive_ship,
     torpedo_ship,
     concatenation_boss,
-    igniting_ship
+    igniting_ship,
+    random_ship
 };
 
 class Ship : public Object
@@ -80,6 +81,10 @@ class Ship : public Object
         int GetBurn() const;
         bool IsBurn() const;
         void IncreaseBurn(int n);
+
+        int GetHide() const;
+        bool IsHide() const;
+        void IncreaseHide(int n);
     
     protected:
         int id_;
@@ -103,6 +108,7 @@ class Ship : public Object
         int fury_;
         int dodge_;
         int burn_;
+        int hide_;
 
         void Ban();
 };

@@ -12,6 +12,7 @@ BurningCannon::BurningCannon(Game* game) : Cannon(game)
 void BurningCannon::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
+    OutputCrit(source, target);
     if (!ProcessDodge(source, target))
     {
         target->DecreaseHealth(2 * crit_, source);

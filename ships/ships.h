@@ -15,3 +15,4 @@
 #include "torpedo_ship.h"
 #include "concatenation_boss.h"
 #include "igniting_ship.h"
+#include "random_ship.h"

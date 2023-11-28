@@ -13,6 +13,7 @@ Blow::Blow(Game* game) : Skill(game)
 void Blow::Use(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
+    OutputCrit(source, target);
     if (!ProcessDodge(source, target))
     {
         target->DecreaseHealth(target->GetBurn() * crit_, source);

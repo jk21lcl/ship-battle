@@ -88,9 +88,14 @@ void Skill::OutputCrit(Ship* source, Ship* target) const
 
 bool Skill::ProcessDodge(Ship* source, Ship* target)
 {
-    dodge_ = target->GetDodgeProb();
-    if (target->IsDodge())
-        dodge_ += 25;
+    if (target->IsHide())
+        dodge_ = 100;
+    else 
+    {
+        dodge_ = target->GetDodgeProb();
+        if (target->IsDodge())
+            dodge_ += 25;
+    }
     int random = rand() % 100;
     if (random < dodge_)
     {

@@ -15,3 +15,4 @@
 #include "big_explode.h"
 #include "ignite.h"
 #include "blow.h"
+#include "random_buff.h"

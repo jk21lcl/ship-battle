@@ -20,7 +20,8 @@ enum SkillType
     medium_explode,
     big_explode,
     ignite,
-    blow
+    blow,
+    random_buff
 };
 
 enum SkillProperty

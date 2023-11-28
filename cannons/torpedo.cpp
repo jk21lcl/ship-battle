@@ -11,6 +11,7 @@ Torpedo::Torpedo(Game* game) : Cannon(game)
 void Torpedo::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
+    OutputCrit(source, target);
     int random = rand() % 100;
     if (random < 30)
     {

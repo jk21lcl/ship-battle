@@ -56,6 +56,8 @@ void Game::ShowStatus() const
                     cout << "\033[1;34m" << "(dodge: " << ship->GetDodge() << ")" << "\033[0m";
                 if (ship->IsBurn())
                     cout << "\033[0;31m" << "(burn: " << ship->GetBurn() << ")" << "\033[0m";
+                if (ship->IsHide())
+                    cout << "\033[1;35m" << "(hide: " << ship->GetHide() << ")" << "\033[0m";
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";
@@ -206,13 +208,18 @@ void Game::Input()
                             int target;
                             if (option <= num_cannon)
                             {
-                                cout << "Please input target id: " << endl;
                                 Cannon* cur_cannon = cannons[option - 1];
                                 Player* target_player = cur_cannon->GetTargetType() == ally ? cur_player_ : other_player_;
-                                for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
+                                if (cur_cannon->GetAttackTimes() == 0)
+                                    cannon_event_.push(new CannonEvent(cur_cannon, ship, nullptr));
+                                else
                                 {
-                                    InputNumber<int>(target, 1, target_player->GetNum());
-                                    cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
+                                    cout << "Please input target id: " << endl;
+                                    for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
+                                    {
+                                        InputNumber<int>(target, 1, target_player->GetNum());
+                                        cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
+                                    }
                                 }
                                 cur_cannon->SetCd(cur_cannon->GetMaxCd() + 1);
                             }
@@ -304,24 +311,32 @@ void Game::Input()
                         int target;
                         if (option <= num_cannon)
                         {
-                            cout << "Target: ";
                             Cannon* cur_cannon = cannons[option - 1];
                             Player* target_player = cur_cannon->GetTargetType() == ally ? cur_player_ : other_player_;
-                            for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
+                            if (cur_cannon->GetAttackTimes() == 0)
                             {
-                                while (true)
+                                cannon_event_.push(new CannonEvent(cur_cannon, ship, nullptr));
+                                cout << endl;
+                            }
+                            else
+                            {
+                                for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
                                 {
-                                    target = rand() % target_player->GetNum() + 1;
-                                    if (target_player->GetShips()[target - 1]->IsAlive())
-                                        break;
+                                    cout << "Target: ";
+                                    while (true)
+                                    {
+                                        target = rand() % target_player->GetNum() + 1;
+                                        if (target_player->GetShips()[target - 1]->IsAlive())
+                                            break;
+                                    }
+                                    cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
+                                    if (j)
+                                        cout << ", ";
+                                    cout << target << " \033[1;36m" << target_player->GetShips()[target - 1]->GetName() << "\033[0m";
                                 }
-                                cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
-                                if (j)
-                                    cout << ", ";
-                                cout << target << " \033[1;36m" << target_player->GetShips()[target - 1]->GetName() << "\033[0m";
+                                cout << "." << endl;
                             }
                             cur_cannon->SetCd(cur_cannon->GetMaxCd() + 1);
-                            cout << "." << endl;
                         }
                         else
                         {
@@ -365,7 +380,6 @@ void Game::Update()
 {
     ProcessCannon();
     ProcessAttackSkill();
-    ProcessSkill();
 
     // update cd, stun, immune, suck, heal, burn
     for (Ship* ship : cur_player_->GetShips())
@@ -387,6 +401,8 @@ void Game::Update()
                 ship->DecreaseHealth(ship->GetBurn(), nullptr);
                 ship->IncreaseBurn(-1);
             }
+            if (ship->IsHide())
+                ship->IncreaseHide(-1);
             if (ship->IsStunned())
                 ship->IncreaseStun(-1);
             else
@@ -402,6 +418,8 @@ void Game::Update()
                         skill->SetCd(skill->GetCd() - 1);
             }
         }
+    
+    ProcessSkill();
 
     // update ingame info
     cur_player_->SetState(out);

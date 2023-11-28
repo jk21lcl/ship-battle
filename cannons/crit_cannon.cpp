@@ -23,12 +23,12 @@ void CritCannon::ProcessCrit(Ship* source, Ship* target)
         else
             crit_ = 1;
     }
-    OutputCrit(source, target);
 }
 
 void CritCannon::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
+    OutputCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(2 * crit_, source);
 }

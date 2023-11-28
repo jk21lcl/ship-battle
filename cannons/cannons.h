@@ -13,3 +13,6 @@
 #include "super_crit_cannon.h"
 #include "torpedo.h"
 #include "burning_cannon.h"
+#include "biased_cannon.h"
+#include "random_cannon.h"
+#include "random_heal_cannon.h"

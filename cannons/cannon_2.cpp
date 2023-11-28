@@ -12,6 +12,7 @@ Cannon2::Cannon2(Game* game) : Cannon(game)
 void Cannon2::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
+    OutputCrit(source, target);
     if (!ProcessDodge(source, target))
     {
         int random = rand() % 100;

@@ -72,7 +72,6 @@ void Cannon::ProcessCrit(Ship* source, Ship* target)
     }
     else
         crit_ = 1;
-    OutputCrit(source, target);
 }
 
 void Cannon::OutputCrit(Ship* source, Ship* target) const
@@ -82,16 +81,24 @@ void Cannon::OutputCrit(Ship* source, Ship* target) const
         cout << source->GetId() << " \033[1;36m" << source->GetName() << "\033[0m";
         cout << "'s " << "\033[0;33m" << name_ << "\033[0m";
         cout << " made a " << "\033[0;33m" << crit_ << "\033[0m" << " crit to ";
-        cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m";
+        if (target)
+            cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m";
+        else 
+            cout << "the air";
         cout << endl;
     }
 }
 
 bool Cannon::ProcessDodge(Ship* source, Ship* target)
 {
-    dodge_ = target->GetDodgeProb();
-    if (target->IsDodge())
-        dodge_ += 25;
+    if (target->IsHide())
+        dodge_ = 100;
+    else 
+    {
+        dodge_ = target->GetDodgeProb();
+        if (target->IsDodge())
+            dodge_ += 25;
+    }
     int random = rand() % 100;
     if (random < dodge_)
     {

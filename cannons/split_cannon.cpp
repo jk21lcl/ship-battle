@@ -25,12 +25,12 @@ void SplitCannon::ProcessCrit(Ship* source, Ship* target)
     }
     else
         crit_ = 1;
-    OutputCrit(source, target);
 }
 
 void SplitCannon::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
+    OutputCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(1 * crit_, source);
 }

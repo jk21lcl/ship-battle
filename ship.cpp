@@ -17,6 +17,7 @@ Ship::Ship(Game* game, int id) : Object(game)
     fury_ = 0;
     dodge_ = 0;
     burn_ = 0;
+    hide_ = 0;
     id_ = id;
 }
 
@@ -258,4 +259,19 @@ void Ship::IncreaseBurn(int n)
 {
     if (!immune_)
         burn_ += n;
+}
+
+int Ship::GetHide() const
+{
+    return hide_;
+}
+
+bool Ship::IsHide() const
+{
+    return hide_;
+}
+
+void Ship::IncreaseHide(int n)
+{
+    hide_ += n;
 }
