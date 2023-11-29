@@ -1,4 +1,4 @@
-#include "big_ship.h"
+#include "random_ship.h"
 #include "game.h"
 
 RandomShip::RandomShip(Game* game, int id) : Ship(game, id)

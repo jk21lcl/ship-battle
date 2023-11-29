@@ -2,7 +2,7 @@
 
 #include "ship.h"
 
-class TorpedoShip : public Ship   // health 20, attack 5
+class TorpedoShip : public Ship
 {
     public:
         TorpedoShip(Game* game, int id);

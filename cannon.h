@@ -21,7 +21,8 @@ enum CannonType
     burning_cannon,
     biased_cannon,
     random_cannon,
-    random_heal_cannon
+    random_heal_cannon,
+    specter_cannon
 };
 
 class Cannon : public Object

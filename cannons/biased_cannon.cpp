@@ -1,4 +1,4 @@
-#include "cannon_1.h"
+#include "biased_cannon.h"
 #include "game.h"
 
 BiasedCannon::BiasedCannon(Game* game) : Cannon(game)
@@ -11,49 +11,55 @@ BiasedCannon::BiasedCannon(Game* game) : Cannon(game)
 void BiasedCannon::Attack(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
-    if (!ProcessDodge(source, target))
+    int id = target->GetId();
+    vector<Ship*> ships = game_->GetOtherPlayer()->GetShips();
+    int num = game_->GetOtherPlayer()->GetNum();
+    int random = rand() % 100;
+    if (random < 50)
     {
-        int id = target->GetId();
-        vector<Ship*> ships = game_->GetOtherPlayer()->GetShips();
-        int num = game_->GetOtherPlayer()->GetNum();
-        int random = rand() % 100;
-        if (random < 50)
+        if (!ProcessDodge(source, target))
         {
             target->DecreaseHealth(3 * crit_, source);
             OutputTarget(source, target);
             OutputCrit(source, target);
         }
-        else if (random < 75)
+    }
+    else if (random < 75)
+    {
+        if (id != 1)
         {
-            if (id != 1)
+            Ship* ship = ships[id - 2];
+            if (!ProcessDodge(source, ship))
             {
-                Ship* ship = ships[id - 2];
                 ship->DecreaseHealth(3 * crit_, source);
                 OutputTarget(source, ship);
                 OutputCrit(source, ship);
-            }
-            else 
-            {
-                OutputTarget(source, nullptr);
-                OutputCrit(source, nullptr);
             }
         }
         else 
         {
-            if (id != num)
+            OutputTarget(source, nullptr);
+            OutputCrit(source, nullptr);
+        }
+    }
+    else 
+    {
+        if (id != num)
+        {
+            Ship* ship = ships[id];
+            if (!ProcessDodge(source, ship))
             {
-                Ship* ship = ships[id];
                 ship->DecreaseHealth(3 * crit_, source);
                 OutputTarget(source, ship);
                 OutputCrit(source, ship);
             }
-            else 
-            {
-                OutputTarget(source, nullptr);
-                OutputCrit(source, nullptr);
-            }
         }
-    }  
+        else 
+        {
+            OutputTarget(source, nullptr);
+            OutputCrit(source, nullptr);
+        }
+    }
 }
 
 void BiasedCannon::OutputTarget(Ship* source, Ship* target) const

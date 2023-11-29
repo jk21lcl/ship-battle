@@ -1,4 +1,4 @@
-#include "cannon_1.h"
+#include "random_heal_cannon.h"
 #include "game.h"
 
 RandomHealCannon::RandomHealCannon(Game* game) : Cannon(game)

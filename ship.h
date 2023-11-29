@@ -22,7 +22,8 @@ enum ShipType
     torpedo_ship,
     concatenation_boss,
     igniting_ship,
-    random_ship
+    random_ship,
+    specter_ship
 };
 
 class Ship : public Object
@@ -96,6 +97,9 @@ class Ship : public Object
         int attack_times_; // default 1
         int dodge_prob_; // initial dodge probability, default 0
         int heal_health_; // the heal health in every round, default 0
+        int absolute_damage_reduce_; // default 0
+        int ratio_damage_reduce_; // default 0
+        int shield_rebound_; // default 0
         ShipType ship_type_;
         vector<Cannon*> cannons_;
         vector<Skill*> skills_;
@@ -110,5 +114,6 @@ class Ship : public Object
         int burn_;
         int hide_;
 
-        void Ban();
+        virtual void Ban();
+        virtual void Update() {}
 };

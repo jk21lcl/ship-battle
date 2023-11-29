@@ -16,3 +16,4 @@
 #include "biased_cannon.h"
 #include "random_cannon.h"
 #include "random_heal_cannon.h"
+#include "specter_cannon.h"

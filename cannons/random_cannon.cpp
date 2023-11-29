@@ -1,4 +1,4 @@
-#include "cannon_1.h"
+#include "random_cannon.h"
 #include "game.h"
 
 RandomCannon::RandomCannon(Game* game) : Cannon(game)
@@ -19,6 +19,17 @@ void RandomCannon::Attack(Ship* source, Ship* target)
     int times = rand() % 3 + 1;
     for (int i = 0; i < times; i++)
     {
+        // check whether there exists living ship
+        bool alive = false;
+        for (Ship* ship : ships)
+            if (ship->IsAlive())
+            {
+                alive = true;
+                break;
+            }
+        if (!alive)
+            break;
+        
         // random choose targets
         int id;
         while (true)

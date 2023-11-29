@@ -1,4 +1,4 @@
-#include "shield.h"
+#include "random_buff.h"
 #include "game.h"
 
 RandomBuff::RandomBuff(Game* game) : Skill(game)
@@ -42,7 +42,7 @@ void RandomBuff::Use(Ship* source, Ship* target)
             break;
         case 6: // hide
             target->IncreaseHide(2);
-            cout << "\033[1;35m" << "hide" << "\033[0m";
+            cout << "\033[1;30m" << "hide" << "\033[0m";
             break;
         case 7: // stun
             target->IncreaseStun(2);

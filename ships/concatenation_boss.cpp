@@ -10,6 +10,7 @@ ConcatenationBoss::ConcatenationBoss(Game* game, int id) : Ship(game, id)
     can_stunned_ = false;
     dodge_prob_ = 25;
     heal_health_ = 2;
+    shield_rebound_ = 100;
     ship_type_ = concatenation_boss;
     name_ = "Concatenation Boss";
     cannons_.push_back(new Cannon1(game));
@@ -29,33 +30,19 @@ ConcatenationBoss::ConcatenationBoss(Game* game, int id) : Ship(game, id)
     skills_.push_back(new Fury(game));
     skills_.push_back(new Dodge(game));
     skills_.push_back(new Grapeshot(game));
+    Update();
 }
 
-void ConcatenationBoss::DecreaseHealth(double n, Ship* source)
+void ConcatenationBoss::Update()
 {
-    if (source && source->IsSuck())
-        source->IncreaseHealth(n);
-    if (shield_health_)
+    if (health_ > 30)
     {
-        shield_health_ -= n;
-        if (source)
-            source->DecreaseHealth(n, nullptr);
+        absolute_damage_reduce_ = 1;
+        ratio_damage_reduce_ = 0;
     }
     else
     {
-        if (health_ > 30)
-            n -= 1;
-        else
-            n *= 0.8;
-        if (n > 0)
-            health_ -= n;
+        absolute_damage_reduce_ = 0;
+        ratio_damage_reduce_ = 20;
     }
-    if (shield_health_ <= 0)
-        shield_health_ = 0;
-    if (health_ <= 0)
-    {
-        health_ = 0;
-        alive_ = false;
-    }
-    Ban();
 }

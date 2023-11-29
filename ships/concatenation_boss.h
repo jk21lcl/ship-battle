@@ -2,11 +2,11 @@
 
 #include "ship.h"
 
-class ConcatenationBoss : public Ship   // health 20, attack 5
+class ConcatenationBoss : public Ship
 {
     public:
         ConcatenationBoss(Game* game, int id);
         ~ConcatenationBoss() {}
 
-        void DecreaseHealth(double n, Ship* source) override;
+        void Update() override; // update damage_reduce data
 };

@@ -7,6 +7,6 @@ class DefenseShip : public Ship
     public:
         DefenseShip(Game* game, int id);
         ~DefenseShip() {}
-        
-        void DecreaseHealth(double n, Ship* source) override;
+
+        void Update() override; // update the damage_reduce data
 };

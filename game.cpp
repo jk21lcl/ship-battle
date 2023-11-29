@@ -57,7 +57,13 @@ void Game::ShowStatus() const
                 if (ship->IsBurn())
                     cout << "\033[0;31m" << "(burn: " << ship->GetBurn() << ")" << "\033[0m";
                 if (ship->IsHide())
-                    cout << "\033[1;35m" << "(hide: " << ship->GetHide() << ")" << "\033[0m";
+                    cout << "\033[1;30m" << "(hide: " << ship->GetHide() << ")" << "\033[0m";
+                if (ship->GetShipType() == specter_ship)
+                {
+                    SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(ship);
+                    if (specter_ship->IsSpecter())
+                        cout << "\033[1;30m" << "(specter: " << specter_ship->GetSpecter() << ")" << "\033[0m";
+                }
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << ship->GetHealth() << "  ";

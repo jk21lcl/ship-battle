@@ -21,7 +21,11 @@ enum SkillType
     big_explode,
     ignite,
     blow,
-    random_buff
+    random_buff,
+    specter,
+    hide,
+    specter_explode,
+    super_specter_explode
 };
 
 enum SkillProperty

@@ -16,3 +16,7 @@
 #include "ignite.h"
 #include "blow.h"
 #include "random_buff.h"
+#include "specter.h"
+#include "hide.h"
+#include "specter_explode.h"
+#include "super_specter_explode.h"

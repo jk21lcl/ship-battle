@@ -9,6 +9,10 @@ Ship::Ship(Game* game, int id) : Object(game)
     attack_times_ = 1;
     dodge_prob_ = 0;
     heal_health_ = 0;
+    absolute_damage_reduce_ = 0;
+    ratio_damage_reduce_ = 0;
+    shield_rebound_ = 0;
+
     stunned_ = 0;
     shield_health_ = 0;
     immune_ = 0;
@@ -36,6 +40,7 @@ double Ship::GetHealth() const
 void Ship::IncreaseHealth(double n)
 {
     health_ = min(health_ + n, max_health_);
+    Update();
 }
 
 void Ship::DecreaseHealth(double n, Ship* source)
@@ -43,9 +48,17 @@ void Ship::DecreaseHealth(double n, Ship* source)
     if (source && source->IsSuck())
         source->IncreaseHealth(n);
     if (shield_health_)
+    {
         shield_health_ -= n;
+        if (source)
+            source->DecreaseHealth(n * shield_rebound_ / 100, nullptr);
+    }
     else
-        health_ -= n;
+    {
+        n -= absolute_damage_reduce_ + n * ratio_damage_reduce_ / 100;
+        if (n > 0)
+            health_ -= n;
+    } 
     if (shield_health_ <= 0)
         shield_health_ = 0;
     if (health_ <= 0)
@@ -53,6 +66,7 @@ void Ship::DecreaseHealth(double n, Ship* source)
         health_ = 0;
         alive_ = false;
     }
+    Update();
     Ban();
 }
 

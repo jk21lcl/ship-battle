@@ -12,29 +12,13 @@ DefenseShip::DefenseShip(Game* game, int id) : Ship(game, id)
     cannons_.push_back(new Cannon3(game));
     skills_.push_back(new Shield(game));
     skills_.push_back(new SuperShield(game));
+    Update();
 }
 
-void DefenseShip::DecreaseHealth(double n, Ship* source)
+void DefenseShip::Update()
 {
-    if (source && source->IsSuck())
-        source->IncreaseHealth(n);
-    if (shield_health_)
-        shield_health_ -= n;
-    else
-    {
-        if (health_ >= 12)
-            n -= 2;
-        else
-            n -= 1;
-        if (n > 0)
-            health_ -= n;
-    }
-    if (shield_health_ <= 0)
-        shield_health_ = 0;
-    if (health_ <= 0)
-    {
-        health_ = 0;
-        alive_ = false;
-    }
-    Ban();
+    if (health_ >= 12)
+        absolute_damage_reduce_ = 2;
+    else 
+        absolute_damage_reduce_ = 1;
 }

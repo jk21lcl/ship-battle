@@ -19,7 +19,7 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             ships/small_explosive_ship.cpp ships/medium_explosive_ship.cpp
             ships/big_explosive_ship.cpp ships/torpedo_ship.cpp 
             ships/concatenation_boss.cpp ships/igniting_ship.cpp
-            ships/random_ship.cpp
+            ships/random_ship.cpp ships/specter_ship.cpp
 
             cannons/cannon_1.cpp cannons/cannon_2.cpp cannons/cannon_3.cpp
             cannons/cannon_4.cpp cannons/cannon_5.cpp
@@ -28,13 +28,15 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             cannons/crit_cannon.cpp cannons/super_crit_cannon.cpp
             cannons/torpedo.cpp cannons/burning_cannon.cpp
             cannons/biased_cannon.cpp cannons/random_cannon.cpp
-            cannons/random_heal_cannon.cpp
+            cannons/random_heal_cannon.cpp cannons/specter_cannon.cpp
             
             skills/shield.cpp skills/immune.cpp skills/suck.cpp skills/heal.cpp
             skills/super_heal.cpp skills/fury.cpp skills/dodge.cpp
             skills/super_shield.cpp skills/grapeshot.cpp skills/super_grapeshot.cpp
             skills/small_explode.cpp skills/medium_explode.cpp skills/big_explode.cpp
             skills/ignite.cpp skills/blow.cpp skills/random_buff.cpp
+            skills/specter.cpp skills/hide.cpp skills/specter_explode.cpp 
+            skills/super_specter_explode.cpp
             
             events/cannon_event.cpp events/skill_event.cpp)
 

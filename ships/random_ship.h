@@ -2,7 +2,7 @@
 
 #include "ship.h"
 
-class RandomShip : public Ship   // health 20, attack 5
+class RandomShip : public Ship
 {
     public:
         RandomShip(Game* game, int id);
