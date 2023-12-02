@@ -58,6 +58,8 @@ void Game::ShowStatus() const
                     cout << "\033[0;31m" << "(burn: " << ship->GetBurn() << ")" << "\033[0m";
                 if (ship->IsHide())
                     cout << "\033[1;30m" << "(hide: " << ship->GetHide() << ")" << "\033[0m";
+                if (ship->IsLock())
+                    cout << "\033[1;34m" << "(lock: " << ship->GetLock() << ")" << "\033[0m";
                 if (ship->GetShipType() == specter_ship)
                 {
                     SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(ship);
@@ -66,7 +68,8 @@ void Game::ShowStatus() const
                 }
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
-                cout << "  Health: " << ship->GetHealth() << "  ";
+                cout << "  Health: " << "\033[1;32m" << ship->GetHealth() << "\033[0m";
+                cout << " / " << ship->GetMaxHealth() << "  ";
                 ShowCannonStatus(ship, false);
                 ShowSkillStatus(ship, false);
                 cout << endl;
@@ -108,7 +111,9 @@ void Game::ShowSkillStatus(Ship* ship, bool showindex) const
         if (showindex)
             cout << i + 1 + num_cannons << ": ";
         Skill* cur = skills[i];
-        cout << cur->GetName();
+        if (!cur->IsActive())
+            cout << "\033[1;30m";
+        cout << cur->GetName() << "\033[0m";
         if (!cur->IsAvailable())
             cout << "\033[1;31m" << "(banned)" << "\033[0m";
         else if (cur->IsReady())
@@ -204,6 +209,11 @@ void Game::Input()
                                         cout << "This skill is in cooldown. Please input again." << endl;
                                         continue;
                                     }
+                                    if (!skills[option - num_cannon - 1]->IsActive())
+                                    {
+                                        cout << "This skill is hidden. Please input again." << endl;
+                                        continue;
+                                    }
                                 }
                             }
                             break;
@@ -227,7 +237,8 @@ void Game::Input()
                                         cannon_event_.push(new CannonEvent(cur_cannon, ship, target_player->GetShips()[target - 1]));
                                     }
                                 }
-                                cur_cannon->SetCd(cur_cannon->GetMaxCd() + 1);
+                                cur_cannon->SetCd(cur_cannon->GetMaxCd());
+                                cur_cannon->SetJustUsed(true);
                             }
                             else
                             {
@@ -245,7 +256,8 @@ void Game::Input()
                                         target_queue->push(new SkillEvent(cur_skill, ship, target_player->GetShips()[target - 1]));
                                     }
                                 }
-                                cur_skill->SetCd(cur_skill->GetMaxCd() + 1);
+                                cur_skill->SetCd(cur_skill->GetMaxCd());
+                                cur_skill->SetJustUsed(true);
                             }
                         }
                     }
@@ -298,7 +310,8 @@ void Game::Input()
                             }
                             else
                             {
-                                if (!skills[option - num_cannon - 1]->IsAvailable() || !skills[option - num_cannon - 1]->IsReady())
+                                if (!skills[option - num_cannon - 1]->IsAvailable() || !skills[option - num_cannon - 1]->IsReady() ||
+                                    !skills[option - num_cannon - 1]->IsActive())
                                     continue;
                             }
                         }
@@ -342,7 +355,8 @@ void Game::Input()
                                 }
                                 cout << "." << endl;
                             }
-                            cur_cannon->SetCd(cur_cannon->GetMaxCd() + 1);
+                            cur_cannon->SetCd(cur_cannon->GetMaxCd());
+                            cur_cannon->SetJustUsed(true);
                         }
                         else
                         {
@@ -372,7 +386,8 @@ void Game::Input()
                                 }
                                 cout << "." << endl;
                             }
-                            cur_skill->SetCd(cur_skill->GetMaxCd() + 1);
+                            cur_skill->SetCd(cur_skill->GetMaxCd());
+                            cur_skill->SetJustUsed(true);
                         }
                     }
                 }
@@ -384,10 +399,17 @@ void Game::Input()
 
 void Game::Update() 
 {
+    // stab processing stage 1
+    for (Ship* ship : other_player_->GetShips())
+        if (ship->IsAlive())
+            alive_info_.push_back(true);
+        else 
+            alive_info_.push_back(false);
+
     ProcessCannon();
     ProcessAttackSkill();
 
-    // update cd, stun, immune, suck, heal, burn
+    // update cd, stun, immune, suck, heal, burn, dodge, hide
     for (Ship* ship : cur_player_->GetShips())
         if (ship->IsAlive())
         {
@@ -416,16 +438,62 @@ void Game::Update()
                 ship->IncreaseHealth(ship->GetHealHealth());
                 vector<Cannon*> cannons = ship->GetCannons();
                 for (Cannon* cannon : cannons)
-                    if (!cannon->IsReady())
+                    if (cannon->IsJustUsed())
+                        cannon->SetJustUsed(false);
+                    else if (!cannon->IsReady())
                         cannon->SetCd(cannon->GetCd() - 1);
                 vector<Skill*> skills = ship->GetSkills();
                 for (Skill* skill : skills)
-                    if (!skill->IsReady())
+                    if (skill->IsJustUsed())
+                        skill->SetJustUsed(false);
+                    else if (!skill->IsReady() && skill->IsActive())
                         skill->SetCd(skill->GetCd() - 1);
             }
         }
-    
+
+    // update lock
+    for (Ship* ship : other_player_->GetShips())
+        if (ship->IsAlive())
+        {
+            if (ship->IsLock())
+                ship->IncreaseLock(-1);
+        }
+
     ProcessSkill();
+
+    // stab processing stage 2
+    for (StabInfo stab_info : stab_info_)
+    {
+        int id = stab_info.target->GetId();
+        bool is_alive_before = alive_info_[id - 1];
+        bool is_dead_after = !stab_info.target->IsAlive();
+        bool alive = false;
+        cout << stab_info.source->GetId() << " \033[1;36m" << stab_info.source->GetName() << "\033[0m";
+        if (is_alive_before && is_dead_after)
+        {
+            cout << " successfully assassinated ";
+            cout << stab_info.target->GetId() << " \033[1;36m" << stab_info.target->GetName() << "\033[0m";
+            cout << ", ";
+            int random = rand() % 100;
+            if (random < 80)
+            {
+                alive = true;
+                cout << "and survived" << endl;
+            }
+            else 
+                cout << "but died" << endl;
+        }
+        else 
+        {
+            cout << " failed to assassinated ";
+            cout << stab_info.target->GetId() << " \033[1;36m" << stab_info.target->GetName() << "\033[0m";
+            cout << endl;
+        }
+        if (!alive)
+            stab_info.source->SetDead();
+    }
+    alive_info_.clear();
+    stab_info_.clear();
 
     // update ingame info
     cur_player_->SetState(out);
@@ -519,4 +587,9 @@ void Game::Start()
 bool Game::CheckInGame() const
 {
     return player_1_->GetState() == ingame && player_2_->GetState() == ingame;
+}
+
+void Game::AddStabInfo(StabInfo stab_info)
+{
+    stab_info_.push_back(stab_info);
 }

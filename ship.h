@@ -23,7 +23,8 @@ enum ShipType
     concatenation_boss,
     igniting_ship,
     random_ship,
-    specter_ship
+    specter_ship,
+    assassin_ship
 };
 
 class Ship : public Object
@@ -42,6 +43,7 @@ class Ship : public Object
         int GetAttackTimes() const;
         int GetDodgeProb() const;
         int GetHealHealth() const;
+        void RoundHealth();
 
         vector<Cannon*> GetCannons() const;
         vector<Skill*> GetSkills() const;
@@ -86,6 +88,10 @@ class Ship : public Object
         int GetHide() const;
         bool IsHide() const;
         void IncreaseHide(int n);
+
+        int GetLock() const;
+        bool IsLock() const;
+        void IncreaseLock(int n);
     
     protected:
         int id_;
@@ -113,6 +119,7 @@ class Ship : public Object
         int dodge_;
         int burn_;
         int hide_;
+        int lock_;
 
         virtual void Ban();
         virtual void Update() {}

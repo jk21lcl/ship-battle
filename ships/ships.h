@@ -17,3 +17,4 @@
 #include "igniting_ship.h"
 #include "random_ship.h"
 #include "specter_ship.h"
+#include "assassin_ship.h"

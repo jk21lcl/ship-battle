@@ -43,6 +43,16 @@ bool Cannon::IsAvailable() const
     return available_;
 }
 
+bool Cannon::IsJustUsed() const
+{
+    return just_used_;
+}
+
+void Cannon::SetJustUsed(bool just_used)
+{
+    just_used_ = just_used;
+}
+
 void Cannon::Ban()
 {
     available_ = false;
@@ -91,7 +101,9 @@ void Cannon::OutputCrit(Ship* source, Ship* target) const
 
 bool Cannon::ProcessDodge(Ship* source, Ship* target)
 {
-    if (target->IsHide())
+    if (target->IsLock())
+        dodge_ = 0;
+    else if (target->IsHide())
         dodge_ = 100;
     else 
     {

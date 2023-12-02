@@ -25,7 +25,10 @@ enum SkillType
     specter,
     hide,
     specter_explode,
-    super_specter_explode
+    super_specter_explode,
+    sacrifice,
+    lock,
+    stab
 };
 
 enum SkillProperty
@@ -45,6 +48,11 @@ class Skill : public Object
         int GetCd() const;
         int GetMaxCd() const;
         bool IsReady() const;
+        bool IsJustUsed() const;
+        void SetJustUsed(bool just_used);
+        bool IsActive() const;
+        void SetActive(bool active);
+
         SkillType GetSkillType() const;
         SkillProperty GetSkillProperty() const;
         TargetType GetTargetType() const;
@@ -62,8 +70,10 @@ class Skill : public Object
         int cd_;
         int max_cd_;
         bool available_;
+        bool just_used_; // whether it is used in this round
         double crit_;
         int dodge_;
+        bool active_;
 
         SkillProperty skill_property_; // default assist_skill
         TargetType target_type_; // default ally

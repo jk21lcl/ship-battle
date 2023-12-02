@@ -22,6 +22,7 @@ Ship::Ship(Game* game, int id) : Object(game)
     dodge_ = 0;
     burn_ = 0;
     hide_ = 0;
+    lock_ = 0;
     id_ = id;
 }
 
@@ -40,6 +41,7 @@ double Ship::GetHealth() const
 void Ship::IncreaseHealth(double n)
 {
     health_ = min(health_ + n, max_health_);
+    RoundHealth();
     Update();
 }
 
@@ -47,7 +49,7 @@ void Ship::DecreaseHealth(double n, Ship* source)
 {
     if (source && source->IsSuck())
         source->IncreaseHealth(n);
-    if (shield_health_)
+    if (shield_health_ && !IsLock())
     {
         shield_health_ -= n;
         if (source)
@@ -59,6 +61,7 @@ void Ship::DecreaseHealth(double n, Ship* source)
         if (n > 0)
             health_ -= n;
     } 
+    RoundHealth();
     if (shield_health_ <= 0)
         shield_health_ = 0;
     if (health_ <= 0)
@@ -68,6 +71,12 @@ void Ship::DecreaseHealth(double n, Ship* source)
     }
     Update();
     Ban();
+}
+
+void Ship::RoundHealth()
+{
+    int round_health = round(health_ * 10000);
+    health_ = (double)round_health / 10000;
 }
 
 void Ship::Ban()
@@ -197,6 +206,7 @@ void Ship::IncreaseImmune(int n)
     immune_ += n;
     stunned_ = 0;
     burn_ = 0;
+    lock_ = 0;
 }
 
 int Ship::GetSuck() const
@@ -288,4 +298,20 @@ bool Ship::IsHide() const
 void Ship::IncreaseHide(int n)
 {
     hide_ += n;
+}
+
+int Ship::GetLock() const
+{
+    return lock_;
+}
+
+bool Ship::IsLock() const
+{
+    return lock_;
+}
+
+void Ship::IncreaseLock(int n)
+{
+    if (!IsImmune())
+        lock_ += n;
 }

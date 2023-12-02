@@ -36,6 +36,8 @@ class Cannon : public Object
         int GetCd() const;
         int GetMaxCd() const;
         bool IsReady() const;
+        bool IsJustUsed() const;
+        void SetJustUsed(bool just_used);
         int GetBanHealth() const;
         CannonType GetCannonType() const;
         TargetType GetTargetType() const;
@@ -53,6 +55,7 @@ class Cannon : public Object
         int cd_;
         int max_cd_;
         bool available_;
+        bool just_used_; // whether it is used in this round
         int ban_health_; // when the health of ship is less than this health, then this cannon is banned
         double crit_;
         int dodge_;

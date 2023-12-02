@@ -20,6 +20,7 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             ships/big_explosive_ship.cpp ships/torpedo_ship.cpp 
             ships/concatenation_boss.cpp ships/igniting_ship.cpp
             ships/random_ship.cpp ships/specter_ship.cpp
+            ships/assassin_ship.cpp
 
             cannons/cannon_1.cpp cannons/cannon_2.cpp cannons/cannon_3.cpp
             cannons/cannon_4.cpp cannons/cannon_5.cpp
@@ -36,7 +37,8 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             skills/small_explode.cpp skills/medium_explode.cpp skills/big_explode.cpp
             skills/ignite.cpp skills/blow.cpp skills/random_buff.cpp
             skills/specter.cpp skills/hide.cpp skills/specter_explode.cpp 
-            skills/super_specter_explode.cpp
+            skills/super_specter_explode.cpp skills/sacrifice.cpp
+            skills/lock.cpp skills/stab.cpp
             
             events/cannon_event.cpp events/skill_event.cpp)
 

@@ -20,3 +20,6 @@
 #include "hide.h"
 #include "specter_explode.h"
 #include "super_specter_explode.h"
+#include "sacrifice.h"
+#include "lock.h"
+#include "stab.h"

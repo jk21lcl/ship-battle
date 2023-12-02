@@ -20,6 +20,12 @@ enum GameResult
     tie
 };
 
+struct StabInfo
+{
+    Ship* source;
+    Ship* target;
+};
+
 class Game
 {
     public:
@@ -45,6 +51,7 @@ class Game
         Player* GetCurPlayer() const;
         Player* GetOtherPlayer() const;
         GameResult GetResult() const;
+        void AddStabInfo(StabInfo stab_info);
     
     private:
         Player* player_1_;
@@ -56,6 +63,9 @@ class Game
         queue<Event*> cannon_event_;
         queue<Event*> skill_event_;
         queue<Event*> attack_skill_event_;
+
+        vector<bool> alive_info_; // track the aliveness of each ship of other_player
+        vector<StabInfo> stab_info_;
 
         GameResult result_;
         bool skip_; // whether skipping the details of computer-computer

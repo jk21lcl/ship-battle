@@ -6,11 +6,13 @@ Skill::Skill(Game* game) : Object(game)
     object_type_ = skill;
     cd_ = 0;
     available_ = true;
+    just_used_ = false;
     skill_property_ = assist_skill;
     target_type_ = ally;
     attack_times_ = 1;
     crit_ = 1;
     dodge_ = 0;
+    active_ = true;
 }
 
 void Skill::SetCd(int cd)
@@ -61,6 +63,26 @@ TargetType Skill::GetTargetType() const
 int Skill::GetAttackTimes() const
 {
     return attack_times_;
+}
+
+bool Skill::IsActive() const
+{
+    return active_;
+}
+
+void Skill::SetActive(bool active)
+{
+    active_ = active;
+}
+
+bool Skill::IsJustUsed() const
+{
+    return just_used_;
+}
+
+void Skill::SetJustUsed(bool just_used)
+{
+    just_used_ = just_used;
 }
 
 void Skill::ProcessCrit(Ship* source, Ship* target)
