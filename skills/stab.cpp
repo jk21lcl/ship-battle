@@ -14,6 +14,8 @@ void Stab::Use(Ship* source, Ship* target)
 {
     ProcessCrit(source, target);
     OutputCrit(source, target);
+    StabInfo stab_info = {source, target};
+    game_->AddStabInfo(stab_info);
     if (!ProcessDodge(source, target))
     {
         int damage = rand() % 11 + 5;
@@ -23,7 +25,5 @@ void Stab::Use(Ship* source, Ship* target)
         cout << target->GetId() << " \033[1;36m" << target->GetName() << "\033[0m";
         cout << endl;
         target->DecreaseHealth(damage * crit_, source);
-        StabInfo stab_info = {source, target};
-        game_->AddStabInfo(stab_info);
     }
 }
