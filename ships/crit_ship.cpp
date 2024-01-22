@@ -1,7 +1,7 @@
 #include "crit_ship.h"
 #include "game.h"
 
-CritShip::CritShip(Game* game, int id) : Ship(game, id)
+CritShip::CritShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 15;
     max_health_ = 15;

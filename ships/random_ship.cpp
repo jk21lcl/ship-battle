@@ -1,7 +1,7 @@
 #include "random_ship.h"
 #include "game.h"
 
-RandomShip::RandomShip(Game* game, int id) : Ship(game, id)
+RandomShip::RandomShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = rand() % 10 + 11;
     max_health_ = health_;

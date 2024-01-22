@@ -5,6 +5,6 @@
 class WizardShip : public Ship
 {
     public:
-        WizardShip(Game* game, int id);
+        WizardShip(Game* game, int id, Player* player);
         ~WizardShip() {}
 };

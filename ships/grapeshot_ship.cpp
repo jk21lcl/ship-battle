@@ -1,7 +1,7 @@
 #include "grapeshot_ship.h"
 #include "game.h"
 
-GrapeshotShip::GrapeshotShip(Game* game, int id) : Ship(game, id)
+GrapeshotShip::GrapeshotShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 18;
     max_health_ = 18;

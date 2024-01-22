@@ -44,7 +44,7 @@ class Player
         template<typename ship_type>
         void AddShip(Game* game)
         {
-            ships_.push_back(new ship_type(game, num_ + 1));
+            ships_.push_back(new ship_type(game, num_ + 1, this));
             num_++;
         }
     

@@ -1,7 +1,7 @@
 #include "specter_ship.h"
 #include "game.h"
 
-SpecterShip::SpecterShip(Game* game, int id) : Ship(game, id)
+SpecterShip::SpecterShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 15;
     max_health_ = 15;

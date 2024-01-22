@@ -5,7 +5,7 @@
 class SpecterShip : public Ship
 {
     public:
-        SpecterShip(Game* game, int id);
+        SpecterShip(Game* game, int id, Player* player);
         ~SpecterShip() {}
 
         int GetSpecter() const;

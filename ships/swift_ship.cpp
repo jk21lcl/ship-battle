@@ -1,7 +1,7 @@
 #include "swift_ship.h"
 #include "game.h"
 
-SwiftShip::SwiftShip(Game* game, int id) : Ship(game, id)
+SwiftShip::SwiftShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 15;
     max_health_ = 15;

@@ -70,6 +70,13 @@ void Game::ShowStatus() const
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
                 cout << "  Health: " << "\033[1;32m" << ship->GetHealth() << "\033[0m";
                 cout << " / " << ship->GetMaxHealth() << "  ";
+                if (ship->GetShipType() == development_ship)
+                {
+                    DevelopmentShip* development_ship = dynamic_cast<DevelopmentShip*>(ship);
+                    cout << "Crit Prob: " << development_ship->GetCritProb() << "%  ";
+                    cout << "Dodge Prob: " << development_ship->GetDodgeProb() << "%  ";
+                    cout << "Damage Reduce: " << development_ship->GetRatioDamageReduce() << "%  ";
+                }
                 ShowCannonStatus(ship, false);
                 ShowSkillStatus(ship, false);
                 cout << endl;

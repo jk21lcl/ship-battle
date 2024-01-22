@@ -5,6 +5,6 @@
 class MediumExplosiveShip : public Ship
 {
     public:
-        MediumExplosiveShip(Game* game, int id);
+        MediumExplosiveShip(Game* game, int id, Player* player);
         ~MediumExplosiveShip() {}
 };

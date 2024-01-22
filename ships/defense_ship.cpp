@@ -1,7 +1,7 @@
 #include "defense_ship.h"
 #include "game.h"
 
-DefenseShip::DefenseShip(Game* game, int id) : Ship(game, id)
+DefenseShip::DefenseShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 15;
     max_health_ = 15;

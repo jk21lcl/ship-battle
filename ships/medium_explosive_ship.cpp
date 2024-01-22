@@ -1,7 +1,7 @@
 #include "medium_explosive_ship.h"
 #include "game.h"
 
-MediumExplosiveShip::MediumExplosiveShip(Game* game, int id) : Ship(game, id)
+MediumExplosiveShip::MediumExplosiveShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 10;
     max_health_ = 10;

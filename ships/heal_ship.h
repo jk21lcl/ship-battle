@@ -5,6 +5,6 @@
 class HealShip : public Ship
 {
     public:
-        HealShip(Game* game, int id);
+        HealShip(Game* game, int id, Player* player);
         ~HealShip() {}
 };

@@ -20,7 +20,7 @@ add_library(ship_battle game.cpp player.cpp object.cpp ship.cpp cannon.cpp skill
             ships/big_explosive_ship.cpp ships/torpedo_ship.cpp 
             ships/concatenation_boss.cpp ships/igniting_ship.cpp
             ships/random_ship.cpp ships/specter_ship.cpp
-            ships/assassin_ship.cpp
+            ships/assassin_ship.cpp ships/development_ship.cpp
 
             cannons/cannon_1.cpp cannons/cannon_2.cpp cannons/cannon_3.cpp
             cannons/cannon_4.cpp cannons/cannon_5.cpp

@@ -5,6 +5,6 @@
 class CritShip : public Ship
 {
     public:
-        CritShip(Game* game, int id);
+        CritShip(Game* game, int id, Player* player);
         ~CritShip() {}
 };

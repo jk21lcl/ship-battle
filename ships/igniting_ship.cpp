@@ -1,7 +1,7 @@
 #include "igniting_ship.h"
 #include "game.h"
 
-IgnitingShip::IgnitingShip(Game* game, int id) : Ship(game, id)
+IgnitingShip::IgnitingShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 20;
     max_health_ = 20;

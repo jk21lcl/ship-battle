@@ -5,6 +5,6 @@
 class IgnitingShip : public Ship
 {
     public:
-        IgnitingShip(Game* game, int id);
+        IgnitingShip(Game* game, int id, Player* player);
         ~IgnitingShip() {}
 };

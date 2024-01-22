@@ -1,7 +1,7 @@
 #include "ship.h"
 #include "game.h"
 
-Ship::Ship(Game* game, int id) : Object(game)
+Ship::Ship(Game* game, int id, Player* player) : Object(game)
 {
     object_type_ = ship;
     alive_ = true;
@@ -24,6 +24,7 @@ Ship::Ship(Game* game, int id) : Object(game)
     hide_ = 0;
     lock_ = 0;
     id_ = id;
+    player_ = player;
 }
 
 Ship::~Ship()
@@ -71,6 +72,11 @@ void Ship::DecreaseHealth(double n, Ship* source)
     }
     Update();
     Ban();
+    if (GetShipType() == development_ship)
+    {
+        DevelopmentShip* development_ship = dynamic_cast<DevelopmentShip*>(this);
+        development_ship->RandomUpdate();
+    }
 }
 
 void Ship::RoundHealth()
@@ -114,6 +120,11 @@ int Ship::GetDodgeProb() const
 int Ship::GetHealHealth() const 
 {
     return heal_health_;
+}
+
+int Ship::GetRatioDamageReduce() const
+{
+    return ratio_damage_reduce_;
 }
 
 vector<Cannon*> Ship::GetCannons() const

@@ -1,7 +1,7 @@
 #include "small_explosive_ship.h"
 #include "game.h"
 
-SmallExplosiveShip::SmallExplosiveShip(Game* game, int id) : Ship(game, id)
+SmallExplosiveShip::SmallExplosiveShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 5;
     max_health_ = 5;

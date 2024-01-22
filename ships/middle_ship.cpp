@@ -1,7 +1,7 @@
 #include "middle_ship.h"
 #include "game.h"
 
-MiddleShip::MiddleShip(Game* game, int id) : Ship(game, id)
+MiddleShip::MiddleShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 10;
     max_health_ = 10;

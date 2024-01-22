@@ -1,7 +1,7 @@
 #include "concatenation_boss.h"
 #include "game.h"
 
-ConcatenationBoss::ConcatenationBoss(Game* game, int id) : Ship(game, id)
+ConcatenationBoss::ConcatenationBoss(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 60;
     max_health_ = 60;

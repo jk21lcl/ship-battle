@@ -5,6 +5,6 @@
 class SwiftShip : public Ship
 {
     public:
-        SwiftShip(Game* game, int id);
+        SwiftShip(Game* game, int id, Player* player);
         ~SwiftShip() {}
 };

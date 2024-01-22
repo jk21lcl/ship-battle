@@ -5,6 +5,6 @@
 class RandomShip : public Ship
 {
     public:
-        RandomShip(Game* game, int id);
+        RandomShip(Game* game, int id, Player* player);
         ~RandomShip() {}
 };

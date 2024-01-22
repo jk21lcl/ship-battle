@@ -1,7 +1,7 @@
 #include "assassin_ship.h"
 #include "game.h"
 
-AssassinShip::AssassinShip(Game* game, int id) : Ship(game, id)
+AssassinShip::AssassinShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 12;
     max_health_ = 12;

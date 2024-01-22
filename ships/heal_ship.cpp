@@ -1,7 +1,7 @@
 #include "heal_ship.h"
 #include "game.h"
 
-HealShip::HealShip(Game* game, int id) : Ship(game, id)
+HealShip::HealShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
     health_ = 30;
     max_health_ = 30;

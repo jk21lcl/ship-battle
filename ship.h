@@ -4,6 +4,7 @@
 
 class Cannon;
 class Skill;
+class Player;
 
 enum ShipType
 {
@@ -24,13 +25,14 @@ enum ShipType
     igniting_ship,
     random_ship,
     specter_ship,
-    assassin_ship
+    assassin_ship,
+    development_ship
 };
 
 class Ship : public Object
 {
     public:
-        Ship(Game* game, int id);
+        Ship(Game* game, int id, Player* player);
         virtual ~Ship();
 
         double GetHealth() const;
@@ -43,6 +45,7 @@ class Ship : public Object
         int GetAttackTimes() const;
         int GetDodgeProb() const;
         int GetHealHealth() const;
+        int GetRatioDamageReduce() const;
         void RoundHealth();
 
         vector<Cannon*> GetCannons() const;
@@ -95,6 +98,7 @@ class Ship : public Object
     
     protected:
         int id_;
+        Player* player_;
 
         double max_health_;
         double health_;

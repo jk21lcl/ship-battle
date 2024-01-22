@@ -80,6 +80,13 @@ void Cannon::ProcessCrit(Ship* source, Ship* target)
         crit_ = 2;
         source->IncreaseFury(-1);
     }
+    else if (source->GetShipType() == development_ship)
+    {
+        DevelopmentShip* development_ship = dynamic_cast<DevelopmentShip*>(source);
+        int random = rand() % 100;
+        if (random < development_ship->GetCritProb())
+            crit_ = 2;
+    }
     else
         crit_ = 1;
 }

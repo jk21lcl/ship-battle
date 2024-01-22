@@ -5,6 +5,6 @@
 class TorpedoShip : public Ship
 {
     public:
-        TorpedoShip(Game* game, int id);
+        TorpedoShip(Game* game, int id, Player* player);
         ~TorpedoShip() {}
 };

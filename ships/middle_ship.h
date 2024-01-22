@@ -5,6 +5,6 @@
 class MiddleShip : public Ship    // health 10, attack 3
 {
     public:
-        MiddleShip(Game* game, int id);
+        MiddleShip(Game* game, int id, Player* player);
         ~MiddleShip() {}
 };
