@@ -72,7 +72,7 @@ void Ship::DecreaseHealth(double n, Ship* source)
     }
     Update();
     Ban();
-    if (GetShipType() == development_ship)
+    if (GetShipType() == development_ship && n > 0)
     {
         DevelopmentShip* development_ship = dynamic_cast<DevelopmentShip*>(this);
         development_ship->RandomUpdate();
