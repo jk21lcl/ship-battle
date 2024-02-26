@@ -110,7 +110,9 @@ void Skill::OutputCrit(Ship* source, Ship* target) const
 
 bool Skill::ProcessDodge(Ship* source, Ship* target)
 {
-    if (target->IsHide())
+    if (target->IsLock())
+        dodge_ = 0;
+    else if (target->IsHide())
         dodge_ = 100;
     else 
     {

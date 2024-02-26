@@ -3,8 +3,8 @@
 
 DevelopmentShip::DevelopmentShip(Game* game, int id, Player* player) : Ship(game, id, player)
 {
-    health_ = 10;
-    max_health_ = 10;
+    health_ = 12;
+    max_health_ = 12;
     crit_prob_ = 0;
     ship_type_ = development_ship;
     name_ = "Development Ship";
