@@ -19,3 +19,4 @@
 #include "specter_ship.h"
 #include "assassin_ship.h"
 #include "development_ship.h"
+#include "bomb_ship.h"

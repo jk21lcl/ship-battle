@@ -26,7 +26,23 @@ enum ShipType
     random_ship,
     specter_ship,
     assassin_ship,
-    development_ship
+    development_ship,
+    bomb_ship
+};
+
+enum Accessory
+{
+    time_bomb_acc,
+    untime_bomb_acc,
+    small_bomb_acc,
+    big_bomb_acc
+};
+
+struct AccessoryInfo
+{
+    Accessory type;
+    int time;
+    string name;
 };
 
 class Ship : public Object
@@ -95,6 +111,11 @@ class Ship : public Object
         int GetLock() const;
         bool IsLock() const;
         void IncreaseLock(int n);
+
+        const vector<AccessoryInfo>& GetAccessories() const;
+        void AddAccessory(Accessory type);
+        void UpdateAccessory();
+        void DismantleBomb();
     
     protected:
         int id_;
@@ -124,6 +145,8 @@ class Ship : public Object
         int burn_;
         int hide_;
         int lock_;
+
+        vector<AccessoryInfo> accessories_;
 
         virtual void Ban();
         virtual void Update() {}

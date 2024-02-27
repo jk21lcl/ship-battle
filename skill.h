@@ -28,7 +28,11 @@ enum SkillType
     super_specter_explode,
     sacrifice,
     lock,
-    stab
+    stab,
+    time_bomb,
+    untime_bomb,
+    small_bomb,
+    big_bomb
 };
 
 enum SkillProperty

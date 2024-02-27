@@ -7,7 +7,8 @@ class Skill;
 enum EventType
 {
     cannon_event,
-    skill_event
+    skill_event,
+    dismantle_bomb_event
 };
 
 class Event

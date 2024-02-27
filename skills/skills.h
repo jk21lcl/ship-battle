@@ -23,3 +23,7 @@
 #include "sacrifice.h"
 #include "lock.h"
 #include "stab.h"
+#include "time_bomb.h"
+#include "untime_bomb.h"
+#include "small_bomb.h"
+#include "big_bomb.h"

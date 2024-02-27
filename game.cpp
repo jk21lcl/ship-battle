@@ -68,6 +68,17 @@ void Game::ShowStatus() const
                 }
                 if (ship->IsStunned())
                     cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
+                
+                // show accessories
+                vector<AccessoryInfo> accs = ship->GetAccessories();
+                for (AccessoryInfo& acc : accs)
+                {
+                    cout << "\033[1;31m" << "(" << acc.name;
+                    if (acc.time)
+                        cout << ": " << acc.time;
+                    cout << ")" << "\033[0m";
+                }
+
                 cout << "  Health: " << "\033[1;32m" << ship->GetHealth() << "\033[0m";
                 cout << " / " << ship->GetMaxHealth() << "  ";
                 if (ship->GetShipType() == development_ship)
@@ -267,6 +278,8 @@ void Game::Input()
                                 cur_skill->SetJustUsed(true);
                             }
                         }
+                        else
+                            dismantle_bomb_event_.push(new DismantleBombEvent(ship));
                     }
                 }
             }
@@ -413,6 +426,7 @@ void Game::Update()
         else 
             alive_info_.push_back(false);
 
+    ProcessDismantleBomb();
     ProcessCannon();
     ProcessAttackSkill();
 
@@ -438,6 +452,10 @@ void Game::Update()
             }
             if (ship->IsHide())
                 ship->IncreaseHide(-1);
+
+            // update accessories
+            ship->UpdateAccessory();
+
             if (ship->IsStunned())
                 ship->IncreaseStun(-1);
             else
@@ -455,6 +473,11 @@ void Game::Update()
                         skill->SetJustUsed(false);
                     else if (!skill->IsReady() && skill->IsActive())
                         skill->SetCd(skill->GetCd() - 1);
+                if (ship->GetShipType() == bomb_ship)
+                {
+                    BombShip* bomb_ship = dynamic_cast<BombShip*>(ship);
+                    bomb_ship->Bomb();
+                }
             }
         }
 
@@ -552,6 +575,17 @@ void Game::ProcessAttackSkill()
         event->Process();
         delete event;
         attack_skill_event_.pop();
+    }
+}
+
+void Game::ProcessDismantleBomb()
+{
+    while (!dismantle_bomb_event_.empty())
+    {
+        Event* event = dismantle_bomb_event_.front();
+        event->Process();
+        delete event;
+        dismantle_bomb_event_.pop();
     }
 }
 

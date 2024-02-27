@@ -326,3 +326,100 @@ void Ship::IncreaseLock(int n)
     if (!IsImmune())
         lock_ += n;
 }
+
+const vector<AccessoryInfo>& Ship::GetAccessories() const
+{
+    return accessories_;
+}
+
+void Ship::AddAccessory(Accessory type)
+{
+    switch (type)
+    {
+        case time_bomb_acc:
+            if (!immune_ && !shield_health_)
+                accessories_.push_back(AccessoryInfo{type, 3, "time bomb"});
+            break;
+        case untime_bomb_acc:
+            if (!immune_ && !shield_health_)
+                accessories_.push_back(AccessoryInfo{type, 0, "untime bomb"});
+            break;
+        case small_bomb_acc:
+            if (!immune_ && !shield_health_)
+                accessories_.push_back(AccessoryInfo{type, 0, "small bomb"});
+            break;
+        case big_bomb_acc:
+            if (!immune_ && !shield_health_)
+                accessories_.push_back(AccessoryInfo{type, 0, "big bomb"});
+            break;
+        default:
+            break;
+    }
+}
+
+void Ship::UpdateAccessory()
+{
+    auto it = accessories_.begin();
+    while (it != accessories_.end())
+    {
+        Accessory type = (*it).type;
+        switch (type)
+        {
+            case time_bomb_acc:
+                (*it).time--;
+                if ((*it).time == 0)
+                    SetDead();
+                it++;
+                break;
+            case untime_bomb_acc:
+            {
+                int random = rand() % 100;
+                if (random < 30)
+                {
+                    SetDead();
+                    cout << id_ << " \033[1;36m" << name_ << "\033[0m";
+                    cout << "'s " << "\033[1;31m" << "untime bomb" << "\033[0m" << " explodes." << endl;
+                }
+                it++;
+                break;
+            }
+            case small_bomb_acc:
+                DecreaseHealth(3, nullptr);
+                it++;
+                break;
+            case big_bomb_acc:
+                DecreaseHealth(0.25 * max_health_, nullptr);
+                it++;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void Ship::DismantleBomb()
+{
+    auto it = accessories_.begin();
+    while (it != accessories_.end())
+    {
+        Accessory type = (*it).type;
+        switch (type)
+        {
+            case time_bomb_acc: case untime_bomb_acc: case small_bomb_acc: case big_bomb_acc:
+            {
+                int random = rand() % 100;
+                if (random < 75)
+                {
+                    cout << id_ << " \033[1;36m" << name_ << "\033[0m";
+                    cout << "'s " << "\033[1;31m" << (*it).name << "\033[0m" << " is dismantled." << endl;
+                    it = accessories_.erase(it);
+                }
+                else 
+                    it++;
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}

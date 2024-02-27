@@ -63,6 +63,7 @@ class Game
         queue<Event*> cannon_event_;
         queue<Event*> skill_event_;
         queue<Event*> attack_skill_event_;
+        queue<Event*> dismantle_bomb_event_;
 
         vector<bool> alive_info_; // track the aliveness of each ship of other_player
         vector<StabInfo> stab_info_;
@@ -78,6 +79,7 @@ class Game
         void ProcessCannon();
         void ProcessSkill();
         void ProcessAttackSkill();
+        void ProcessDismantleBomb();
 
         bool CheckInGame() const;
 };
