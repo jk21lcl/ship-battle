@@ -12,12 +12,12 @@ SplitCannon::SplitCannon(Game* game) : Cannon(game)
 
 void SplitCannon::ProcessCrit(Ship* source, Ship* target)
 {
-    if (source->IsFury())
+    if (source->FindEffect(fury_eff))
     {
         crit_ = 2;
         if (crit_count_ == 2)
         {
-            source->IncreaseFury(-1);
+            source->DecreaseEffect(fury_eff, 1);
             crit_count_ = 0;
         }
         else

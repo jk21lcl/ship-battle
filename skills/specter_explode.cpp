@@ -12,10 +12,9 @@ SpecterExplode::SpecterExplode(Game* game) : Skill(game)
 
 void SpecterExplode::Use(Ship* source, Ship* target)
 {
-    SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(source);
     ProcessCrit(source, target);
     OutputCrit(source, target);
     if (!ProcessDodge(source, target))
-        target->DecreaseHealth((specter_ship->GetSpecter() + 2) * crit_, source);
-    specter_ship->IncreaseSpecter(-specter_ship->GetSpecter());
+        target->DecreaseHealth((source->FindEffect(specter_eff) + 2) * crit_, source);
+    source->DeleteEffect(specter_eff);
 }

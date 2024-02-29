@@ -14,8 +14,7 @@ SmallExplode::SmallExplode(Game* game) : Skill(game)
 void SmallExplode::Use(Ship* source, Ship* target)
 {
     double damage = 5;
-    if (source->HasShield())
-        damage += source->GetShieldHealth();
+    damage += source->FindEffect(shield_eff);
     target->DecreaseHealth(damage, source);
     source->SetDead();
 }

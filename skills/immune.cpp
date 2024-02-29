@@ -11,5 +11,5 @@ Immune::Immune(Game* game) : Skill(game)
 
 void Immune::Use(Ship* source, Ship* target)
 {
-    target->IncreaseImmune(2);
+    target->IncreaseEffect(immune_eff, 2);
 }

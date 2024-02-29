@@ -13,5 +13,5 @@ Ignite::Ignite(Game* game) : Skill(game)
 void Ignite::Use(Ship* source, Ship* target)
 {
     if (!ProcessDodge(source, target))
-        target->IncreaseBurn(1);
+        target->IncreaseEffect(burn_eff, 1);
 }

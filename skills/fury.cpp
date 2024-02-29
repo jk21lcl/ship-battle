@@ -10,5 +10,5 @@ Fury::Fury(Game* game) : Skill(game)
 
 void Fury::Use(Ship* source, Ship* target)
 {
-    target->IncreaseFury(1);
+    target->IncreaseEffect(fury_eff, 1);
 }

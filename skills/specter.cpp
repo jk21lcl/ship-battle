@@ -11,6 +11,5 @@ Specter::Specter(Game* game) : Skill(game)
 
 void Specter::Use(Ship* source, Ship* target)
 {
-    SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(source);
-    specter_ship->IncreaseSpecter(2);
+    source->IncreaseEffect(specter_eff, 2);
 }

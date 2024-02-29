@@ -16,6 +16,6 @@ void BurningCannon::Attack(Ship* source, Ship* target)
     if (!ProcessDodge(source, target))
     {
         target->DecreaseHealth(2 * crit_, source);
-        target->IncreaseBurn(2);
+        target->IncreaseEffect(burn_eff, 2);
     }
 }

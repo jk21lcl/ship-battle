@@ -10,5 +10,5 @@ Suck::Suck(Game* game) : Skill(game)
 
 void Suck::Use(Ship* source, Ship* target)
 {
-    target->IncreaseSuck(2);
+    target->IncreaseEffect(suck_eff, 2);
 }

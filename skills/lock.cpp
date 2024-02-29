@@ -11,5 +11,5 @@ Lock::Lock(Game* game) : Skill(game)
 
 void Lock::Use(Ship* source, Ship* target)
 {
-    target->IncreaseLock(1);
+    target->IncreaseEffect(lock_eff, 1);
 }

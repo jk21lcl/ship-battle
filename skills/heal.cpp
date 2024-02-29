@@ -10,5 +10,5 @@ Heal::Heal(Game* game) : Skill(game)
 
 void Heal::Use(Ship* source, Ship* target)
 {
-    target->IncreaseHeal(3);
+    target->IncreaseEffect(heal_eff, 3);
 }

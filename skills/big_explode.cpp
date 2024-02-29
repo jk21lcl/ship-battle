@@ -14,8 +14,7 @@ BigExplode::BigExplode(Game* game) : Skill(game)
 void BigExplode::Use(Ship* source, Ship* target)
 {
     double damage = 12;
-    if (source->HasShield())
-        damage += source->GetShieldHealth();
+    damage += source->FindEffect(shield_eff);
     target->DecreaseHealth(damage, source);
     int id = target->GetId();
     vector<Ship*> ships = game_->GetOtherPlayer()->GetShips();

@@ -14,6 +14,5 @@ void SpecterCannon::Attack(Ship* source, Ship* target)
     OutputCrit(source, target);
     if (!ProcessDodge(source, target))
         target->DecreaseHealth(1 * crit_, source);
-    SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(source);
-    specter_ship->IncreaseSpecter(1);
+    source->IncreaseEffect(specter_eff, 1);
 }

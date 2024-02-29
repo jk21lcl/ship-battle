@@ -5,7 +5,6 @@ WizardShip::WizardShip(Game* game, int id, Player* player) : Ship(game, id, play
 {
     health_ = 15;
     max_health_ = 15;
-    shield_health_ = 5;
     can_stunned_ = false;
     shield_rebound_ = 100;
     ship_type_ = wizard_ship;
@@ -15,4 +14,5 @@ WizardShip::WizardShip(Game* game, int id, Player* player) : Ship(game, id, play
     cannons_.push_back(new StunningCannon(game));
     cannons_.push_back(new ExplosiveCannon(game));
     skills_.push_back(new Immune(game));
+    effects_.push_back(EffectInfo{shield_eff, 5});
 }

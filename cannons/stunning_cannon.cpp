@@ -13,5 +13,5 @@ StunningCannon::StunningCannon(Game* game) : Cannon(game)
 void StunningCannon::Attack(Ship* source, Ship* target)
 {
     if (!ProcessDodge(source, target))
-        target->IncreaseStun(1);
+        target->IncreaseEffect(stunned_eff, 1);
 }

@@ -18,7 +18,7 @@ void Torpedo::Attack(Ship* source, Ship* target)
         if (!ProcessDodge(source, target))
         {
             target->DecreaseHealth(8 * crit_, source);
-            target->IncreaseBurn(3);
+            target->IncreaseEffect(burn_eff, 3);
         }
     }
     else

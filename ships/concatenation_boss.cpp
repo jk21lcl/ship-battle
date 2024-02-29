@@ -6,7 +6,6 @@ ConcatenationBoss::ConcatenationBoss(Game* game, int id, Player* player) : Ship(
     health_ = 60;
     max_health_ = 60;
     attack_times_ = 4;
-    shield_health_ = 20;
     can_stunned_ = false;
     dodge_prob_ = 25;
     heal_health_ = 2;
@@ -30,6 +29,7 @@ ConcatenationBoss::ConcatenationBoss(Game* game, int id, Player* player) : Ship(
     skills_.push_back(new Fury(game));
     skills_.push_back(new Dodge(game));
     skills_.push_back(new Grapeshot(game));
+    effects_.push_back(EffectInfo{shield_eff, 20});
     Update();
 }
 

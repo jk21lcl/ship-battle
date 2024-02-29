@@ -12,13 +12,12 @@ SuperSpecterExplode::SuperSpecterExplode(Game* game) : Skill(game)
 
 void SuperSpecterExplode::Use(Ship* source, Ship* target)
 {
-    SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(source);
     ProcessCrit(source, target);
     OutputCrit(source, target);
     if (!ProcessDodge(source, target))
     {
-        double damage = specter_ship->GetSpecter() * 3 + 5;
-        double splash_damage = specter_ship->GetSpecter() * 0.1 * damage;
+        double damage = source->FindEffect(specter_eff) * 3 + 5;
+        double splash_damage = source->FindEffect(specter_eff) * 0.1 * damage;
         target->DecreaseHealth(damage * crit_, source);
         int id = target->GetId();
         vector<Ship*> ships = game_->GetOtherPlayer()->GetShips();
@@ -34,6 +33,6 @@ void SuperSpecterExplode::Use(Ship* source, Ship* target)
             OutputCrit(source, ships[id]);
         }
     }
-    specter_ship->IncreaseSpecter(-specter_ship->GetSpecter());
+    source->DeleteEffect(specter_eff);
     Ban();
 }

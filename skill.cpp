@@ -87,10 +87,10 @@ void Skill::SetJustUsed(bool just_used)
 
 void Skill::ProcessCrit(Ship* source, Ship* target)
 {
-    if (source->IsFury())
+    if (source->FindEffect(fury_eff))
     {
         crit_ = 2;
-        source->IncreaseFury(-1);
+        source->DecreaseEffect(fury_eff, 1);
     }
     else
         crit_ = 1;
@@ -110,14 +110,14 @@ void Skill::OutputCrit(Ship* source, Ship* target) const
 
 bool Skill::ProcessDodge(Ship* source, Ship* target)
 {
-    if (target->IsLock())
+    if (target->FindEffect(lock_eff))
         dodge_ = 0;
-    else if (target->IsHide())
+    else if (target->FindEffect(hide_eff))
         dodge_ = 100;
     else 
     {
         dodge_ = target->GetDodgeProb();
-        if (target->IsDodge())
+        if (target->FindEffect(dodge_eff))
             dodge_ += 25;
     }
     int random = rand() % 100;

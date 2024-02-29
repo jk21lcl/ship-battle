@@ -13,16 +13,6 @@ Ship::Ship(Game* game, int id, Player* player) : Object(game)
     ratio_damage_reduce_ = 0;
     shield_rebound_ = 0;
 
-    stunned_ = 0;
-    shield_health_ = 0;
-    immune_ = 0;
-    suck_ = 0;
-    heal_ = 0;
-    fury_ = 0;
-    dodge_ = 0;
-    burn_ = 0;
-    hide_ = 0;
-    lock_ = 0;
     id_ = id;
     player_ = player;
 }
@@ -48,11 +38,11 @@ void Ship::IncreaseHealth(double n)
 
 void Ship::DecreaseHealth(double n, Ship* source)
 {
-    if (source && source->IsSuck())
+    if (source && source->FindEffect(suck_eff))
         source->IncreaseHealth(n);
-    if (shield_health_ && !IsLock())
+    if (FindEffect(shield_eff) && !FindEffect(lock_eff))
     {
-        shield_health_ -= n;
+        DecreaseEffect(shield_eff, n);
         if (source)
             source->DecreaseHealth(n * shield_rebound_ / 100, nullptr);
     }
@@ -63,8 +53,6 @@ void Ship::DecreaseHealth(double n, Ship* source)
             health_ -= n;
     } 
     RoundHealth();
-    if (shield_health_ <= 0)
-        shield_health_ = 0;
     if (health_ <= 0)
     {
         health_ = 0;
@@ -162,169 +150,153 @@ void Ship::SetDead()
     alive_ = false;
 }
 
-int Ship::GetStunned() const
+const vector<EffectInfo>& Ship::GetEffects() const
 {
-    return stunned_;
+    return effects_;
 }
 
-bool Ship::IsStunned() const
+int Ship::FindEffect(Effect type) const
 {
-    return stunned_;
-}
-
-bool Ship::IncreaseStun(int n)
-{
-    if (n < 0)
+    auto it = effects_.begin();
+    while (it != effects_.end())
     {
-        stunned_ += n;
-        return true;
+        if ((*it).type == type)
+            return (*it).time;
+        it++;
     }
-    if (!shield_health_ && !immune_ && can_stunned_)
+    return 0;
+}
+
+bool Ship::IncreaseEffect(Effect type, int time)
+{
+    auto it = effects_.begin();
+    while (it != effects_.end())
     {
-        stunned_ += n;
-        return true;
+        if ((*it).type == type)
+        {
+            if (type == specter_eff)
+            {
+                (*it).time = min((*it).time + time, 5);
+                Update();
+            }
+            else 
+                (*it).time += time;
+            return true;
+        }
+        it++;
     }
-    return false;
+    
+    // not found
+    bool has_immune = FindEffect(immune_eff);
+    bool has_shield = FindEffect(shield_eff);
+    switch (type)
+    {
+        case shield_eff: case suck_eff: case heal_eff: case fury_eff: case dodge_eff: case hide_eff:
+            effects_.push_back(EffectInfo{type, time});
+            return true;
+        case specter_eff:
+            effects_.push_back(EffectInfo{type, time});
+            Update();
+            return true;
+        case burn_eff: case lock_eff:
+            if (!has_immune)
+            {
+                effects_.push_back(EffectInfo{type, time});
+                return true;
+            }
+            return false;
+        case stunned_eff:
+            if (!has_immune && !has_shield && can_stunned_)
+            {
+                effects_.push_back(EffectInfo{type, time});
+                return true;
+            }
+            return false;
+        case immune_eff:
+            effects_.push_back(EffectInfo{type, time});
+            DeleteEffect(stunned_eff);
+            DeleteEffect(burn_eff);
+            DeleteEffect(lock_eff);
+            return true;
+        default:
+            return false;
+    }
 }
 
-int Ship::GetShieldHealth() const
+void Ship::DecreaseEffect(Effect type, int time)
 {
-    return shield_health_;
+    auto it = effects_.begin();
+    while (it != effects_.end())
+    {
+        if ((*it).type == type)
+        {
+            (*it).time = max((*it).time - time, 0);
+            if (type == specter_eff)
+                Update();
+            return;
+        }
+        it++;
+    }
 }
 
-void Ship::IncreaseShieldHealth(int n)
+void Ship::DeleteEffect(Effect type)
 {
-    shield_health_ += n;
+    auto it = effects_.begin();
+    while (it != effects_.end())
+    {
+        if ((*it).type == type)
+        {
+            (*it).time = 0;
+            return;
+        }
+        it++;
+    }
 }
 
-bool Ship::HasShield() const
+void Ship::UpdateCurEffect()
 {
-    return shield_health_ != 0;
+    auto it = effects_.begin();
+    while (it != effects_.end())
+    {
+        Effect type = (*it).type;
+        if (type == heal_eff)
+            IncreaseHealth(2);
+        if (type == burn_eff)
+            DecreaseHealth(FindEffect(burn_eff), nullptr);
+        switch (type)
+        {
+            case stunned_eff: case immune_eff: case suck_eff: case heal_eff: case dodge_eff: case burn_eff:
+            case hide_eff:
+                (*it).time = max((*it).time - 1, 0);
+                break;
+            default:
+                break;
+        }
+        it++;
+    }
 }
 
-int Ship::GetImmune() const
+void Ship::UpdateOtherEffect()
 {
-    return immune_;
+    auto it = effects_.begin();
+    while (it != effects_.end())
+    {
+        if ((*it).type == lock_eff)
+            (*it).time = max((*it).time - 1, 0);
+        it++;
+    }
 }
 
-bool Ship::IsImmune() const
+void Ship::CheckEffects()
 {
-    return immune_;
-}
-
-void Ship::IncreaseImmune(int n)
-{
-    immune_ += n;
-    stunned_ = 0;
-    burn_ = 0;
-    lock_ = 0;
-}
-
-int Ship::GetSuck() const
-{
-    return suck_;
-}
-
-bool Ship::IsSuck() const
-{
-    return suck_;
-}
-
-void Ship::IncreaseSuck(int n)
-{
-    suck_ += n;
-}
-
-int Ship::GetHeal() const
-{
-    return heal_;
-}
-
-bool Ship::IsHeal() const
-{
-    return heal_;
-}
-
-void Ship::IncreaseHeal(int n)
-{
-    heal_ += n;
-}
-
-int Ship::GetFury() const
-{
-    return fury_;
-}
-
-bool Ship::IsFury() const
-{
-    return fury_;
-}
-
-void Ship::IncreaseFury(int n)
-{
-    fury_ += n;
-}
-
-int Ship::GetDodge() const
-{
-    return dodge_;
-}
-
-bool Ship::IsDodge() const
-{
-    return dodge_;
-}
-
-void Ship::IncreaseDodge(int n)
-{
-    dodge_ += n;
-}
-
-int Ship::GetBurn() const
-{
-    return burn_;
-}
-
-bool Ship::IsBurn() const
-{
-    return burn_;
-}
-
-void Ship::IncreaseBurn(int n)
-{
-    if (!immune_)
-        burn_ += n;
-}
-
-int Ship::GetHide() const
-{
-    return hide_;
-}
-
-bool Ship::IsHide() const
-{
-    return hide_;
-}
-
-void Ship::IncreaseHide(int n)
-{
-    hide_ += n;
-}
-
-int Ship::GetLock() const
-{
-    return lock_;
-}
-
-bool Ship::IsLock() const
-{
-    return lock_;
-}
-
-void Ship::IncreaseLock(int n)
-{
-    if (!IsImmune())
-        lock_ += n;
+    auto it = effects_.begin();
+    while (it != effects_.end())
+    {
+        if ((*it).time <= 0)
+            it = effects_.erase(it);
+        else 
+            it++;
+    }
 }
 
 const vector<AccessoryInfo>& Ship::GetAccessories() const
@@ -337,19 +309,19 @@ void Ship::AddAccessory(Accessory type)
     switch (type)
     {
         case time_bomb_acc:
-            if (!immune_ && !shield_health_)
+            if (!FindEffect(immune_eff) && !FindEffect(shield_eff))
                 accessories_.push_back(AccessoryInfo{type, 3, "time bomb"});
             break;
         case untime_bomb_acc:
-            if (!immune_ && !shield_health_)
+            if (!FindEffect(immune_eff) && !FindEffect(shield_eff))
                 accessories_.push_back(AccessoryInfo{type, 0, "untime bomb"});
             break;
         case small_bomb_acc:
-            if (!immune_ && !shield_health_)
+            if (!FindEffect(immune_eff) && !FindEffect(shield_eff))
                 accessories_.push_back(AccessoryInfo{type, 0, "small bomb"});
             break;
         case big_bomb_acc:
-            if (!immune_ && !shield_health_)
+            if (!FindEffect(immune_eff) && !FindEffect(shield_eff))
                 accessories_.push_back(AccessoryInfo{type, 0, "big bomb"});
             break;
         default:

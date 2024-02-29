@@ -16,8 +16,8 @@ void Blow::Use(Ship* source, Ship* target)
     OutputCrit(source, target);
     if (!ProcessDodge(source, target))
     {
-        target->DecreaseHealth(target->GetBurn() * crit_, source);
-        target->IncreaseBurn(target->GetBurn());
+        target->DecreaseHealth(target->FindEffect(burn_eff) * crit_, source);
+        target->IncreaseEffect(burn_eff, target->FindEffect(burn_eff));
     }
     Ban();
 }

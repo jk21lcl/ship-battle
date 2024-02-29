@@ -10,10 +10,10 @@ CritCannon::CritCannon(Game* game) : Cannon(game)
 
 void CritCannon::ProcessCrit(Ship* source, Ship* target)
 {
-    if (source->IsFury())
+    if (source->FindEffect(fury_eff))
     {
         crit_ = 2;
-        source->IncreaseFury(-1);
+        source->DecreaseEffect(fury_eff, 1);
     }
     else
     {

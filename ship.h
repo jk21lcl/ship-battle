@@ -30,6 +30,27 @@ enum ShipType
     bomb_ship
 };
 
+enum Effect
+{
+    stunned_eff,
+    shield_eff,
+    immune_eff,
+    suck_eff,
+    heal_eff,
+    fury_eff,
+    dodge_eff,
+    burn_eff,
+    hide_eff,
+    lock_eff,
+    specter_eff
+};
+
+struct EffectInfo
+{
+    Effect type;
+    int time;
+};
+
 enum Accessory
 {
     time_bomb_acc,
@@ -72,45 +93,14 @@ class Ship : public Object
         virtual void IncreaseHealth(double n);
         virtual void DecreaseHealth(double n, Ship* source);
 
-        int GetStunned() const;
-        bool IsStunned() const;
-        bool IncreaseStun(int n);
-
-        int GetShieldHealth() const;
-        void IncreaseShieldHealth(int n);
-        bool HasShield() const;
-
-        int GetImmune() const;
-        bool IsImmune() const;
-        void IncreaseImmune(int n);
-
-        int GetSuck() const;
-        bool IsSuck() const;
-        void IncreaseSuck(int n);
-
-        int GetHeal() const;
-        bool IsHeal() const;
-        void IncreaseHeal(int n);
-
-        int GetFury() const;
-        bool IsFury() const;
-        void IncreaseFury(int n);
-
-        int GetDodge() const;
-        bool IsDodge() const;
-        void IncreaseDodge(int n);
-
-        int GetBurn() const;
-        bool IsBurn() const;
-        void IncreaseBurn(int n);
-
-        int GetHide() const;
-        bool IsHide() const;
-        void IncreaseHide(int n);
-
-        int GetLock() const;
-        bool IsLock() const;
-        void IncreaseLock(int n);
+        const vector<EffectInfo>& GetEffects() const;
+        int FindEffect(Effect type) const;
+        bool IncreaseEffect(Effect type, int time);
+        void DecreaseEffect(Effect type, int time);
+        void DeleteEffect(Effect type);
+        void UpdateCurEffect();
+        void UpdateOtherEffect(); // update lock
+        void CheckEffects();
 
         const vector<AccessoryInfo>& GetAccessories() const;
         void AddAccessory(Accessory type);
@@ -135,17 +125,7 @@ class Ship : public Object
         vector<Cannon*> cannons_;
         vector<Skill*> skills_;
 
-        int stunned_;
-        int shield_health_;
-        int immune_;
-        int suck_;
-        int heal_;
-        int fury_;
-        int dodge_;
-        int burn_;
-        int hide_;
-        int lock_;
-
+        vector<EffectInfo> effects_;
         vector<AccessoryInfo> accessories_;
 
         virtual void Ban();

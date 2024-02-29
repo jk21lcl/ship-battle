@@ -42,33 +42,50 @@ void Game::ShowStatus() const
             cout << "\033[1;36m" << ship->GetName() << "\033[0m";
             if (ship->IsAlive())
             {
-                if (ship->HasShield())
-                    cout << "\033[0;32m" << "(shield: " << ship->GetShieldHealth() << ")" << "\033[0m";
-                if (ship->IsImmune())
-                    cout << "\033[1;35m" << "(immune: " << ship->GetImmune() << ")" << "\033[0m";
-                if (ship->IsSuck())
-                    cout << "\033[0;35m" << "(suck: " << ship->GetSuck() << ")" << "\033[0m";
-                if (ship->IsHeal())
-                    cout << "\033[1;32m" << "(heal: " << ship->GetHeal() << ")" << "\033[0m";
-                if (ship->IsFury())
-                    cout << "\033[0;33m" << "(fury: " << ship->GetFury() << ")" << "\033[0m";
-                if (ship->IsDodge())
-                    cout << "\033[1;34m" << "(dodge: " << ship->GetDodge() << ")" << "\033[0m";
-                if (ship->IsBurn())
-                    cout << "\033[0;31m" << "(burn: " << ship->GetBurn() << ")" << "\033[0m";
-                if (ship->IsHide())
-                    cout << "\033[1;30m" << "(hide: " << ship->GetHide() << ")" << "\033[0m";
-                if (ship->IsLock())
-                    cout << "\033[1;34m" << "(lock: " << ship->GetLock() << ")" << "\033[0m";
-                if (ship->GetShipType() == specter_ship)
+                // show effects
+                vector<EffectInfo> effs = ship->GetEffects();
+                for (EffectInfo& eff : effs)
                 {
-                    SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(ship);
-                    if (specter_ship->IsSpecter())
-                        cout << "\033[1;30m" << "(specter: " << specter_ship->GetSpecter() << ")" << "\033[0m";
+                    switch (eff.type)
+                    {
+                        case stunned_eff:
+                            cout << "\033[1;33m" << "(stunned: " << ship->FindEffect(stunned_eff) << ")" << "\033[0m";
+                            break;
+                        case shield_eff:
+                            cout << "\033[0;32m" << "(shield: " << ship->FindEffect(shield_eff) << ")" << "\033[0m";
+                            break;
+                        case immune_eff:
+                            cout << "\033[1;35m" << "(immune: " << ship->FindEffect(immune_eff) << ")" << "\033[0m";
+                            break;
+                        case suck_eff:
+                            cout << "\033[0;35m" << "(suck: " << ship->FindEffect(suck_eff) << ")" << "\033[0m";
+                            break;
+                        case heal_eff:
+                            cout << "\033[1;32m" << "(heal: " << ship->FindEffect(heal_eff) << ")" << "\033[0m";
+                            break;
+                        case fury_eff:
+                            cout << "\033[0;33m" << "(fury: " << ship->FindEffect(fury_eff) << ")" << "\033[0m";
+                            break;
+                        case dodge_eff:
+                            cout << "\033[1;34m" << "(dodge: " << ship->FindEffect(dodge_eff) << ")" << "\033[0m";
+                            break;
+                        case burn_eff:
+                            cout << "\033[0;31m" << "(burn: " << ship->FindEffect(burn_eff) << ")" << "\033[0m";
+                            break;
+                        case hide_eff:
+                            cout << "\033[1;30m" << "(hide: " << ship->FindEffect(hide_eff) << ")" << "\033[0m";
+                            break;
+                        case lock_eff:
+                            cout << "\033[1;34m" << "(lock: " << ship->FindEffect(lock_eff) << ")" << "\033[0m";
+                            break;
+                        case specter_eff:
+                            cout << "\033[1;30m" << "(specter: " << ship->FindEffect(specter_eff) << ")" << "\033[0m";
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                if (ship->IsStunned())
-                    cout << "\033[1;33m" << "(stunned: " << ship->GetStunned() << ")" << "\033[0m";
-                
+
                 // show accessories
                 vector<AccessoryInfo> accs = ship->GetAccessories();
                 for (AccessoryInfo& acc : accs)
@@ -154,7 +171,7 @@ void Game::Input()
         for (int i = 0; i < num_ship; i++)
         {
             Ship* ship = ships[i];
-            if (ship->IsAlive() && !ship->IsStunned())
+            if (ship->IsAlive() && !ship->FindEffect(stunned_eff))
             {
                 all_stunned = false;
                 break;
@@ -171,7 +188,7 @@ void Game::Input()
             for (int i = 0; i < num_ship; i++)
             {
                 Ship* ship = ships[i];
-                if (ship->IsAlive() && !ship->IsStunned())
+                if (ship->IsAlive() && !ship->FindEffect(stunned_eff))
                 {
                     cout << "  " << i + 1 << "  " << "\033[1;36m" << ship->GetName() << "\033[0m" << endl;
                     if (ship->GetNumCannons())
@@ -308,7 +325,7 @@ void Game::Input()
         for (int i = 0; i < num_ship; i++)
         {
             Ship* ship = ships[i];
-            if (ship->IsAlive() && !ship->IsStunned())
+            if (ship->IsAlive() && !ship->FindEffect(stunned_eff))
             {
                 vector<Cannon*> cannons = ship->GetCannons();
                 vector<Skill*> skills = ship->GetSkills();
@@ -359,9 +376,9 @@ void Game::Input()
                             }
                             else
                             {
+                                cout << "Target: ";
                                 for (int j = 0; j < cur_cannon->GetAttackTimes(); j++)
                                 {
-                                    cout << "Target: ";
                                     while (true)
                                     {
                                         target = rand() % target_player->GetNum() + 1;
@@ -430,35 +447,17 @@ void Game::Update()
     ProcessCannon();
     ProcessAttackSkill();
 
-    // update cd, stun, immune, suck, heal, burn, dodge, hide
+    // update effects of current ships
     for (Ship* ship : cur_player_->GetShips())
         if (ship->IsAlive())
         {
-            if (ship->IsImmune())
-                ship->IncreaseImmune(-1);
-            if (ship->IsSuck())
-                ship->IncreaseSuck(-1);
-            if (ship->IsHeal())
-            {
-                ship->IncreaseHealth(2);
-                ship->IncreaseHeal(-1);
-            }
-            if (ship->IsDodge())
-                ship->IncreaseDodge(-1);
-            if (ship->IsBurn())
-            {
-                ship->DecreaseHealth(ship->GetBurn(), nullptr);
-                ship->IncreaseBurn(-1);
-            }
-            if (ship->IsHide())
-                ship->IncreaseHide(-1);
+            bool is_stunned = ship->FindEffect(stunned_eff);
+            ship->UpdateCurEffect();
 
             // update accessories
             ship->UpdateAccessory();
 
-            if (ship->IsStunned())
-                ship->IncreaseStun(-1);
-            else
+            if (!is_stunned)
             {
                 ship->IncreaseHealth(ship->GetHealHealth());
                 vector<Cannon*> cannons = ship->GetCannons();
@@ -481,15 +480,20 @@ void Game::Update()
             }
         }
 
-    // update lock
+    // update effects of other ships
     for (Ship* ship : other_player_->GetShips())
         if (ship->IsAlive())
-        {
-            if (ship->IsLock())
-                ship->IncreaseLock(-1);
-        }
+            ship->UpdateOtherEffect();
 
     ProcessSkill();
+
+    // remove non-existing effects
+    for (Ship* ship : cur_player_->GetShips())
+        if (ship->IsAlive())
+            ship->CheckEffects();
+    for (Ship* ship : other_player_->GetShips())
+        if (ship->IsAlive())
+            ship->CheckEffects();
 
     // stab processing stage 2
     for (StabInfo stab_info : stab_info_)

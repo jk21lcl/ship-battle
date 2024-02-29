@@ -10,5 +10,5 @@ Dodge::Dodge(Game* game) : Skill(game)
 
 void Dodge::Use(Ship* source, Ship* target)
 {
-    target->IncreaseDodge(2);
+    target->IncreaseEffect(dodge_eff, 2);
 }

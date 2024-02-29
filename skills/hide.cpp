@@ -11,10 +11,9 @@ Hide::Hide(Game* game) : Skill(game)
 
 void Hide::Use(Ship* source, Ship* target)
 {
-    SpecterShip* specter_ship = dynamic_cast<SpecterShip*>(source);
-    if (specter_ship->IsSpecter())
+    if (source->FindEffect(specter_eff))
     {
-        specter_ship->IncreaseHide(1);
-        specter_ship->IncreaseSpecter(-1);
+        source->IncreaseEffect(hide_eff, 1);
+        source->DecreaseEffect(specter_eff, 1);
     }
 }
