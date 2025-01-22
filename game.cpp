@@ -355,8 +355,10 @@ void Game::Input()
                         break;
                     }
 
-                    if (option == 0)
+                    if (option == 0) {
+                        dismantle_bomb_event_.push(new DismantleBombEvent(ship));
                         cout << i + 1 << " " << "\033[1;36m" << ship->GetName() << "\033[0m" << " rests" << endl;
+                    }
                     else
                     {
                         string name = option <= num_cannon ? cannons[option - 1]->GetName() : 
